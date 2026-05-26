@@ -1369,7 +1369,7 @@
             <div class="code-block">
               <span class="code-prompt">$</span>
               <span class="code-text">xattr -cr /Applications/Timelog.app</span>
-              <button class="copy-btn" onclick="navigator.clipboard.writeText('xattr -cr /Applications/Timelog.app').then(()=>{this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',1800)})">Copy</button>
+              <button class="copy-btn" onclick="navigator.clipboard.writeText('xattr -cr /Applications/Timelog.app').then(()=>{this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',1800)}).catch(()=>{this.textContent='Failed';setTimeout(()=>this.textContent='Copy',1800)})">Copy</button>
             </div>
           </div>
         </div>
