@@ -27,6 +27,15 @@ struct SettingsView: View {
                 }
 
                 Section {
+                    Toggle("Auto-advance phases", isOn: $store.pomodoroAutoAdvance)
+                        .onChange(of: store.pomodoroAutoAdvance) { timerVM.applySettings(store) }
+                    Toggle("Sound effects", isOn: $store.pomodoroSoundEnabled)
+                        .onChange(of: store.pomodoroSoundEnabled) { timerVM.applySettings(store) }
+                } footer: {
+                    Text("Auto-advance: when a phase ends the next one starts automatically, no input needed.\nSound effects: plays a chime at each phase transition.")
+                }
+
+                Section {
                     Toggle("Daily reminder", isOn: $store.reminderEnabled)
                     if store.reminderEnabled {
                         DatePicker("Time", selection: reminderTime, displayedComponents: .hourAndMinute)

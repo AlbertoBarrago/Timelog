@@ -26,10 +26,18 @@ struct MacSettingsView: View {
                 Stepper("Long break: \(store.pomodoroLongBreak) min",
                         value: $store.pomodoroLongBreak, in: 1...60)
                     .onChange(of: store.pomodoroLongBreak) { timerVM.applySettings(store) }
+            }
+
+            Section {
                 Toggle(String(localized: "Auto-advance phases"), isOn: $store.pomodoroAutoAdvance)
                     .onChange(of: store.pomodoroAutoAdvance) { timerVM.applySettings(store) }
                 Toggle(String(localized: "Sound effects"), isOn: $store.pomodoroSoundEnabled)
                     .onChange(of: store.pomodoroSoundEnabled) { timerVM.applySettings(store) }
+            } footer: {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Auto-advance: when a phase ends the next one starts automatically, no input needed.")
+                    Text("Sound effects: plays a chime at each phase transition.")
+                }
             }
 
             // MARK: Reminders

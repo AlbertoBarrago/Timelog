@@ -20,7 +20,8 @@ struct StopSessionSheet: View {
 
     init(session: ActiveSession) {
         self.session = session
-        let elapsed = max(0, Int(Date().timeIntervalSince(session.startDate) / 60))
+        let seconds = max(0, Date().timeIntervalSince(session.startDate))
+        let elapsed = max(1, Int((seconds / 60).rounded()))
         _hours = State(initialValue: elapsed / 60)
         _minutes = State(initialValue: elapsed % 60)
         _notes = State(initialValue: session.notes ?? "")
