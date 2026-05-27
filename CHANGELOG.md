@@ -7,6 +7,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [1.2.1] — 2026-05-27
+
 ### Fixed
 - **Widget non si aggiornava rapidamente dopo stop/start sessione** (iOS) — aggiunto `try? context.save()` in `StopSessionSheet` e `StartTrackingSheet`; la `@Query` di `HomeView` riceve dati aggiornati prima di scrivere lo snapshot su App Group UserDefaults
 - **Sessione ancora attiva dopo stop + navigazione** (iOS + macOS) — stesso `context.save()` esplicito risolve il lag di autosave di SwiftData; aggiunto anche in `StartTrackingMacView`
