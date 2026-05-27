@@ -40,12 +40,25 @@ private struct ProjectDocument: Codable {
     var clientMongoId: String?
     var labels: [String]
     var deletedAt: Date?
+
     init(from project: TimelogCore.Project) {
         _id = project.mongoId.flatMap { ObjectId($0) } ?? ObjectId()
         name = project.name; code = project.code; isArchived = project.isArchived
         userId = project.userId; clientMongoId = project.client?.mongoId
         labels = project.labels
         deletedAt = project.deletedAt
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        _id           = try c.decode(ObjectId.self, forKey: ._id)
+        name          = try c.decode(String.self, forKey: .name)
+        code          = try c.decodeIfPresent(String.self, forKey: .code)
+        isArchived    = try c.decodeIfPresent(Bool.self, forKey: .isArchived) ?? false
+        userId        = try c.decodeIfPresent(String.self, forKey: .userId) ?? ""
+        clientMongoId = try c.decodeIfPresent(String.self, forKey: .clientMongoId)
+        labels        = try c.decodeIfPresent([String].self, forKey: .labels) ?? []
+        deletedAt     = try c.decodeIfPresent(Date.self, forKey: .deletedAt)
     }
 }
 

@@ -3,6 +3,7 @@ import SwiftData
 import TimelogCore
 import TimelogSync
 import UIKit
+import UserNotifications
 
 private struct RestSyncSetup: ViewModifier {
     @Environment(\.modelContext) private var modelContext
@@ -71,30 +72,63 @@ private struct SyncFlashOverlay: ViewModifier {
     }
 }
 
+private final class ForegroundNotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
+        return [.banner, .sound]
+    }
+}
+
+private struct IdleAlertModifier: ViewModifier {
+    @Environment(\.scenePhase) private var scenePhase
+    @Environment(SettingsStore.self) private var settings
+    @Query private var sessions: [ActiveSession]
+
+    func body(content: Content) -> some View {
+        content
+            .onAppear { updateAlert() }
+            .onChange(of: sessions.count) { _, _ in updateAlert() }
+            .onChange(of: scenePhase) { _, phase in if phase == .active { updateAlert() } }
+            .onChange(of: settings.idleAlertEnabled) { _, _ in updateAlert() }
+            .onChange(of: settings.idleAlertMinutes) { _, _ in updateAlert() }
+    }
+
+    private func updateAlert() {
+        if !settings.idleAlertEnabled || !sessions.isEmpty {
+            NotificationManager.shared.cancelIdleAlert()
+        } else {
+            NotificationManager.shared.scheduleIdleAlert(afterMinutes: settings.idleAlertMinutes)
+        }
+    }
+}
+
 @main
 struct TimelogApp: App {
     @State private var settings  = SettingsStore()
     @State private var timerVM   = TimerViewModel()
     @State private var showSplash = true
+    @State private var notificationDelegate = ForegroundNotificationDelegate()
 
     var body: some Scene {
         WindowGroup {
             ZStack {
                 ContentView()
-                    .environment(settings)
-                    .environment(timerVM)
                     .onAppear {
+                        UNUserNotificationCenter.current().delegate = notificationDelegate
                         timerVM.applySettings(settings)
                         NotificationManager.shared.requestPermission()
                         settings.applyReminders()
                     }
                     .modifier(RestSyncSetup())
                     .modifier(SyncFlashOverlay())
+                    .modifier(IdleAlertModifier())
 
                 if showSplash {
                     SplashView(isShowing: $showSplash)
                 }
             }
+            .environment(settings)
+            .environment(timerVM)
         }
         .modelContainer(for: [Client.self, Project.self, TimeEntry.self, ActiveSession.self])
     }

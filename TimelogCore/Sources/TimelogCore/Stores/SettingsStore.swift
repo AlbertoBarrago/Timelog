@@ -19,6 +19,9 @@ public final class SettingsStore {
     public var trackingEndHour: Int = 18 { didSet { save() } }
     public var trackingEndMinute: Int = 0 { didSet { save() } }
 
+    public var idleAlertEnabled: Bool = false { didSet { save() } }
+    public var idleAlertMinutes: Int = 10 { didSet { save() } }
+
     private let defaults: UserDefaults
     private var isLoading = false
 
@@ -50,6 +53,8 @@ public final class SettingsStore {
         }
         trackingEndHour   = defaults.object(forKey: "tracking_end_hour")   != nil ? defaults.integer(forKey: "tracking_end_hour")   : 18
         trackingEndMinute = defaults.object(forKey: "tracking_end_minute") != nil ? defaults.integer(forKey: "tracking_end_minute") : 0
+        idleAlertEnabled  = defaults.bool(forKey: "idle_alert_enabled")
+        idleAlertMinutes  = defaults.object(forKey: "idle_alert_minutes")  != nil ? defaults.integer(forKey: "idle_alert_minutes")  : 10
     }
 
     public func save() {
@@ -66,6 +71,8 @@ public final class SettingsStore {
         defaults.set(Array(reminderDays),forKey: "reminder_days")
         defaults.set(trackingEndHour,    forKey: "tracking_end_hour")
         defaults.set(trackingEndMinute,  forKey: "tracking_end_minute")
+        defaults.set(idleAlertEnabled,   forKey: "idle_alert_enabled")
+        defaults.set(idleAlertMinutes,   forKey: "idle_alert_minutes")
     }
 
     public func applyReminders() {

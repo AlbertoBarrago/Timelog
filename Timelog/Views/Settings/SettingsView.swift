@@ -41,10 +41,14 @@ struct SettingsView: View {
 
                 Section {
                     DatePicker("Notify if still open at", selection: trackingEndTime, displayedComponents: .hourAndMinute)
+                    Toggle("Alert when idle", isOn: $store.idleAlertEnabled)
+                    if store.idleAlertEnabled {
+                        Stepper("After \(store.idleAlertMinutes) min", value: $store.idleAlertMinutes, in: 1...120)
+                    }
                 } header: {
                     Text("Smart Tracking")
                 } footer: {
-                    Text("You'll receive a notification if a session is still running at this time.")
+                    Text("You'll receive a notification if a session is still running at this time, or if you have no active session after the idle threshold.")
                 }
 
                 Section {

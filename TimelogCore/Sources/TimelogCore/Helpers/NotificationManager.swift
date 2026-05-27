@@ -115,6 +115,26 @@ public final class NotificationManager {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["pomodoro_phase"])
     }
 
+    // MARK: - Idle alert
+
+    private static let idleNotificationID = "timelog_idle_alert"
+
+    public func scheduleIdleAlert(afterMinutes minutes: Int) {
+        cancelIdleAlert()
+        guard minutes > 0 else { return }
+        let content = UNMutableNotificationContent()
+        content.title = String(localized: "You're not tracking anything")
+        content.body = String(localized: "What are you working on?")
+        content.sound = .default
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(minutes * 60), repeats: false)
+        let request = UNNotificationRequest(identifier: Self.idleNotificationID, content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request)
+    }
+
+    public func cancelIdleAlert() {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [Self.idleNotificationID])
+    }
+
     public func notifyPhaseTransition(to phase: String, completedCount: Int) {
         let content = UNMutableNotificationContent()
         content.sound = .default

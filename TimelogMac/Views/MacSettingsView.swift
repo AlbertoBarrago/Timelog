@@ -49,10 +49,14 @@ struct MacSettingsView: View {
                 DatePicker("Notify if still open at",
                            selection: trackingEndTime,
                            displayedComponents: .hourAndMinute)
+                Toggle("Alert when idle", isOn: $store.idleAlertEnabled)
+                if store.idleAlertEnabled {
+                    Stepper("After \(store.idleAlertMinutes) min", value: $store.idleAlertMinutes, in: 1...120)
+                }
             } header: {
                 Text("Smart Tracking")
             } footer: {
-                Text("Sends a notification if a session is still running at this time.")
+                Text("Sends a notification if a session is still running at this time, or if you have no active session after the idle threshold.")
             }
 
             // MARK: MongoDB Sync — native macOS layout

@@ -40,6 +40,29 @@ private struct MongoSyncSetup: ViewModifier {
     }
 }
 
+private struct IdleAlertModifier: ViewModifier {
+    @Environment(\.scenePhase) private var scenePhase
+    @Environment(SettingsStore.self) private var settings
+    @Query private var sessions: [ActiveSession]
+
+    func body(content: Content) -> some View {
+        content
+            .onAppear { updateAlert() }
+            .onChange(of: sessions.count) { _, _ in updateAlert() }
+            .onChange(of: scenePhase) { _, phase in if phase == .active { updateAlert() } }
+            .onChange(of: settings.idleAlertEnabled) { _, _ in updateAlert() }
+            .onChange(of: settings.idleAlertMinutes) { _, _ in updateAlert() }
+    }
+
+    private func updateAlert() {
+        if !settings.idleAlertEnabled || !sessions.isEmpty {
+            NotificationManager.shared.cancelIdleAlert()
+        } else {
+            NotificationManager.shared.scheduleIdleAlert(afterMinutes: settings.idleAlertMinutes)
+        }
+    }
+}
+
 final class AppNotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
@@ -93,8 +116,6 @@ struct TimelogMacApp: App {
     var body: some Scene {
         WindowGroup("Timelog", id: "main") {
             MainMacView()
-                .environment(settings)
-                .environment(timerVM)
                 .onAppear {
                     UNUserNotificationCenter.current().delegate = notificationDelegate
                     timerVM.applySettings(settings)
@@ -103,6 +124,9 @@ struct TimelogMacApp: App {
                     MongoSyncService.shared.userId = settings.userId
                 }
                 .modifier(MongoSyncSetup())
+                .modifier(IdleAlertModifier())
+                .environment(settings)
+                .environment(timerVM)
         }
         .modelContainer(Self.container)
         .commands {
