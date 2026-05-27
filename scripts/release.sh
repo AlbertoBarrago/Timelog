@@ -87,9 +87,15 @@ git tag "v$NEW_VERSION"
 ok "Tag v$NEW_VERSION creato"
 
 # ── Push ──────────────────────────────────────────────────────────────
-git push origin main
-git push origin "v$NEW_VERSION"
-ok "Pushato su origin (main + tag v$NEW_VERSION)"
+echo ""
+read -rp "Push origin main + tag v$NEW_VERSION? (y/N) " PUSH_CONFIRM
+if [[ "${PUSH_CONFIRM,,}" == "y" ]]; then
+  git push origin main
+  git push origin "v$NEW_VERSION"
+  ok "Pushato su origin (main + tag v$NEW_VERSION)"
+else
+  warn "Push saltato. Esegui manualmente: git push origin main && git push origin v$NEW_VERSION"
+fi
 
 echo ""
 echo -e "${GREEN}🚀 Release $NEW_VERSION pubblicata!${NC}"
