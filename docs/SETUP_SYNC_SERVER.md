@@ -1,26 +1,42 @@
 # Sync Server Setup — new machine notes
 
-## 1. Local configuration file
+## iOS — RestSyncService
 
-Create the file `~/.config/timelog/sync.local` with this content:
+The iOS app reads sync credentials from a file **inside the Xcode project bundle** (not `~/.config`).
+
+Create `Timelog/SyncConfig.local` at the root of the iOS project (gitignored, already in `.gitignore`):
+
+```
+URL=https://timelog-server.vercel.app
+API_KEY=YOUR_API_KEY
+```
+
+> Replace `YOUR_API_KEY` with the key configured on Vercel.
+
+On first launch the app reads this file and saves URL + API key to Keychain automatically.
+No manual input in Settings required.
+
+**Do not use `~/.config/timelog/` for iOS — that path is only for macOS.**
+
+---
+
+## macOS — MongoSyncService
+
+The macOS app reads the MongoDB connection string from `~/.config/timelog/mongo.local`:
 
 ```bash
 mkdir -p ~/.config/timelog
 
-cat > ~/.config/timelog/sync.local << 'EOF'
-URL=https://timelog-server.vercel.app
-API_KEY=YOUR_API_KEY
-EOF
+echo "mongodb+srv://user:password@cluster.mongodb.net" > ~/.config/timelog/mongo.local
 
-chmod 600 ~/.config/timelog/sync.local
+chmod 600 ~/.config/timelog/mongo.local
 ```
 
-> Replace `YOUR_API_KEY` with the key you set on Vercel.
+On first launch the app reads this file and saves the connection string to Keychain automatically.
 
-The app reads this file on first launch and saves the credentials to Keychain automatically.
-No manual input in Settings required.
+---
 
-## 2. Vercel environment variables (already set — for reference only)
+## Vercel environment variables (already set — for reference only)
 
 The `timelog-server` project on Vercel has these configured:
 - `MONGODB_URI` — MongoDB Atlas connection string
@@ -28,7 +44,9 @@ The `timelog-server` project on Vercel has these configured:
 
 To retrieve them: run `vercel env pull` from the `server/` folder.
 
-## 3. Quick verification
+---
+
+## Quick verification
 
 ```bash
 curl -s -H "X-API-Key: YOUR_API_KEY" https://timelog-server.vercel.app/api/pull
