@@ -158,6 +158,8 @@ public final class RestSyncService {
             guard let self, let data = self.dataProvider?() else { return }
             do {
                 try await self.push(clients: data.clients, projects: data.projects, entries: data.entries, sessions: data.sessions)
+            } catch is CancellationError {
+                // superseded by a newer sync request — not an error
             } catch {
                 self.lastError = error.localizedDescription
             }
@@ -174,6 +176,8 @@ public final class RestSyncService {
             guard let data = self.dataProvider?() else { return }
             do {
                 try await self.push(clients: data.clients, projects: data.projects, entries: data.entries, sessions: data.sessions)
+            } catch is CancellationError {
+                // superseded by a newer sync request — not an error
             } catch {
                 self.lastError = error.localizedDescription
             }

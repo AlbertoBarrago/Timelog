@@ -102,6 +102,7 @@ private struct ClientMacRow: View {
 
 struct ProjectsMacView: View {
     @Environment(\.modelContext) private var context
+    @Environment(SettingsStore.self) private var settings
     let client: Client
 
     @State private var showingAddProject = false
@@ -110,12 +111,17 @@ struct ProjectsMacView: View {
     @State private var selectedProjects  = Set<Project.ID>()
 
     @Query(sort: \Project.name) private var allProjects: [Project]
+    @Query(sort: \ActiveSession.startDate) private var allSessions: [ActiveSession]
 
     private var visibleProjects: [Project] {
         allProjects.filter {
             $0.client?.persistentModelID == client.persistentModelID
             && (showArchived || !$0.isArchived)
         }
+    }
+
+    private var activeSessions: [ActiveSession] {
+        allSessions.filter { $0.userId == settings.userId }
     }
 
     var body: some View {
@@ -152,21 +158,29 @@ struct ProjectsMacView: View {
             } else {
                 Section {
                     ForEach(visibleProjects) { proj in
-                        ProjectMacRow(project: proj)
-                            .contentShape(Rectangle())
-                            .onTapGesture { projectToEdit = proj }
-                            .accessibilityAddTraits(.isButton)
-                            .accessibilityHint(String(localized: "Click to edit project"))
-                            .contextMenu {
-                                Button("Edit") { projectToEdit = proj }
-                                Button(proj.isArchived ? "Unarchive" : "Archive") {
-                                    proj.isArchived.toggle()
-                                }
-                                Divider()
-                                Button("Delete", role: .destructive) {
-                                    proj.deletedAt = .now
-                                }
+                        let isActive = activeSessions.contains { $0.project?.persistentModelID == proj.persistentModelID }
+                        ProjectMacRow(project: proj, isActive: isActive) {
+                            if isActive {
+                                autoStop(activeSessions.filter { $0.project?.persistentModelID == proj.persistentModelID })
+                            } else {
+                                autoStop(activeSessions)
+                                quickStart(project: proj)
                             }
+                        }
+                        .contentShape(Rectangle())
+                        .onTapGesture { projectToEdit = proj }
+                        .accessibilityAddTraits(.isButton)
+                        .accessibilityHint(String(localized: "Click to edit project"))
+                        .contextMenu {
+                            Button("Edit") { projectToEdit = proj }
+                            Button(proj.isArchived ? "Unarchive" : "Archive") {
+                                proj.isArchived.toggle()
+                            }
+                            Divider()
+                            Button("Delete", role: .destructive) {
+                                proj.deletedAt = .now
+                            }
+                        }
                     }
                 }
             }
@@ -192,10 +206,43 @@ struct ProjectsMacView: View {
             selectedProjects = []
         }
     }
+
+    private func autoStop(_ sessions: [ActiveSession]) {
+        for session in sessions {
+            let seconds = max(0, Date().timeIntervalSince(session.startDate))
+            let elapsed = max(1, Int((seconds / 60).rounded()))
+            let entry = session.asTimeEntry(durationMinutes: elapsed, notes: session.notes, label: session.label)
+            context.insert(entry)
+            NotificationManager.shared.cancelSession(id: session.notificationID)
+            context.delete(session)
+        }
+        try? context.save()
+    }
+
+    private func quickStart(project: Project) {
+        let session = ActiveSession(
+            client: project.client,
+            project: project,
+            userId: settings.userId
+        )
+        context.insert(session)
+        NotificationManager.shared.scheduleSessionOverdue(
+            id: session.notificationID,
+            clientName: project.client?.name ?? "a project",
+            projectName: project.name,
+            startDate: session.startDate,
+            endHour: settings.trackingEndHour,
+            endMinute: settings.trackingEndMinute
+        )
+        try? context.save()
+    }
 }
 
 private struct ProjectMacRow: View {
     let project: Project
+    let isActive: Bool
+    let onQuickToggle: () -> Void
+
     var body: some View {
         HStack(spacing: 8) {
             VStack(alignment: .leading, spacing: 2) {
@@ -217,6 +264,14 @@ private struct ProjectMacRow: View {
                 Text("Archived")
                     .font(.caption)
                     .foregroundStyle(.secondary)
+            } else {
+                Button(action: onQuickToggle) {
+                    Image(systemName: isActive ? "stop.circle.fill" : "play.circle")
+                        .foregroundStyle(isActive ? .red : .secondary)
+                }
+                .buttonStyle(.plain)
+                .help(isActive ? String(localized: "Stop session") : String(localized: "Start session"))
+                .accessibilityLabel(isActive ? String(localized: "Stop session") : String(localized: "Start session"))
             }
         }
         .padding(.vertical, 2)

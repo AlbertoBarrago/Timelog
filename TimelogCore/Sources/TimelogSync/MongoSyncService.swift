@@ -179,10 +179,18 @@ public final class MongoSyncService {
             try? await Task.sleep(for: .seconds(Self.debounceSeconds))
             guard !Task.isCancelled, let self else { return }
             if self.db == nil {
-                do { try await self.connect() } catch { self.lastError = error.localizedDescription; return }
+                do { try await self.connect() } catch is CancellationError {
+                    return
+                } catch { self.lastError = error.localizedDescription; return }
             }
             guard let data = self.dataProvider?() else { return }
-            try? await self.syncAll(clients: data.clients, projects: data.projects, entries: data.entries, sessions: data.sessions)
+            do {
+                try await self.syncAll(clients: data.clients, projects: data.projects, entries: data.entries, sessions: data.sessions)
+            } catch is CancellationError {
+                // superseded by a newer sync request — not an error
+            } catch {
+                self.lastError = error.localizedDescription
+            }
         }
     }
 
