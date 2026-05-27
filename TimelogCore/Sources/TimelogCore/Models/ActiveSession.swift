@@ -7,15 +7,17 @@ public final class ActiveSession {
     public var client: Client?
     public var project: Project?
     public var notes: String?
+    public var label: String?
     public var notificationID: String
     public var mongoId: String?
     public var userId: String = ""
 
-    public init(client: Client? = nil, project: Project? = nil, notes: String? = nil, userId: String = "") {
+    public init(client: Client? = nil, project: Project? = nil, notes: String? = nil, label: String? = nil, userId: String = "") {
         self.startDate = .now
         self.client = client
         self.project = project
         self.notes = notes
+        self.label = label
         self.notificationID = UUID().uuidString
         self.mongoId = Client.newMongoId()
         self.userId = userId
@@ -35,11 +37,12 @@ public final class ActiveSession {
         max(0, Int(Date().timeIntervalSince(startDate) / 60))
     }
 
-    public func asTimeEntry(durationMinutes: Int, notes: String?) -> TimeEntry {
+    public func asTimeEntry(durationMinutes: Int, notes: String?, label: String? = nil) -> TimeEntry {
         TimeEntry(
             date: startDate,
             durationMinutes: durationMinutes,
             notes: notes,
+            label: label ?? self.label,
             client: client,
             project: project,
             userId: userId

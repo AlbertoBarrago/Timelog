@@ -11,6 +11,8 @@ struct StartTrackingSheet: View {
 
     @State private var selectedClient: Client?
     @State private var selectedProject: Project?
+    @State private var selectedLabel: String?
+    @State private var newLabelText = ""
     @State private var notes = ""
 
     @Query(filter: #Predicate<Project> { !$0.isArchived && $0.deletedAt == nil }, sort: \Project.name)
@@ -29,12 +31,27 @@ struct StartTrackingSheet: View {
                         Text("None").tag(Optional<Client>.none)
                         ForEach(clients) { Text($0.name).tag(Optional($0)) }
                     }
-                    .onChange(of: selectedClient) { selectedProject = nil }
+                    .onChange(of: selectedClient) { selectedProject = nil; selectedLabel = nil }
 
                     if !availableProjects.isEmpty {
                         Picker("Project", selection: $selectedProject) {
                             Text("None").tag(Optional<Project>.none)
                             ForEach(availableProjects) { Text($0.name).tag(Optional($0)) }
+                        }
+                        .onChange(of: selectedProject) { _, _ in selectedLabel = nil }
+                    }
+
+                    if let project = selectedProject {
+                        if !project.labels.isEmpty {
+                            Picker("Type", selection: $selectedLabel) {
+                                Text("None").tag(Optional<String>.none)
+                                ForEach(project.labels, id: \.self) { Text($0).tag(Optional($0)) }
+                            }
+                        }
+                        HStack {
+                            TextField("New label", text: $newLabelText)
+                            Button("Add") { addLabel(to: project) }
+                                .disabled(newLabelText.trimmingCharacters(in: .whitespaces).isEmpty)
                         }
                     }
                 }
@@ -58,11 +75,21 @@ struct StartTrackingSheet: View {
         }
     }
 
+    private func addLabel(to project: Project) {
+        let trimmed = newLabelText.trimmingCharacters(in: .whitespaces)
+        guard !trimmed.isEmpty, !project.labels.contains(trimmed) else { return }
+        project.labels.append(trimmed)
+        try? context.save()
+        selectedLabel = trimmed
+        newLabelText = ""
+    }
+
     private func start() {
         let session = ActiveSession(
             client: selectedClient,
             project: selectedProject,
             notes: notes.isEmpty ? nil : notes,
+            label: selectedLabel,
             userId: settings.userId
         )
         context.insert(session)

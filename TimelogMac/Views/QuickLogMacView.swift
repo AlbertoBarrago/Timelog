@@ -13,6 +13,8 @@ struct QuickLogMacView: View {
 
     @State private var selectedClient: Client?
     @State private var selectedProject: Project?
+    @State private var selectedLabel: String?
+    @State private var newLabelText = ""
     @State private var date = Date()
     @State private var hours = 0
     @State private var minutes = 30
@@ -49,6 +51,7 @@ struct QuickLogMacView: View {
                     .onChange(of: selectedClient) { _, newClient in
                         if selectedProject?.client?.persistentModelID != newClient?.persistentModelID {
                             selectedProject = nil
+                            selectedLabel = nil
                         }
                     }
 
@@ -57,6 +60,30 @@ struct QuickLogMacView: View {
                         Picker("Project", selection: $selectedProject) {
                             Text("None").tag(Optional<Project>.none)
                             ForEach(availableProjects) { Text($0.name).tag(Optional($0)) }
+                        }
+                        .onChange(of: selectedProject) { oldVal, newVal in
+                            if oldVal?.persistentModelID != newVal?.persistentModelID {
+                                selectedLabel = nil
+                                newLabelText = ""
+                            }
+                        }
+                    }
+
+                    if let project = selectedProject {
+                        if !project.labels.isEmpty {
+                            Divider()
+                            Picker("Type", selection: $selectedLabel) {
+                                Text("None").tag(Optional<String>.none)
+                                ForEach(project.labels, id: \.self) { Text($0).tag(Optional($0)) }
+                            }
+                        }
+                        Divider()
+                        HStack {
+                            TextField("New label", text: $newLabelText)
+                                .textFieldStyle(.roundedBorder)
+                                .onSubmit { addLabel(to: project) }
+                            Button("Add") { addLabel(to: project) }
+                                .disabled(newLabelText.trimmingCharacters(in: .whitespaces).isEmpty)
                         }
                     }
                 }
@@ -82,6 +109,15 @@ struct QuickLogMacView: View {
         .onAppear { populate() }
     }
 
+    private func addLabel(to project: Project) {
+        let trimmed = newLabelText.trimmingCharacters(in: .whitespaces)
+        guard !trimmed.isEmpty, !project.labels.contains(trimmed) else { return }
+        project.labels.append(trimmed)
+        try? context.save()
+        selectedLabel = trimmed
+        newLabelText = ""
+    }
+
     private func populate() {
         guard let e = entry else { return }
         date = e.date
@@ -90,6 +126,7 @@ struct QuickLogMacView: View {
         notes = e.notes ?? ""
         selectedClient = e.client
         selectedProject = e.project
+        selectedLabel = e.label
     }
 
     private func save() {
@@ -98,11 +135,13 @@ struct QuickLogMacView: View {
             e.date = date
             e.durationMinutes = total
             e.notes = notes.isEmpty ? nil : notes
+            e.label = selectedLabel
             e.client = selectedClient
             e.project = selectedProject
         } else {
             context.insert(TimeEntry(date: date, durationMinutes: total,
                                      notes: notes.isEmpty ? nil : notes,
+                                     label: selectedLabel,
                                      client: selectedClient, project: selectedProject,
                                      userId: settings.userId))
         }

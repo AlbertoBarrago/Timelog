@@ -178,14 +178,21 @@ struct EntryMacRow: View {
                 .frame(width: 4, height: 32)
             VStack(alignment: .leading, spacing: 2) {
                 Text(entry.client?.name ?? "No client").fontWeight(.medium)
-                Group {
-                    if let proj = entry.project {
+                if let proj = entry.project {
+                    HStack(spacing: 4) {
                         Text(proj.name)
-                    } else if let notes = entry.notes, !notes.isEmpty {
-                        Text(notes).lineLimit(1)
+                        if let label = entry.label {
+                            Text(label)
+                                .padding(.horizontal, 5)
+                                .padding(.vertical, 2)
+                                .background(.quaternary, in: Capsule())
+                        }
                     }
+                    .font(.caption).foregroundStyle(.secondary)
+                } else if let notes = entry.notes, !notes.isEmpty {
+                    Text(notes).lineLimit(1)
+                        .font(.caption).foregroundStyle(.secondary)
                 }
-                .font(.caption).foregroundStyle(.secondary)
             }
             Spacer()
             Text(entry.durationMinutes.formattedDuration)

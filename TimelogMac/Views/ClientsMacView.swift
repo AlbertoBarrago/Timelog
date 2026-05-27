@@ -325,12 +325,50 @@ struct ProjectMacFormView: View {
 
     @State private var name = ""
     @State private var code = ""
+    @State private var labels: [String] = []
+    @State private var newLabel = ""
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text(project == nil ? "New Project" : "Edit Project").font(.headline)
             TextField("Name", text: $name).textFieldStyle(.roundedBorder)
             TextField("Code (optional)", text: $code).textFieldStyle(.roundedBorder)
+
+            VStack(alignment: .leading, spacing: 6) {
+                Text("Labels")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+
+                if !labels.isEmpty {
+                    VStack(alignment: .leading, spacing: 4) {
+                        ForEach(labels, id: \.self) { label in
+                            HStack {
+                                Text(label)
+                                Spacer()
+                                Button {
+                                    labels.removeAll { $0 == label }
+                                } label: {
+                                    Image(systemName: "minus.circle.fill")
+                                        .foregroundStyle(.red)
+                                }
+                                .buttonStyle(.plain)
+                                .accessibilityLabel(String(localized: "Remove \(label)"))
+                            }
+                        }
+                    }
+                    .padding(8)
+                    .background(.quaternary, in: RoundedRectangle(cornerRadius: 6))
+                }
+
+                HStack {
+                    TextField("New label", text: $newLabel)
+                        .textFieldStyle(.roundedBorder)
+                        .onSubmit { addLabel() }
+                    Button("Add") { addLabel() }
+                        .disabled(newLabel.trimmingCharacters(in: .whitespaces).isEmpty)
+                }
+            }
+
             HStack {
                 Button("Cancel") { dismiss() }.keyboardShortcut(.escape)
                 Spacer()
@@ -341,16 +379,31 @@ struct ProjectMacFormView: View {
             }
         }
         .padding(20)
-        .frame(width: 280)
-        .onAppear { name = project?.name ?? ""; code = project?.code ?? "" }
+        .frame(width: 300)
+        .onAppear {
+            name = project?.name ?? ""
+            code = project?.code ?? ""
+            labels = project?.labels ?? []
+        }
+    }
+
+    private func addLabel() {
+        let trimmed = newLabel.trimmingCharacters(in: .whitespaces)
+        guard !trimmed.isEmpty, !labels.contains(trimmed) else { return }
+        labels.append(trimmed)
+        newLabel = ""
     }
 
     private func save() {
         dismiss()
-        if let p = project { p.name = name; p.code = code.isEmpty ? nil : code }
-        else {
+        if let p = project {
+            p.name = name
+            p.code = code.isEmpty ? nil : code
+            p.labels = labels
+        } else {
             let p = Project(name: name, code: code.isEmpty ? nil : code, userId: settings.userId)
             p.client = client
+            p.labels = labels
             context.insert(p)
         }
     }

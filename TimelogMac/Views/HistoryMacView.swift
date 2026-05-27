@@ -342,7 +342,16 @@ private struct HistoryMacRow: View {
                 .frame(width: 4, height: 34)
             VStack(alignment: .leading, spacing: 2) {
                 if let project = entry.project {
-                    Text(project.name).fontWeight(.medium)
+                    HStack(spacing: 4) {
+                        Text(project.name).fontWeight(.medium)
+                        if let label = entry.label {
+                            Text(label)
+                                .font(.caption2)
+                                .padding(.horizontal, 5)
+                                .padding(.vertical, 2)
+                                .background(.quaternary, in: Capsule())
+                        }
+                    }
                 } else if let notes = entry.notes, !notes.isEmpty {
                     Text(notes).fontWeight(.medium).lineLimit(1)
                 } else {

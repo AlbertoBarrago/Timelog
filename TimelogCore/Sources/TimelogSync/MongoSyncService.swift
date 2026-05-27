@@ -38,11 +38,13 @@ private struct ProjectDocument: Codable {
     var isArchived: Bool
     var userId: String
     var clientMongoId: String?
+    var labels: [String]
     var deletedAt: Date?
     init(from project: TimelogCore.Project) {
         _id = project.mongoId.flatMap { ObjectId($0) } ?? ObjectId()
         name = project.name; code = project.code; isArchived = project.isArchived
         userId = project.userId; clientMongoId = project.client?.mongoId
+        labels = project.labels
         deletedAt = project.deletedAt
     }
 }
@@ -52,6 +54,7 @@ private struct TimeEntryDocument: Codable {
     var date: Date
     var durationMinutes: Int
     var notes: String?
+    var label: String?
     var userId: String
     var clientMongoId: String?
     var projectMongoId: String?
@@ -59,6 +62,7 @@ private struct TimeEntryDocument: Codable {
     init(from entry: TimeEntry) {
         _id = entry.mongoId.flatMap { ObjectId($0) } ?? ObjectId()
         date = entry.date; durationMinutes = entry.durationMinutes; notes = entry.notes
+        label = entry.label
         userId = entry.userId
         clientMongoId = entry.client?.mongoId; projectMongoId = entry.project?.mongoId
         deletedAt = entry.deletedAt
@@ -69,13 +73,15 @@ private struct ActiveSessionDocument: Codable {
     var _id: ObjectId
     var startDate: Date
     var notes: String?
+    var label: String?
     var userId: String
     var clientMongoId: String?
     var projectMongoId: String?
     var notificationID: String
     init(from session: ActiveSession) {
         _id = session.mongoId.flatMap { ObjectId($0) } ?? ObjectId()
-        startDate = session.startDate; notes = session.notes; userId = session.userId
+        startDate = session.startDate; notes = session.notes; label = session.label
+        userId = session.userId
         clientMongoId = session.client?.mongoId; projectMongoId = session.project?.mongoId
         notificationID = session.notificationID
     }
@@ -225,10 +231,12 @@ public final class MongoSyncService {
             let id = doc._id.hexString
             if let p = localById[id] {
                 p.name = doc.name; p.code = doc.code; p.isArchived = doc.isArchived
+                p.labels = doc.labels
                 p.deletedAt = doc.deletedAt
             } else if doc.deletedAt == nil {
                 let p = TimelogCore.Project(name: doc.name, code: doc.code, isArchived: doc.isArchived, userId: userId)
                 p.mongoId = id
+                p.labels = doc.labels
                 if let cid = doc.clientMongoId { p.client = clientMap[cid] }
                 ctx.insert(p); localById[id] = p
             }
@@ -249,11 +257,12 @@ public final class MongoSyncService {
             let id = doc._id.hexString
             if let e = localById[id] {
                 e.date = doc.date; e.durationMinutes = doc.durationMinutes; e.notes = doc.notes
+                e.label = doc.label
                 e.deletedAt = doc.deletedAt
             } else if doc.deletedAt == nil {
                 let client = doc.clientMongoId.flatMap { clientMap[$0] }
                 let project = doc.projectMongoId.flatMap { projectMap[$0] }
-                let e = TimeEntry(date: doc.date, durationMinutes: doc.durationMinutes, notes: doc.notes, client: client, project: project, userId: userId)
+                let e = TimeEntry(date: doc.date, durationMinutes: doc.durationMinutes, notes: doc.notes, label: doc.label, client: client, project: project, userId: userId)
                 e.mongoId = id; ctx.insert(e)
             }
         }
@@ -300,12 +309,12 @@ public final class MongoSyncService {
         for doc in docs {
             let id = doc._id.hexString
             if let s = localById[id] {
-                s.startDate = doc.startDate; s.notes = doc.notes
+                s.startDate = doc.startDate; s.notes = doc.notes; s.label = doc.label
             } else {
                 let s = ActiveSession(
                     client: doc.clientMongoId.flatMap { clientMap[$0] },
                     project: doc.projectMongoId.flatMap { projectMap[$0] },
-                    notes: doc.notes, userId: userId
+                    notes: doc.notes, label: doc.label, userId: userId
                 )
                 s.startDate = doc.startDate
                 s.mongoId = id

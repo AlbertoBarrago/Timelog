@@ -13,6 +13,8 @@ struct StopSessionMacView: View {
     @State private var hours: Int
     @State private var minutes: Int
     @State private var notes: String
+    @State private var selectedLabel: String?
+    @State private var newLabelText = ""
     @State private var showDiscardAlert = false
 
     init(session: ActiveSession, onDismiss: (() -> Void)? = nil) {
@@ -22,6 +24,7 @@ struct StopSessionMacView: View {
         _hours = State(initialValue: elapsed / 60)
         _minutes = State(initialValue: elapsed % 60)
         _notes = State(initialValue: session.notes ?? "")
+        _selectedLabel = State(initialValue: session.label)
     }
 
     var body: some View {
@@ -48,6 +51,29 @@ struct StopSessionMacView: View {
                 DurationPickerMac(hours: $hours, minutes: $minutes)
             }
 
+            if let project = session.project {
+                GroupBox(String(localized: "Type")) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        if !project.labels.isEmpty {
+                            Picker(String(localized: "Type"), selection: $selectedLabel) {
+                                Text("None").tag(Optional<String>.none)
+                                ForEach(project.labels, id: \.self) { Text($0).tag(Optional($0)) }
+                            }
+                            .pickerStyle(.segmented)
+                            .frame(maxWidth: .infinity)
+                            Divider()
+                        }
+                        HStack {
+                            TextField(String(localized: "New label"), text: $newLabelText)
+                                .textFieldStyle(.roundedBorder)
+                                .onSubmit { addLabel(to: project) }
+                            Button(String(localized: "Add")) { addLabel(to: project) }
+                                .disabled(newLabelText.trimmingCharacters(in: .whitespaces).isEmpty)
+                        }
+                    }
+                }
+            }
+
             GroupBox(String(localized: "Notes")) {
                 TextField("Optional", text: $notes)
                     .frame(maxWidth: .infinity)
@@ -71,6 +97,15 @@ struct StopSessionMacView: View {
         .padding()
     }
 
+    private func addLabel(to project: Project) {
+        let trimmed = newLabelText.trimmingCharacters(in: .whitespaces)
+        guard !trimmed.isEmpty, !project.labels.contains(trimmed) else { return }
+        project.labels.append(trimmed)
+        try? context.save()
+        selectedLabel = trimmed
+        newLabelText = ""
+    }
+
     private func dismissSelf() {
         if let onDismiss { onDismiss() } else { dismiss() }
     }
@@ -86,7 +121,8 @@ struct StopSessionMacView: View {
     private func stop() {
         let entry = session.asTimeEntry(
             durationMinutes: hours * 60 + minutes,
-            notes: notes.isEmpty ? nil : notes
+            notes: notes.isEmpty ? nil : notes,
+            label: selectedLabel
         )
         context.insert(entry)
         NotificationManager.shared.cancelSession(id: session.notificationID)

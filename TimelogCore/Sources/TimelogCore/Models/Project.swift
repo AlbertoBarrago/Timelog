@@ -9,6 +9,7 @@ public final class Project {
     public var mongoId: String?
     public var userId: String = ""
     public var client: Client?
+    public var labels: [String] = []
     @Relationship(deleteRule: .nullify, inverse: \TimeEntry.project) public var entries: [TimeEntry] = []
     public var deletedAt: Date? = nil
 

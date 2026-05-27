@@ -25,6 +25,7 @@ private struct SessionDTO: Codable {
     var _id: String
     var startDate: String?
     var notes: String?
+    var label: String?
     var userId: String?
     var clientMongoId: String?
     var projectMongoId: String?
@@ -47,6 +48,7 @@ private struct ProjectDTO: Codable {
     var isArchived: Bool?
     var userId: String?
     var clientMongoId: String?
+    var labels: [String]?
     var deletedAt: String?
 }
 
@@ -55,6 +57,7 @@ private struct EntryDTO: Codable {
     var date: String?
     var durationMinutes: Int?
     var notes: String?
+    var label: String?
     var userId: String?
     var clientMongoId: String?
     var projectMongoId: String?
@@ -207,11 +210,13 @@ public final class RestSyncService {
             if let p = projectMap[dto._id] {
                 p.name = dto.name; p.code = dto.code
                 p.isArchived = dto.isArchived ?? p.isArchived
+                p.labels = dto.labels ?? p.labels
                 p.deletedAt = deletedAt
                 if let cid = dto.clientMongoId { p.client = clientMap[cid] }
             } else if deletedAt == nil {
                 let p = TimelogCore.Project(name: dto.name, code: dto.code, isArchived: dto.isArchived ?? false, userId: userId)
                 p.mongoId = dto._id
+                p.labels = dto.labels ?? []
                 if let cid = dto.clientMongoId { p.client = clientMap[cid] }
                 context.insert(p); projectMap[dto._id] = p
             }
@@ -225,9 +230,10 @@ public final class RestSyncService {
             guard dto.userId == nil || dto.userId == userId else { continue }
             if let e = entryMap[dto._id] {
                 e.date = date; e.durationMinutes = dto.durationMinutes ?? e.durationMinutes
-                e.notes = dto.notes; e.deletedAt = deletedAt
+                e.notes = dto.notes; e.label = dto.label; e.deletedAt = deletedAt
             } else if deletedAt == nil {
                 let e = TimeEntry(date: date, durationMinutes: dto.durationMinutes ?? 0, notes: dto.notes,
+                                  label: dto.label,
                                   client: dto.clientMongoId.flatMap { clientMap[$0] },
                                   project: dto.projectMongoId.flatMap { projectMap[$0] },
                                   userId: userId)
@@ -241,12 +247,12 @@ public final class RestSyncService {
         for dto in response.sessions {
             let startDate = dto.startDate.flatMap { Self.iso8601.date(from: $0) ?? Self.iso8601NoFrac.date(from: $0) } ?? Date()
             if let s = localSessionById[dto._id] {
-                s.startDate = startDate; s.notes = dto.notes
+                s.startDate = startDate; s.notes = dto.notes; s.label = dto.label
             } else {
                 let s = ActiveSession(
                     client: dto.clientMongoId.flatMap { clientMap[$0] },
                     project: dto.projectMongoId.flatMap { projectMap[$0] },
-                    notes: dto.notes
+                    notes: dto.notes, label: dto.label
                 )
                 s.startDate = startDate
                 s.mongoId = dto._id
@@ -272,9 +278,9 @@ public final class RestSyncService {
 
         let payload = SyncPayload(
             clients: clients.map { ClientDTO(_id: $0.mongoId ?? "", name: $0.name, colorHex: $0.colorHex, isArchived: $0.isArchived, userId: $0.userId, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }) },
-            projects: projects.map { ProjectDTO(_id: $0.mongoId ?? "", name: $0.name, code: $0.code, isArchived: $0.isArchived, userId: $0.userId, clientMongoId: $0.client?.mongoId, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }) },
-            entries: entries.map { EntryDTO(_id: $0.mongoId ?? "", date: Self.iso8601.string(from: $0.date), durationMinutes: $0.durationMinutes, notes: $0.notes, userId: $0.userId, clientMongoId: $0.client?.mongoId, projectMongoId: $0.project?.mongoId, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }) },
-            sessions: sessions.map { SessionDTO(_id: $0.mongoId ?? "", startDate: Self.iso8601.string(from: $0.startDate), notes: $0.notes, userId: $0.userId, clientMongoId: $0.client?.mongoId, projectMongoId: $0.project?.mongoId, notificationID: $0.notificationID) }
+            projects: projects.map { ProjectDTO(_id: $0.mongoId ?? "", name: $0.name, code: $0.code, isArchived: $0.isArchived, userId: $0.userId, clientMongoId: $0.client?.mongoId, labels: $0.labels, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }) },
+            entries: entries.map { EntryDTO(_id: $0.mongoId ?? "", date: Self.iso8601.string(from: $0.date), durationMinutes: $0.durationMinutes, notes: $0.notes, label: $0.label, userId: $0.userId, clientMongoId: $0.client?.mongoId, projectMongoId: $0.project?.mongoId, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }) },
+            sessions: sessions.map { SessionDTO(_id: $0.mongoId ?? "", startDate: Self.iso8601.string(from: $0.startDate), notes: $0.notes, label: $0.label, userId: $0.userId, clientMongoId: $0.client?.mongoId, projectMongoId: $0.project?.mongoId, notificationID: $0.notificationID) }
         )
         try await post(url: url, body: payload)
         lastSyncDate = .now

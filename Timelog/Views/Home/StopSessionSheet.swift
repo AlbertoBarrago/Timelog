@@ -15,6 +15,8 @@ struct StopSessionSheet: View {
     @State private var hours: Int
     @State private var minutes: Int
     @State private var notes: String
+    @State private var selectedLabel: String?
+    @State private var newLabelText = ""
 
     init(session: ActiveSession) {
         self.session = session
@@ -22,6 +24,7 @@ struct StopSessionSheet: View {
         _hours = State(initialValue: elapsed / 60)
         _minutes = State(initialValue: elapsed % 60)
         _notes = State(initialValue: session.notes ?? "")
+        _selectedLabel = State(initialValue: session.label)
     }
 
     var body: some View {
@@ -44,6 +47,23 @@ struct StopSessionSheet: View {
                     Stepper("\(minutes)m", value: $minutes, in: 0...59)
                 }
 
+                if let project = session.project {
+                    Section(String(localized: "Type")) {
+                        if !project.labels.isEmpty {
+                            Picker(String(localized: "Type"), selection: $selectedLabel) {
+                                Text("None").tag(Optional<String>.none)
+                                ForEach(project.labels, id: \.self) { Text($0).tag(Optional($0)) }
+                            }
+                            .pickerStyle(.segmented)
+                        }
+                        HStack {
+                            TextField(String(localized: "New label"), text: $newLabelText)
+                            Button(String(localized: "Add")) { addLabel(to: project) }
+                                .disabled(newLabelText.trimmingCharacters(in: .whitespaces).isEmpty)
+                        }
+                    }
+                }
+
                 Section(String(localized: "Notes")) {
                     TextField(String(localized: "Optional"), text: $notes, axis: .vertical)
                         .lineLimit(3...6)
@@ -64,10 +84,20 @@ struct StopSessionSheet: View {
         }
     }
 
+    private func addLabel(to project: Project) {
+        let trimmed = newLabelText.trimmingCharacters(in: .whitespaces)
+        guard !trimmed.isEmpty, !project.labels.contains(trimmed) else { return }
+        project.labels.append(trimmed)
+        try? context.save()
+        selectedLabel = trimmed
+        newLabelText = ""
+    }
+
     private func stop() {
         let entry = session.asTimeEntry(
             durationMinutes: hours * 60 + minutes,
-            notes: notes.isEmpty ? nil : notes
+            notes: notes.isEmpty ? nil : notes,
+            label: selectedLabel
         )
         context.insert(entry)
         NotificationManager.shared.cancelSession(id: session.notificationID)

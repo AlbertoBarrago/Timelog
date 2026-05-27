@@ -15,6 +15,8 @@ struct StartTrackingMacView: View {
 
     @State private var selectedClient: Client?
     @State private var selectedProject: Project?
+    @State private var selectedLabel: String?
+    @State private var newLabelText = ""
     @State private var notes = ""
 
     private var clients: [Client] { allClients.filter { $0.userId == settings.userId } }
@@ -34,13 +36,32 @@ struct StartTrackingMacView: View {
                         Text("None").tag(Optional<Client>.none)
                         ForEach(clients) { Text($0.name).tag(Optional($0)) }
                     }
-                    .onChange(of: selectedClient) { selectedProject = nil }
+                    .onChange(of: selectedClient) { selectedProject = nil; selectedLabel = nil }
 
                     if !availableProjects.isEmpty {
                         Divider()
                         Picker("Project", selection: $selectedProject) {
                             Text("None").tag(Optional<Project>.none)
                             ForEach(availableProjects) { Text($0.name).tag(Optional($0)) }
+                        }
+                        .onChange(of: selectedProject) { _, _ in selectedLabel = nil }
+                    }
+
+                    if let project = selectedProject {
+                        if !project.labels.isEmpty {
+                            Divider()
+                            Picker("Type", selection: $selectedLabel) {
+                                Text("None").tag(Optional<String>.none)
+                                ForEach(project.labels, id: \.self) { Text($0).tag(Optional($0)) }
+                            }
+                        }
+                        Divider()
+                        HStack {
+                            TextField("New label", text: $newLabelText)
+                                .textFieldStyle(.roundedBorder)
+                                .onSubmit { addLabel(to: project) }
+                            Button("Add") { addLabel(to: project) }
+                                .disabled(newLabelText.trimmingCharacters(in: .whitespaces).isEmpty)
                         }
                     }
                 }
@@ -64,6 +85,15 @@ struct StartTrackingMacView: View {
         .frame(width: 320)
     }
 
+    private func addLabel(to project: Project) {
+        let trimmed = newLabelText.trimmingCharacters(in: .whitespaces)
+        guard !trimmed.isEmpty, !project.labels.contains(trimmed) else { return }
+        project.labels.append(trimmed)
+        try? context.save()
+        selectedLabel = trimmed
+        newLabelText = ""
+    }
+
     private func dismissSelf() {
         if let onDismiss { onDismiss() } else { dismiss() }
     }
@@ -73,6 +103,7 @@ struct StartTrackingMacView: View {
             client: selectedClient,
             project: selectedProject,
             notes: notes.isEmpty ? nil : notes,
+            label: selectedLabel,
             userId: settings.userId
         )
         context.insert(session)

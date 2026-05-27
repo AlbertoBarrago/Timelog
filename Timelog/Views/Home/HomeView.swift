@@ -230,9 +230,18 @@ private struct EntryRow: View {
                 Text(entry.client?.name ?? "No client")
                     .font(.subheadline.weight(.semibold))
                 if let proj = entry.project {
-                    Text(proj.name)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                    HStack(spacing: 4) {
+                        Text(proj.name)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        if let label = entry.label {
+                            Text(label)
+                                .font(.caption2)
+                                .padding(.horizontal, 5)
+                                .padding(.vertical, 2)
+                                .background(.quaternary, in: Capsule())
+                        }
+                    }
                 }
                 if let notes = entry.notes, !notes.isEmpty {
                     Text(notes)
