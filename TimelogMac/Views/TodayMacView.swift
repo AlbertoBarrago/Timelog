@@ -189,7 +189,8 @@ struct EntryMacRow: View {
                         }
                     }
                     .font(.caption).foregroundStyle(.secondary)
-                } else if let notes = entry.notes, !notes.isEmpty {
+                }
+                if let notes = entry.notes, !notes.isEmpty {
                     Text(notes).lineLimit(1)
                         .font(.caption).foregroundStyle(.secondary)
                 }
