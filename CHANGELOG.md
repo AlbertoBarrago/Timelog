@@ -11,6 +11,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [1.2.2] — 2026-05-27
 
+### Fixed
+- **Release workflow** — CI now uses the pushed tag directly (`github.ref_name`) instead of computing a new version, preventing spurious tag creation on every push
+- **`release.sh`** — uses `git tag -f` to overwrite an existing local tag if the script is re-run for the same version; prompts for confirmation before `git push`
+
 ---
 
 ## [1.2.1] — 2026-05-27
@@ -23,6 +27,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **Stato timer perso al riavvio dell'app** (iOS + macOS) — `TimerViewModel` persiste `elapsed`, `isRunning`, `pomodoroEnabled`, `phase` e `completedPomodoros` in `UserDefaults`; al riavvio lo stato viene ripristinato e il drift temporale calcolato automaticamente se il timer era in corsa
 
 ### Added
+- **Meeting-type labels on projects and time entries** — projects can be tagged as a meeting type; entries inherit the label for better reporting (#36)
 - **Quick start/stop buttons on project lists** (iOS + macOS) — tap to start or stop a session directly from the project list without opening the full tracking sheet (#38)
 - **Pomodoro toggles in iOS Settings** — enable/disable Pomodoro and configure intervals from the Settings tab; fixed stop-session duration being incorrect when Pomodoro was active
 - **Idle alert when no active session is running** — notification fires at the configured end-of-day threshold if no session has been started that day (#37)
