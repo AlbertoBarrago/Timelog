@@ -12,12 +12,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [1.2.1] — 2026-05-27
 
 ### Fixed
+- **Entry notes not shown in Today view (macOS)** — notes are now displayed regardless of whether a project is associated with the entry
 - **Widget non si aggiornava rapidamente dopo stop/start sessione** (iOS) — aggiunto `try? context.save()` in `StopSessionSheet` e `StartTrackingSheet`; la `@Query` di `HomeView` riceve dati aggiornati prima di scrivere lo snapshot su App Group UserDefaults
 - **Sessione ancora attiva dopo stop + navigazione** (iOS + macOS) — stesso `context.save()` esplicito risolve il lag di autosave di SwiftData; aggiunto anche in `StartTrackingMacView`
 - **Pomodoro si resettava aprendo il MenuBarExtra** (macOS) — `.onChange(of: vm.pomodoroEnabled)` in `CompactTimerRow` e `TimerView` ora usa `initial: false`; non scatta più alla prima render del popup
 - **Stato timer perso al riavvio dell'app** (iOS + macOS) — `TimerViewModel` persiste `elapsed`, `isRunning`, `pomodoroEnabled`, `phase` e `completedPomodoros` in `UserDefaults`; al riavvio lo stato viene ripristinato e il drift temporale calcolato automaticamente se il timer era in corsa
 
 ### Added
+- **Quick start/stop buttons on project lists** (iOS + macOS) — tap to start or stop a session directly from the project list without opening the full tracking sheet (#38)
+- **Pomodoro toggles in iOS Settings** — enable/disable Pomodoro and configure intervals from the Settings tab; fixed stop-session duration being incorrect when Pomodoro was active
+- **Idle alert when no active session is running** — notification fires at the configured end-of-day threshold if no session has been started that day (#37)
 - **Localizzazione EN / IT** — infrastruttura `.xcstrings` (Xcode 15+) per iOS e macOS; ~130 chiavi iOS, ~127 chiavi macOS, tutte tradotte in italiano
 - `it` aggiunto a `knownRegions` in entrambi i `.xcodeproj`
 - **Discard sessione dal form di stop (macOS)** — bottone "Discard" con alert di conferma in `StopSessionMacView`; elimina la sessione senza creare entry
