@@ -1,1932 +1,2017 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "" : {
-
+  "sourceLanguage": "en",
+  "strings": {
+    "": {
+      "shouldTranslate": false
     },
-    "  |  " : {
-
+    "  |  ": {
+      "shouldTranslate": false
     },
-    "0" : {
-
+    "0": {
+      "shouldTranslate": false
     },
-    "About" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Informazioni"
+    "About": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Informazioni"
           }
         }
       }
     },
-    "About Timelog" : {
-
+    "About Timelog": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Informazioni su Timelog"
+          }
+        }
+      }
+    },
+    "Account": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Account"
+          }
+        }
+      }
+    },
+    "Active": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Attive"
+          }
+        }
+      }
+    },
+    "Add": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiungi"
+          }
+        }
+      }
+    },
+    "Add Client": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiungi cliente"
+          }
+        }
+      }
+    },
+    "Add Project": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiungi progetto"
+          }
+        }
+      }
+    },
+    "Add a new client": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiungi un nuovo cliente"
+          }
+        }
+      }
+    },
+    "After %lld min": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dopo %lld min"
+          }
+        }
+      }
+    },
+    "Alberto Barrago": {
+      "shouldTranslate": false
+    },
+    "Alert when idle": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avvisa se inattivo"
+          }
+        }
+      }
+    },
+    "All Time": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tutto il tempo"
+          }
+        }
+      }
+    },
+    "Archive": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Archivia"
+          }
+        }
+      }
+    },
+    "Archived": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Archiviato"
+          }
+        }
+      }
+    },
+    "Auto-advance phases": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avanza automaticamente le fasi"
+          }
+        }
+      }
+    },
+    "Auto-advance: when a phase ends the next one starts automatically, no input needed.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avanzamento automatico: quando una fase termina, la successiva parte in automatico, senza input."
+          }
+        }
+      }
+    },
+    "Blue": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blu"
+          }
+        }
+      }
+    },
+    "Brown": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marrone"
+          }
+        }
+      }
+    },
+    "Cancel": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annulla"
+          }
+        }
+      }
+    },
+    "Changelog": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Changelog"
+          }
+        }
+      }
+    },
+    "Click to edit entry": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clicca per modificare la registrazione"
+          }
+        }
+      }
+    },
+    "Click to edit project": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clicca per modificare il progetto"
+          }
+        }
+      }
+    },
+    "Client": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cliente"
+          }
+        }
+      }
+    },
+    "Clients": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clienti"
+          }
+        }
+      }
+    },
+    "Code (optional)": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Codice (opzionale)"
+          }
+        }
+      }
+    },
+    "Color": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Colore"
+          }
+        }
+      }
+    },
+    "Confirm mode switch": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conferma cambio modalità"
+          }
+        }
+      }
+    },
+    "Custom": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personalizzato"
+          }
+        }
+      }
+    },
+    "Custom color": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Colore personalizzato"
+          }
+        }
+      }
+    },
+    "Daily reminder": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Promemoria giornaliero"
+          }
+        }
+      }
+    },
+    "Danger Zone": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zona pericolosa"
+          }
+        }
+      }
+    },
+    "Date": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data"
+          }
+        }
+      }
+    },
+    "Days": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giorni"
+          }
+        }
+      }
+    },
+    "Delete": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elimina"
+          }
+        }
+      }
+    },
+    "Delete \"%@\"?": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eliminare \"%@\"?"
+          }
+        }
+      }
+    },
+    "Delete Client": {
+      "extractionState": "stale",
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elimina cliente"
+          }
+        }
+      }
+    },
+    "Delete all": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elimina tutto"
+          }
+        }
+      }
+    },
+    "Delete all entries": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elimina tutte le registrazioni"
+          }
+        }
+      }
+    },
+    "Delete all entries?": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eliminare tutte le registrazioni?"
+          }
+        }
+      }
+    },
+    "Delete client%@": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elimina cliente%@"
+          }
+        }
+      }
+    },
+    "Delete project%@": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elimina progetto%@"
+          }
+        }
+      }
+    },
+    "Developer": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sviluppatore"
+          }
+        }
+      }
+    },
+    "Discard": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scarta"
+          }
+        }
+      }
+    },
+    "Discard session?": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scartare la sessione?"
+          }
+        }
+      }
+    },
+    "Done": {
+      "extractionState": "stale",
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fatto"
+          }
+        }
+      }
+    },
+    "Duration": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durata"
+          }
+        }
+      }
+    },
+    "Edit": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifica"
+          }
+        }
+      }
+    },
+    "Edit Client": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifica cliente"
+          }
+        }
+      }
+    },
+    "Edit Entry": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifica registrazione"
+          }
+        }
+      }
+    },
+    "Edit Project": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifica progetto"
+          }
+        }
+      }
+    },
+    "Entries": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registrazioni"
+          }
+        }
+      }
+    },
+    "Entry, %@": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registrazione, %@"
+          }
+        }
+      }
+    },
+    "Export": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esporta"
+          }
+        }
+      }
+    },
+    "Export this week via Email": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esporta questa settimana via Email"
+          }
+        }
+      }
+    },
+    "Focus: %lld min": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Concentrazione: %lld min"
+          }
+        }
+      }
+    },
+    "Friday": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Venerdì"
+          }
+        }
+      }
+    },
+    "Get Started": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inizia"
+          }
+        }
+      }
+    },
+    "GitHub": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitHub"
+          }
+        }
+      }
+    },
+    "Got it": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Capito"
+          }
+        }
+      }
+    },
+    "Gray": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grigio"
+          }
+        }
+      }
+    },
+    "Green": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verde"
+          }
+        }
+      }
+    },
+    "Hide Archived": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nascondi archiviati"
+          }
+        }
+      }
+    },
+    "Hide archived": {
+      "extractionState": "stale",
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nascondi archiviati"
+          }
+        }
+      }
+    },
+    "Hide archived clients": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nascondi clienti archiviati"
+          }
+        }
+      }
+    },
+    "Hide nickname": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nascondi nickname"
+          }
+        }
+      }
+    },
+    "History": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cronologia"
+          }
+        }
+      }
+    },
+    "Hours by project": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ore per progetto"
+          }
+        }
+      }
+    },
+    "Indigo": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indaco"
+          }
+        }
+      }
+    },
+    "Labels": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etichette"
+          }
+        }
+      }
+    },
+    "Last sync %@": {
+      "extractionState": "stale",
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ultima sincronizzazione %@"
+          }
+        }
+      }
+    },
+    "Light Blue": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Azzurro"
+          }
+        }
+      }
+    },
+    "Log": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registra"
+          }
+        }
+      }
+    },
+    "Log Entry": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salva registrazione"
+          }
+        }
+      }
+    },
+    "Log Time": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registra tempo"
+          }
+        }
+      }
+    },
+    "Log time": {
+      "extractionState": "stale",
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registra tempo"
+          }
+        }
+      }
+    },
+    "Log time manually": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registra il tempo manualmente"
+          }
+        }
+      }
     },
-    "Account" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Account"
+    "Log time manually or start a tracking session.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registra il tempo manualmente o avvia una sessione di tracciamento."
           }
         }
       }
     },
-    "Active" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Attive"
+    "Long break: %lld min": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausa lunga: %lld min"
           }
         }
       }
     },
-    "Add" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aggiungi"
+    "M": {
+      "extractionState": "stale",
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L"
           }
         }
       }
     },
-    "Add a new client" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aggiungi un nuovo cliente"
+    "Min": {
+      "extractionState": "stale",
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Min"
           }
         }
       }
     },
-    "Add Client" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aggiungi cliente"
+    "Minutes": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Minuti"
           }
         }
       }
     },
-    "Add Project" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aggiungi progetto"
+    "Mode": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modalità"
           }
         }
       }
     },
-    "After %lld min" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dopo %lld min"
+    "Monday": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lunedì"
           }
         }
       }
     },
-    "Alberto Barrago" : {
-
+    "MongoDB Sync": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sincronizzazione MongoDB"
+          }
+        }
+      }
+    },
+    "Month": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mese"
+          }
+        }
+      }
     },
-    "Alert when idle" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Avvisa se inattivo"
+    "Name": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nome"
           }
         }
       }
     },
-    "All Time" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tutto il tempo"
+    "New Client": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuovo cliente"
           }
         }
       }
     },
-    "Archive" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Archivia"
+    "New Project": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuovo progetto"
           }
         }
       }
     },
-    "Archived" : {
-
+    "New label": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuova etichetta"
+          }
+        }
+      }
     },
-    "Auto-advance phases" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Avanza automaticamente le fasi"
+    "Next day": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giorno successivo"
           }
         }
       }
     },
-    "Auto-advance: when a phase ends the next one starts automatically, no input needed." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Avanzamento automatico: quando una fase termina, la successiva parte in automatico, senza input."
+    "Nickname": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nickname"
           }
         }
       }
     },
-    "Blue" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Blu"
+    "No active sessions on this Mac": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessuna sessione attiva su questo Mac"
           }
         }
       }
     },
-    "Brown" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Marrone"
+    "No client": {
+      "extractionState": "stale",
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessun cliente"
           }
         }
       }
     },
-    "Cancel" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Annulla"
+    "No entries": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessuna registrazione"
           }
         }
       }
     },
-    "Changelog" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Changelog"
+    "No entries today": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessuna registrazione oggi"
           }
         }
       }
     },
-    "Click to edit entry" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Clicca per modificare la registrazione"
+    "No project": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessun progetto"
           }
         }
       }
     },
-    "Click to edit project" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Clicca per modificare il progetto"
+    "No projects": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessun progetto"
           }
         }
       }
     },
-    "Client" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cliente"
+    "None": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessuno"
           }
         }
       }
     },
-    "Clients" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Clienti"
+    "Not connected": {
+      "extractionState": "stale",
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non connesso"
           }
         }
       }
     },
-    "Code (optional)" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Codice (opzionale)"
+    "Notes": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Note"
           }
         }
       }
     },
-    "Color" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Colore"
+    "Notify if still open at": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avvisa se ancora aperta alle"
           }
         }
       }
     },
-    "Confirm mode switch" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Conferma cambio modalità"
+    "Open history": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apri cronologia"
           }
         }
       }
     },
-    "Custom" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Personalizzato"
+    "Open session": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sessione aperta"
           }
         }
       }
     },
-    "Custom color" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Colore personalizzato"
+    "Optional": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opzionale"
           }
         }
       }
     },
-    "Daily reminder" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Promemoria giornaliero"
+    "Orange": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arancione"
           }
         }
       }
     },
-    "Danger Zone" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zona pericolosa"
+    "Pause": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausa"
           }
         }
       }
     },
-    "Date" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Data"
+    "Pause timer": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Metti in pausa il timer"
           }
         }
       }
     },
-    "Days" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Giorni"
+    "Paused": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In pausa"
           }
         }
       }
     },
-    "Delete" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Elimina"
+    "Pick another day to review logged time.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seleziona un altro giorno per vedere le ore registrate."
           }
         }
       }
     },
-    "Delete \"%@\"?" : {
-
+    "Pink": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rosa"
+          }
+        }
+      }
     },
-    "Delete all" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Elimina tutto"
+    "Pomodoro": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pomodoro"
           }
         }
       }
     },
-    "Delete all entries" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Elimina tutte le registrazioni"
+    "Pomodoro mode": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modalità Pomodoro"
           }
         }
       }
     },
-    "Delete all entries?" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eliminare tutte le registrazioni?"
+    "Press ⌘S to sync changes immediately.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Premi ⌘S per sincronizzare le modifiche immediatamente."
           }
         }
       }
     },
-    "Delete Client" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Elimina cliente"
+    "Previous day": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giorno precedente"
           }
         }
       }
     },
-    "Delete client%@" : {
-
+    "Project": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Progetto"
+          }
+        }
+      }
     },
-    "Delete project%@" : {
-
+    "Purple": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Viola"
+          }
+        }
+      }
     },
-    "Developer" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sviluppatore"
+    "Quit Anyway": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chiudi comunque"
           }
         }
       }
     },
-    "Discard" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scarta"
+    "Red": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rosso"
           }
         }
       }
     },
-    "Discard session?" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scartare la sessione?"
+    "Reminders": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Promemoria"
           }
         }
       }
     },
-    "Done" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fatto"
+    "Remove %@": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rimuovi %@"
           }
         }
       }
     },
-    "Duration" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Durata"
+    "Reset": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reimposta"
           }
         }
       }
     },
-    "Edit" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Modifica"
+    "Reset & Pull": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reimposta e scarica"
           }
         }
       }
     },
-    "Edit Client" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Modifica cliente"
+    "Reset & Pull wipes local data and re-downloads everything from MongoDB.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reimposta e scarica cancella i dati locali e riscarica tutto da MongoDB."
           }
         }
       }
     },
-    "Edit Entry" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Modifica registrazione"
+    "Reset & switch": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reimposta e cambia"
           }
         }
       }
     },
-    "Edit Project" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Modifica progetto"
+    "Reset and switch": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reimposta e cambia"
           }
         }
       }
     },
-    "Entries" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Registrazioni"
+    "Reset timer": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reimposta timer"
           }
         }
       }
     },
-    "Entry, %@" : {
-
+    "Running": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In esecuzione"
+          }
+        }
+      }
     },
-    "Export" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esporta"
+    "Sa": {
+      "extractionState": "stale",
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sa"
           }
         }
       }
     },
-    "Export this week via Email" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esporta questa settimana via Email"
+    "Saturday": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sabato"
           }
         }
       }
     },
-    "Focus: %lld min" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Concentrazione: %lld min"
+    "Save": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salva"
           }
         }
       }
     },
-    "Friday" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Venerdì"
+    "Select a client": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seleziona un cliente"
           }
         }
       }
     },
-    "Get Started" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inizia"
+    "Sends a notification if a session is still running at this time, or if you have no active session after the idle threshold.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invia una notifica se una sessione è ancora in esecuzione a quest'ora, o se non hai sessioni attive dopo la soglia di inattività."
           }
         }
       }
     },
-    "GitHub" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "GitHub"
+    "Session": {
+      "extractionState": "stale",
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sessione"
           }
         }
       }
     },
-    "Got it" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Capito"
+    "Settings": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impostazioni"
           }
         }
       }
     },
-    "Gray" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Grigio"
+    "Short break: %lld min": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausa breve: %lld min"
           }
         }
       }
     },
-    "Green" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verde"
+    "Show Archived": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra archiviati"
           }
         }
       }
     },
-    "h" : {
-
+    "Show archived": {
+      "extractionState": "stale",
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra archiviati"
+          }
+        }
+      }
     },
-    "Hide archived" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nascondi archiviati"
+    "Show archived clients": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra clienti archiviati"
           }
         }
       }
     },
-    "Hide Archived" : {
-
+    "Show guide again": {
+      "extractionState": "stale",
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra la guida di nuovo"
+          }
+        }
+      }
     },
-    "Hide archived clients" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nascondi clienti archiviati"
+    "Show nickname": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra nickname"
           }
         }
       }
     },
-    "Hide nickname" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nascondi nickname"
+    "Show/hide Timelog window": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra/nascondi la finestra di Timelog"
           }
         }
       }
     },
-    "History" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cronologia"
+    "Smart Tracking": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tracciamento intelligente"
           }
         }
       }
     },
-    "Hours by project" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ore per progetto"
+    "Sound effects": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Effetti sonori"
           }
         }
       }
     },
-    "Indigo" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Indaco"
+    "Sound effects: plays a chime at each phase transition.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Effetti sonori: suona un segnale acustico ad ogni transizione di fase."
           }
         }
       }
     },
-    "Labels" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Etichette"
+    "Start": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avvia"
           }
         }
       }
     },
-    "Last sync %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ultima sincronizzazione %@"
+    "Start Tracking": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avvia tracciamento"
           }
         }
       }
     },
-    "Light Blue" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Azzurro"
+    "Start a new tracking session": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avvia una nuova sessione di tracciamento"
           }
         }
       }
     },
-    "Log" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Registra"
+    "Start session": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avvia sessione"
           }
         }
       }
     },
-    "Log Entry" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Salva registrazione"
+    "Start timer": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avvia timer"
           }
         }
       }
     },
-    "Log time" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Registra tempo"
+    "Started": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Iniziata"
           }
         }
       }
     },
-    "Log Time" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Registra tempo"
+    "Stop & Log": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferma e registra"
           }
         }
       }
     },
-    "Log time manually" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Registra il tempo manualmente"
+    "Stop Tracking": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferma tracciamento"
           }
         }
       }
     },
-    "Log time manually or start a tracking session." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Registra il tempo manualmente o avvia una sessione di tracciamento."
+    "Stop and log": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferma e registra"
           }
         }
       }
     },
-    "Long break: %lld min" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pausa lunga: %lld min"
+    "Stop and log session": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferma e registra la sessione"
           }
         }
       }
     },
-    "m" : {
-
+    "Stop session": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferma sessione"
+          }
+        }
+      }
     },
-    "M" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "L"
+    "Stopwatch": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cronometro"
           }
         }
       }
     },
-    "Min" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Min"
+    "Su": {
+      "extractionState": "stale",
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Do"
           }
         }
       }
     },
-    "Minutes" : {
-
+    "Sunday": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Domenica"
+          }
+        }
+      }
     },
-    "Mode" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Modalità"
+    "Switch mode": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cambia modalità"
           }
         }
       }
     },
-    "Monday" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lunedì"
+    "Sync": {
+      "extractionState": "stale",
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sincronizzazione"
           }
         }
       }
     },
-    "MongoDB Sync" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sincronizzazione MongoDB"
+    "Sync Now": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sincronizza ora"
           }
         }
       }
     },
-    "Month" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mese"
+    "Syncing…": {
+      "extractionState": "stale",
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sincronizzazione in corso…"
           }
         }
       }
     },
-    "Name" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nome"
+    "Teal": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verde acqua"
           }
         }
       }
     },
-    "New Client" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nuovo cliente"
+    "Th": {
+      "extractionState": "stale",
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gi"
           }
         }
       }
     },
-    "New label" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nuova etichetta"
+    "The current session will be reset.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La sessione corrente verrà reimpostata."
           }
         }
       }
     },
-    "New Project" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nuovo progetto"
+    "The tracked time will be lost.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il tempo tracciato andrà perso."
           }
         }
       }
     },
-    "Next day" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Giorno successivo"
+    "This will permanently delete all time entries and active sessions. This action cannot be undone.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Questa azione eliminerà definitivamente tutte le registrazioni e le sessioni attive. Non può essere annullata."
           }
         }
       }
     },
-    "Nickname" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nickname"
+    "Thursday": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giovedì"
           }
         }
       }
     },
-    "No active sessions on this Mac" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nessuna sessione attiva su questo Mac"
+    "Time": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Orario"
           }
         }
       }
     },
-    "No client" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nessun cliente"
+    "Timelog": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Timelog"
           }
         }
       }
     },
-    "No entries" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nessuna registrazione"
+    "Timelog Week Export": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esportazione settimanale Timelog"
           }
         }
       }
     },
-    "No entries today" : {
-
+    "Timelog — Week of": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Timelog — Settimana del"
+          }
+        }
+      }
     },
-    "No project" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nessun progetto"
+    "Timer": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Timer"
           }
         }
       }
     },
-    "No projects" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nessun progetto"
+    "Timer will be reset.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il timer verrà reimpostato."
           }
         }
       }
     },
-    "None" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nessuno"
+    "Today": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oggi"
           }
         }
       }
     },
-    "Not connected" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Non connesso"
+    "Toggle Timelog window": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra/nascondi finestra Timelog"
           }
         }
       }
     },
-    "Notes" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Note"
+    "Total:": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Totale:"
           }
         }
       }
     },
-    "Notify if still open at" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Avvisa se ancora aperta alle"
+    "Track": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Traccia"
           }
         }
       }
     },
-    "Open history" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Apri cronologia"
+    "Track elapsed time without a fixed interval.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Traccia il tempo trascorso senza intervallo fisso."
           }
         }
       }
     },
-    "Open session" : {
-
+    "Tracking session in progress": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sessione di tracking in corso"
+          }
+        }
+      }
     },
-    "Optional" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Opzionale"
+    "Tu": {
+      "extractionState": "stale",
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ma"
           }
         }
       }
     },
-    "Orange" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Arancione"
+    "Tuesday": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Martedì"
           }
         }
       }
     },
-    "Pause" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pausa"
+    "Type": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tipo"
           }
         }
       }
     },
-    "Pause timer" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Metti in pausa il timer"
+    "Unarchive": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ripristina"
           }
         }
       }
     },
-    "Paused" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "In pausa"
+    "Version": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versione"
           }
         }
       }
     },
-    "Pick another day to review logged time." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seleziona un altro giorno per vedere le ore registrate."
+    "Version %@ (%@)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Version %1$@ (%2$@)"
           }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versione %@ (%@)"
+          }
         }
       }
     },
-    "Pink" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rosa"
+    "W": {
+      "extractionState": "stale",
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Me"
           }
         }
       }
     },
-    "Pomodoro" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pomodoro"
+    "Website": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sito web"
           }
         }
       }
     },
-    "Pomodoro mode" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Modalità Pomodoro"
+    "Wednesday": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mercoledì"
           }
         }
       }
     },
-    "Press ⌘S to sync changes immediately." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Premi ⌘S per sincronizzare le modifiche immediatamente."
+    "Week": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settimana"
           }
         }
       }
     },
-    "Previous day" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Giorno precedente"
+    "What's your name?": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Come ti chiami?"
           }
         }
       }
     },
-    "Project" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Progetto"
+    "When": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quando"
           }
         }
       }
     },
-    "Purple" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Viola"
+    "Yellow": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giallo"
           }
         }
       }
     },
-    "Quit Anyway" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Chiudi comunque"
+    "Your nickname identifies your data.\nEach teammate uses their own.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il tuo nickname identifica i tuoi dati.\nOgni membro del team usa il proprio."
           }
         }
       }
+    },
+    "h": {
+      "shouldTranslate": false
+    },
+    "m": {
+      "shouldTranslate": false
     },
-    "quit_anyway_sessions_warning %lld" : {
-      "localizations" : {
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "You have 1 active session. Quit anyway?"
+    "quit_anyway_sessions_warning %lld": {
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "You have 1 active session. Quit anyway?"
                 }
               },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "You have %lld active sessions. Quit anyway?"
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "You have %lld active sessions. Quit anyway?"
                 }
               }
             }
           }
         },
-        "it" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Hai una sessione attiva. Chiudi l'app comunque?"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Hai %lld sessioni attive. Chiudi l'app comunque?"
-                }
-              }
-            }
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ci sono %lld sessioni attive. Chiudere comunque?"
           }
         }
       }
     },
-    "Red" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rosso"
-          }
-        }
-      }
-    },
-    "Reminders" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Promemoria"
-          }
-        }
-      }
-    },
-    "Remove %@" : {
-
-    },
-    "Reset" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reimposta"
-          }
-        }
-      }
-    },
-    "Reset & Pull" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reimposta e scarica"
-          }
-        }
-      }
-    },
-    "Reset & Pull wipes local data and re-downloads everything from MongoDB." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reimposta e scarica cancella i dati locali e riscarica tutto da MongoDB."
-          }
-        }
-      }
-    },
-    "Reset & switch" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reimposta e cambia"
-          }
-        }
-      }
-    },
-    "Reset and switch" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reimposta e cambia"
-          }
-        }
-      }
-    },
-    "Reset timer" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reimposta timer"
-          }
-        }
-      }
-    },
-    "Running" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "In esecuzione"
-          }
-        }
-      }
-    },
-    "Sa" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sa"
-          }
-        }
-      }
-    },
-    "Saturday" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sabato"
-          }
-        }
-      }
-    },
-    "Save" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Salva"
-          }
-        }
-      }
-    },
-    "Select a client" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seleziona un cliente"
-          }
-        }
-      }
-    },
-    "Sends a notification if a session is still running at this time, or if you have no active session after the idle threshold." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Invia una notifica se una sessione è ancora in esecuzione a quest'ora, o se non hai sessioni attive dopo la soglia di inattività."
-          }
-        }
-      }
-    },
-    "Session" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sessione"
-          }
-        }
-      }
-    },
-    "Settings" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Impostazioni"
-          }
-        }
-      }
-    },
-    "Short break: %lld min" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pausa breve: %lld min"
-          }
-        }
-      }
-    },
-    "Show archived" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mostra archiviati"
-          }
-        }
-      }
-    },
-    "Show Archived" : {
-
-    },
-    "Show archived clients" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mostra clienti archiviati"
-          }
-        }
-      }
-    },
-    "Show guide again" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mostra la guida di nuovo"
-          }
-        }
-      }
-    },
-    "Show nickname" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mostra nickname"
-          }
-        }
-      }
-    },
-    "Show/hide Timelog window" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mostra/nascondi la finestra di Timelog"
-          }
-        }
-      }
-    },
-    "Smart Tracking" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tracciamento intelligente"
-          }
-        }
-      }
-    },
-    "Sound effects" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Effetti sonori"
-          }
-        }
-      }
-    },
-    "Sound effects: plays a chime at each phase transition." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Effetti sonori: suona un segnale acustico ad ogni transizione di fase."
-          }
-        }
-      }
-    },
-    "Start" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Avvia"
-          }
-        }
-      }
-    },
-    "Start a new tracking session" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Avvia una nuova sessione di tracciamento"
-          }
-        }
-      }
-    },
-    "Start session" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Avvia sessione"
-          }
-        }
-      }
-    },
-    "Start timer" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Avvia timer"
-          }
-        }
-      }
-    },
-    "Start Tracking" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Avvia tracciamento"
-          }
-        }
-      }
-    },
-    "Started" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Iniziata"
-          }
-        }
-      }
-    },
-    "Stop & Log" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ferma e registra"
-          }
-        }
-      }
-    },
-    "Stop and log" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ferma e registra"
-          }
-        }
-      }
-    },
-    "Stop and log session" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ferma e registra la sessione"
-          }
-        }
-      }
-    },
-    "Stop session" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ferma sessione"
-          }
-        }
-      }
-    },
-    "Stop Tracking" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ferma tracciamento"
-          }
-        }
-      }
-    },
-    "Stopwatch" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cronometro"
-          }
-        }
-      }
-    },
-    "Su" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Do"
-          }
-        }
-      }
-    },
-    "Sunday" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Domenica"
-          }
-        }
-      }
-    },
-    "Switch mode" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cambia modalità"
-          }
-        }
-      }
-    },
-    "Sync" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sincronizzazione"
-          }
-        }
-      }
-    },
-    "Sync Now" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sincronizza ora"
-          }
-        }
-      }
-    },
-    "Syncing…" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sincronizzazione in corso…"
-          }
-        }
-      }
-    },
-    "Teal" : {
-
-    },
-    "Th" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gi"
-          }
-        }
-      }
-    },
-    "The current session will be reset." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La sessione corrente verrà reimpostata."
-          }
-        }
-      }
-    },
-    "The tracked time will be lost." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Il tempo tracciato andrà perso."
-          }
-        }
-      }
-    },
-    "This will permanently delete all time entries and active sessions. This action cannot be undone." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Questa azione eliminerà definitivamente tutte le registrazioni e le sessioni attive. Non può essere annullata."
-          }
-        }
-      }
-    },
-    "Thursday" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Giovedì"
-          }
-        }
-      }
-    },
-    "Time" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Orario"
-          }
-        }
-      }
-    },
-    "Timelog" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Timelog"
-          }
-        }
-      }
-    },
-    "Timelog — Week of" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Timelog — Settimana del"
-          }
-        }
-      }
-    },
-    "Timelog Week Export" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esportazione settimanale Timelog"
-          }
-        }
-      }
-    },
-    "Timer" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Timer"
-          }
-        }
-      }
-    },
-    "Timer will be reset." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Il timer verrà reimpostato."
-          }
-        }
-      }
-    },
-    "Today" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Oggi"
-          }
-        }
-      }
-    },
-    "Toggle Timelog window" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mostra/nascondi finestra Timelog"
-          }
-        }
-      }
-    },
-    "total" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "totale"
-          }
-        }
-      }
-    },
-    "Total:" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Totale:"
-          }
-        }
-      }
-    },
-    "Track" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Traccia"
-          }
-        }
-      }
-    },
-    "Track elapsed time without a fixed interval." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Traccia il tempo trascorso senza intervallo fisso."
-          }
-        }
-      }
-    },
-    "Tracking session in progress" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sessione di tracking in corso"
-          }
-        }
-      }
-    },
-    "Tu" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ma"
-          }
-        }
-      }
-    },
-    "Tuesday" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Martedì"
-          }
-        }
-      }
-    },
-    "Type" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tipo"
-          }
-        }
-      }
-    },
-    "Unarchive" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ripristina"
-          }
-        }
-      }
-    },
-    "Version" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Versione"
-          }
-        }
-      }
-    },
-    "Version %@ (%@)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Version %1$@ (%2$@)"
-          }
-        }
-      }
-    },
-    "W" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Me"
-          }
-        }
-      }
-    },
-    "Website" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sito web"
-          }
-        }
-      }
-    },
-    "Wednesday" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mercoledì"
-          }
-        }
-      }
-    },
-    "Week" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Settimana"
-          }
-        }
-      }
-    },
-    "What's your name?" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Come ti chiami?"
-          }
-        }
-      }
-    },
-    "When" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Quando"
-          }
-        }
-      }
-    },
-    "Yellow" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Giallo"
-          }
-        }
-      }
-    },
-    "Your nickname identifies your data.\nEach teammate uses their own." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Il tuo nickname identifica i tuoi dati.\nOgni membro del team usa il proprio."
+    "total": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "totale"
           }
         }
       }
     }
   },
-  "version" : "1.0"
+  "version": "1.0"
 }

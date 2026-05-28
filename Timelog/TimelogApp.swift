@@ -45,40 +45,6 @@ private struct RestSyncSetup: ViewModifier {
     }
 }
 
-// MARK: - Widget pending start handler
-
-private struct PendingStartModifier: ViewModifier {
-    @Environment(\.modelContext) private var context
-    @Environment(\.scenePhase) private var scenePhase
-    @Environment(SettingsStore.self) private var settings
-    @Query(filter: #Predicate<Project> { $0.deletedAt == nil }) private var allProjects: [Project]
-
-    func body(content: Content) -> some View {
-        content.onChange(of: scenePhase) { _, phase in
-            if phase == .active { handlePendingStart() }
-        }
-    }
-
-    private func handlePendingStart() {
-        guard let mongoId = WidgetSnapshotStore.consumePendingStart() else { return }
-        guard let project = allProjects.first(where: { $0.mongoId == mongoId }) else { return }
-        let session = ActiveSession(
-            client: project.client,
-            project: project,
-            userId: settings.userId
-        )
-        context.insert(session)
-        NotificationManager.shared.scheduleSessionOverdue(
-            id: session.notificationID,
-            clientName: project.client?.name ?? "a project",
-            projectName: project.name,
-            startDate: session.startDate,
-            endHour: settings.trackingEndHour,
-            endMinute: settings.trackingEndMinute
-        )
-        try? context.save()
-    }
-}
 
 // MARK: - Sync flash overlay
 
@@ -153,7 +119,6 @@ struct TimelogApp: App {
                     .modifier(RestSyncSetup())
                     .modifier(SyncFlashOverlay())
                     .modifier(IdleAlertModifier())
-                    .modifier(PendingStartModifier())
 
                 if showSplash {
                     SplashView(isShowing: $showSplash)

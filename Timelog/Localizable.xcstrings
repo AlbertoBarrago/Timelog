@@ -2,36 +2,6 @@
   "sourceLanguage": "en",
   "strings": {
     "": {},
-    "%lld projects": {
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld progetti"
-          }
-        }
-      }
-    },
-    "%lldh": {
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lldh"
-          }
-        }
-      }
-    },
-    "%lldm": {
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lldm"
-          }
-        }
-      }
-    },
     "About": {
       "localizations": {
         "it": {
@@ -82,44 +52,12 @@
         }
       }
     },
-    "Add Client": {
-      "extractionState": "stale",
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aggiungi cliente"
-          }
-        }
-      }
-    },
     "Add project": {
       "localizations": {
         "it": {
           "stringUnit": {
             "state": "translated",
             "value": "Aggiungi progetto"
-          }
-        }
-      }
-    },
-    "Add Project": {
-      "extractionState": "stale",
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aggiungi progetto"
-          }
-        }
-      }
-    },
-    "After %lld min": {
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dopo %lld min"
           }
         }
       }
@@ -171,16 +109,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Avanza automaticamente le fasi"
-          }
-        }
-      }
-    },
-    "Auto-advance: when a phase ends the next one starts automatically, no input needed.\nSound effects: plays a chime at each phase transition.": {
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Avanzamento automatico: quando una fase termina, la successiva parte in automatico.\nEffetti sonori: suona un segnale acustico ad ogni transizione di fase."
           }
         }
       }
@@ -346,16 +274,6 @@
         }
       }
     },
-    "Delete \"%@\"?": {
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Eliminare \"%@\"?"
-          }
-        }
-      }
-    },
     "Delete all": {
       "localizations": {
         "it": {
@@ -382,26 +300,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Eliminare tutte le voci?"
-          }
-        }
-      }
-    },
-    "Delete client%@": {
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elimina cliente%@"
-          }
-        }
-      }
-    },
-    "Delete project%@": {
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elimina progetto%@"
           }
         }
       }
@@ -529,27 +427,6 @@
         }
       }
     },
-    "Focus: %lld min": {
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Focus: %lld min"
-          }
-        }
-      }
-    },
-    "Free": {
-      "extractionState": "stale",
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Libero"
-          }
-        }
-      }
-    },
     "Friday": {
       "localizations": {
         "it": {
@@ -650,16 +527,6 @@
         }
       }
     },
-    "Last sync: %@": {
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ultima sinc.: %@"
-          }
-        }
-      }
-    },
     "Light Blue": {
       "localizations": {
         "it": {
@@ -680,44 +547,12 @@
         }
       }
     },
-    "Log Entry": {
-      "extractionState": "stale",
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Salva voce"
-          }
-        }
-      }
-    },
-    "Log time": {
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Registra tempo"
-          }
-        }
-      }
-    },
     "Log Time": {
       "localizations": {
         "it": {
           "stringUnit": {
             "state": "translated",
             "value": "Registra ore"
-          }
-        }
-      }
-    },
-    "Log time manually": {
-      "extractionState": "stale",
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Registra il tempo manualmente"
           }
         }
       }
@@ -733,34 +568,12 @@
         }
       }
     },
-    "Log time manually or start a tracking session.": {
-      "extractionState": "stale",
+    "Log time": {
       "localizations": {
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Registra il tempo manualmente o avvia una sessione di tracciamento."
-          }
-        }
-      }
-    },
-    "Long Break": {
-      "extractionState": "stale",
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pausa lunga"
-          }
-        }
-      }
-    },
-    "Long break: %lld min": {
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pausa lunga: %lld min"
+            "value": "Registra tempo"
           }
         }
       }
@@ -852,22 +665,22 @@
         }
       }
     },
-    "New label": {
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nuova etichetta"
-          }
-        }
-      }
-    },
     "New Project": {
       "localizations": {
         "it": {
           "stringUnit": {
             "state": "translated",
             "value": "Nuovo progetto"
+          }
+        }
+      }
+    },
+    "New label": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuova etichetta"
           }
         }
       }
@@ -962,34 +775,12 @@
         }
       }
     },
-    "Notes (optional)": {
-      "extractionState": "stale",
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Note (opzionale)"
-          }
-        }
-      }
-    },
     "Notify if still open at": {
       "localizations": {
         "it": {
           "stringUnit": {
             "state": "translated",
             "value": "Notifica se ancora aperta alle"
-          }
-        }
-      }
-    },
-    "Open session": {
-      "extractionState": "stale",
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sessione aperta"
           }
         }
       }
@@ -1031,17 +822,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Metti in pausa il timer"
-          }
-        }
-      }
-    },
-    "Paused": {
-      "extractionState": "stale",
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "In pausa"
           }
         }
       }
@@ -1210,17 +990,6 @@
         }
       }
     },
-    "Select a client": {
-      "extractionState": "stale",
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Seleziona un cliente"
-          }
-        }
-      }
-    },
     "Session": {
       "localizations": {
         "it": {
@@ -1270,16 +1039,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Pausa breve"
-          }
-        }
-      }
-    },
-    "Short break: %lld min": {
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pausa breve: %lld min"
           }
         }
       }
@@ -1354,6 +1113,16 @@
         }
       }
     },
+    "Start Tracking": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avvia tracciamento"
+          }
+        }
+      }
+    },
     "Start session": {
       "localizations": {
         "it": {
@@ -1384,16 +1153,6 @@
         }
       }
     },
-    "Start Tracking": {
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Avvia tracciamento"
-          }
-        }
-      }
-    },
     "Started": {
       "localizations": {
         "it": {
@@ -1415,27 +1174,6 @@
         }
       }
     },
-    "Stop & Log": {
-      "extractionState": "stale",
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ferma e registra"
-          }
-        }
-      }
-    },
-    "Stop session": {
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ferma sessione"
-          }
-        }
-      }
-    },
     "Stop Tracking": {
       "localizations": {
         "it": {
@@ -1446,13 +1184,12 @@
         }
       }
     },
-    "Stopwatch": {
-      "extractionState": "stale",
+    "Stop session": {
       "localizations": {
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cronometro"
+            "value": "Ferma sessione"
           }
         }
       }
@@ -1560,17 +1297,6 @@
         }
       }
     },
-    "Tap ▶ to start a session when you begin working. Stop it when you're done — duration is logged automatically. You can run multiple sessions at once.": {
-      "extractionState": "stale",
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Premi ▶ per avviare una sessione quando inizi a lavorare. Fermala quando hai finito — la durata viene registrata automaticamente. Puoi avere più sessioni contemporaneamente."
-          }
-        }
-      }
-    },
     "Tap to edit": {
       "localizations": {
         "it": {
@@ -1587,6 +1313,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tocca per fermare la sessione"
+          }
+        }
+      }
+    },
+    "Tap ▶ to start a session when you begin working. Stop it when you're done — duration is logged automatically. You can run multiple sessions at once.": {
+      "extractionState": "stale",
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Premi ▶ per avviare una sessione quando inizi a lavorare. Fermala quando hai finito — la durata viene registrata automaticamente. Puoi avere più sessioni contemporaneamente."
           }
         }
       }
@@ -1674,22 +1411,22 @@
         }
       }
     },
-    "Timelog — Week of": {
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Timelog — Settimana del"
-          }
-        }
-      }
-    },
     "Timelog Week Export": {
       "localizations": {
         "it": {
           "stringUnit": {
             "state": "translated",
             "value": "Esportazione settimanale Timelog"
+          }
+        }
+      }
+    },
+    "Timelog — Week of": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Timelog — Settimana del"
           }
         }
       }
@@ -1731,17 +1468,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Traccia"
-          }
-        }
-      }
-    },
-    "Track elapsed time without a fixed interval.": {
-      "extractionState": "stale",
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Traccia il tempo trascorso senza intervallo fisso."
           }
         }
       }
@@ -1805,16 +1531,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ripristina"
-          }
-        }
-      }
-    },
-    "v%@": {
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "v%@"
           }
         }
       }
@@ -1913,17 +1629,6 @@
         }
       }
     },
-    "You'll receive a notification if a session is still running at this time.": {
-      "extractionState": "stale",
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Riceverai una notifica se una sessione è ancora in esecuzione a quest'ora."
-          }
-        }
-      }
-    },
     "You're All Set!": {
       "extractionState": "stale",
       "localizations": {
@@ -1931,16 +1636,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sei pronto!"
-          }
-        }
-      }
-    },
-    "Your nickname identifies your data.\nEach teammate uses their own.": {
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Il tuo nickname identifica i tuoi dati.\nOgni membro del team usa il proprio."
           }
         }
       }

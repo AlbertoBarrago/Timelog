@@ -146,14 +146,6 @@ struct HomeView: View {
     private func updateWidgetSnapshot() {
         let latestEntry = todayEntries.first
         let latestSession = activeSessions.max { $0.startDate < $1.startDate }
-        var seenIds = Set<String>()
-        var recentProjects: [TimelogWidgetProjectEntry] = []
-        for entry in allEntries where entry.userId == settings.userId {
-            guard let project = entry.project, let mid = project.mongoId, !seenIds.contains(mid) else { continue }
-            seenIds.insert(mid)
-            recentProjects.append(TimelogWidgetProjectEntry(mongoId: mid, name: project.name, clientName: entry.client?.name))
-            if recentProjects.count == 5 { break }
-        }
         let snapshot = TimelogWidgetSnapshot(
             loggedMinutes: todayEntries.reduce(0) { $0 + $1.durationMinutes },
             activeSessions: activeSessions.map {
@@ -164,8 +156,7 @@ struct HomeView: View {
                 )
             },
             lastClientName: latestSession?.client?.name ?? latestEntry?.client?.name,
-            lastProjectName: latestSession?.project?.name ?? latestEntry?.project?.name,
-            recentProjects: recentProjects
+            lastProjectName: latestSession?.project?.name ?? latestEntry?.project?.name
         )
         WidgetSnapshotStore.save(snapshot)
         #if os(iOS)

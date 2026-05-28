@@ -74,6 +74,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				ProjectsWidget.swift,
+				TrackingLiveActivity.swift,
 			);
 			target = E97A4C702FAFE9D100C528C1 /* Timelog */;
 		};
