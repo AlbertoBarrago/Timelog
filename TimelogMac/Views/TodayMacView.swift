@@ -70,6 +70,7 @@ struct TodayMacView: View {
                                 .contentShape(Rectangle())
                                 .onTapGesture { entryToEdit = entry }
                                 .accessibilityAddTraits(.isButton)
+                                .accessibilityLabel(String(localized: "Entry, \(entry.client?.name ?? "No client")"))
                                 .accessibilityHint(String(localized: "Click to edit entry"))
                                 .contextMenu {
                                     Button("Edit") { entryToEdit = entry }
@@ -132,6 +133,7 @@ struct ActiveSessionMacRow: View {
             RoundedRectangle(cornerRadius: 3)
                 .fill(session.client?.color ?? .accentColor)
                 .frame(width: 4, height: 32)
+                .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 2) {
                 Text(session.client?.name ?? "No client")
                     .fontWeight(.medium)
@@ -176,6 +178,7 @@ struct EntryMacRow: View {
             RoundedRectangle(cornerRadius: 3)
                 .fill(entry.client?.color ?? Color.secondary.opacity(0.3))
                 .frame(width: 4, height: 32)
+                .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 2) {
                 Text(entry.client?.name ?? "No client").fontWeight(.medium)
                 if let proj = entry.project {

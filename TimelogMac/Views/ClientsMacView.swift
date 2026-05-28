@@ -106,6 +106,7 @@ private struct ClientMacRow: View {
     var body: some View {
         HStack(spacing: 8) {
             Circle().fill(client.color).frame(width: 10, height: 10)
+                .accessibilityHidden(true)
             Text(client.name)
                 .foregroundStyle(client.isArchived ? .secondary : .primary)
             Spacer()
@@ -113,6 +114,7 @@ private struct ClientMacRow: View {
                 Image(systemName: "archivebox")
                     .font(.caption2)
                     .foregroundStyle(.tertiary)
+                    .accessibilityLabel(String(localized: "Archived"))
             }
         }
         .padding(.vertical, 2)
@@ -145,6 +147,7 @@ struct ProjectsMacView: View {
             Section {
                 HStack(spacing: 8) {
                     Circle().fill(client.color).frame(width: 10, height: 10)
+                        .accessibilityHidden(true)
                     Text(client.name).font(.headline)
                     Spacer()
                 }
@@ -161,6 +164,7 @@ struct ProjectsMacView: View {
                             Image(systemName: "folder")
                                 .font(.system(size: 32))
                                 .foregroundStyle(.secondary)
+                                .accessibilityHidden(true)
                             Text("No projects")
                                 .font(.headline)
                                 .foregroundStyle(.secondary)

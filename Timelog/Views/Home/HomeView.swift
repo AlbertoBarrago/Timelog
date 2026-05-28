@@ -38,6 +38,7 @@ struct HomeView: View {
                         Image(systemName: activeSessions.isEmpty ? "clock.fill" : "record.circle.fill")
                             .font(.system(size: 32))
                             .foregroundStyle(activeSessions.isEmpty ? Color.secondary.opacity(0.4) : Color.red.opacity(0.7))
+                            .accessibilityHidden(true)
                     }
                     .padding()
                     .background(.quinary, in: RoundedRectangle(cornerRadius: 12))
@@ -60,6 +61,7 @@ struct HomeView: View {
                                         .contentShape(Rectangle())
                                         .onTapGesture { activeSheet = .stopSession(session) }
                                         .accessibilityAddTraits(.isButton)
+                                        .accessibilityLabel(String(localized: "Active session, \(session.client?.name ?? "No client")"))
                                         .accessibilityHint(String(localized: "Tap to stop session"))
                                         .swipeActions(edge: .trailing) {
                                             Button(role: .destructive) {
@@ -80,6 +82,7 @@ struct HomeView: View {
                                 .contentShape(Rectangle())
                                 .onTapGesture { activeSheet = .editEntry(entry) }
                                 .accessibilityAddTraits(.isButton)
+                                .accessibilityLabel(String(localized: "Entry, \(entry.client?.name ?? "No client")"))
                                 .accessibilityHint(String(localized: "Tap to edit"))
                                 .swipeActions(edge: .trailing) {
                                     Button(role: .destructive) {
@@ -143,6 +146,14 @@ struct HomeView: View {
     private func updateWidgetSnapshot() {
         let latestEntry = todayEntries.first
         let latestSession = activeSessions.max { $0.startDate < $1.startDate }
+        var seenIds = Set<String>()
+        var recentProjects: [TimelogWidgetProjectEntry] = []
+        for entry in allEntries where entry.userId == settings.userId {
+            guard let project = entry.project, let mid = project.mongoId, !seenIds.contains(mid) else { continue }
+            seenIds.insert(mid)
+            recentProjects.append(TimelogWidgetProjectEntry(mongoId: mid, name: project.name, clientName: entry.client?.name))
+            if recentProjects.count == 5 { break }
+        }
         let snapshot = TimelogWidgetSnapshot(
             loggedMinutes: todayEntries.reduce(0) { $0 + $1.durationMinutes },
             activeSessions: activeSessions.map {
@@ -153,7 +164,8 @@ struct HomeView: View {
                 )
             },
             lastClientName: latestSession?.client?.name ?? latestEntry?.client?.name,
-            lastProjectName: latestSession?.project?.name ?? latestEntry?.project?.name
+            lastProjectName: latestSession?.project?.name ?? latestEntry?.project?.name,
+            recentProjects: recentProjects
         )
         WidgetSnapshotStore.save(snapshot)
         #if os(iOS)
@@ -188,6 +200,7 @@ private struct ActiveSessionRow: View {
             RoundedRectangle(cornerRadius: 3)
                 .fill(session.client?.color ?? .accentColor)
                 .frame(width: 4, height: 36)
+                .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(session.client?.name ?? "No client")
@@ -225,6 +238,7 @@ private struct EntryRow: View {
                 RoundedRectangle(cornerRadius: 3)
                     .fill(color)
                     .frame(width: 4, height: 36)
+                    .accessibilityHidden(true)
             }
             VStack(alignment: .leading, spacing: 2) {
                 Text(entry.client?.name ?? "No client")

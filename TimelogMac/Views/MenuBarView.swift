@@ -214,6 +214,7 @@ private struct MenuSessionRow: View {
             RoundedRectangle(cornerRadius: 2)
                 .fill(session.client?.color ?? .accentColor)
                 .frame(width: 3, height: 30)
+                .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 1) {
                 Text(session.client?.name ?? "No client")
                     .font(.caption.weight(.semibold)).lineLimit(1)

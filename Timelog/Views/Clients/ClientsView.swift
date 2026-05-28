@@ -43,6 +43,7 @@ struct ClientsView: View {
                                     Circle()
                                         .fill(client.color)
                                         .frame(width: 12, height: 12)
+                                        .accessibilityHidden(true)
                                     Text(client.name)
                                         .foregroundStyle(client.isArchived ? .secondary : .primary)
                                     Spacer()
