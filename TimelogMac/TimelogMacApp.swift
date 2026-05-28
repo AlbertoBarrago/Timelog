@@ -81,11 +81,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         guard !sessions.isEmpty else { return .terminateNow }
 
         let alert = NSAlert()
-        alert.messageText = "Sessione di tracking in corso"
-        alert.informativeText = "Hai \(sessions.count == 1 ? "una sessione attiva" : "\(sessions.count) sessioni attive"). Chiudi l'app comunque?"
+        alert.messageText = String(localized: "Tracking session in progress")
+        alert.informativeText = String(localized: "quit_anyway_sessions_warning \(sessions.count)")
         alert.alertStyle = .warning
-        alert.addButton(withTitle: "Chiudi comunque")
-        alert.addButton(withTitle: "Annulla")
+        alert.addButton(withTitle: String(localized: "Quit Anyway"))
+        alert.addButton(withTitle: String(localized: "Cancel"))
         return alert.runModal() == .alertFirstButtonReturn ? .terminateNow : .terminateCancel
     }
 }

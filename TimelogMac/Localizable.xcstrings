@@ -1,6 +1,9 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "": {},
+    "  |  ": {},
+    "0": {},
     "About": {
       "localizations": {
         "it": {
@@ -11,6 +14,7 @@
         }
       }
     },
+    "About Timelog": {},
     "Account": {
       "localizations": {
         "it": {
@@ -41,6 +45,16 @@
         }
       }
     },
+    "Add a new client": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiungi un nuovo cliente"
+          }
+        }
+      }
+    },
     "Add Client": {
       "localizations": {
         "it": {
@@ -61,16 +75,6 @@
         }
       }
     },
-    "Add a new client": {
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aggiungi un nuovo cliente"
-          }
-        }
-      }
-    },
     "After %lld min": {
       "localizations": {
         "it": {
@@ -81,6 +85,7 @@
         }
       }
     },
+    "Alberto Barrago": {},
     "Alert when idle": {
       "localizations": {
         "it": {
@@ -311,16 +316,7 @@
         }
       }
     },
-    "Delete Client": {
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elimina cliente"
-          }
-        }
-      }
-    },
+    "Delete \"%@\"?": {},
     "Delete all": {
       "localizations": {
         "it": {
@@ -351,6 +347,19 @@
         }
       }
     },
+    "Delete Client": {
+      "extractionState": "stale",
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elimina cliente"
+          }
+        }
+      }
+    },
+    "Delete client%@": {},
+    "Delete project%@": {},
     "Developer": {
       "localizations": {
         "it": {
@@ -382,6 +391,7 @@
       }
     },
     "Done": {
+      "extractionState": "stale",
       "localizations": {
         "it": {
           "stringUnit": {
@@ -541,7 +551,9 @@
         }
       }
     },
+    "h": {},
     "Hide archived": {
+      "extractionState": "stale",
       "localizations": {
         "it": {
           "stringUnit": {
@@ -551,6 +563,7 @@
         }
       }
     },
+    "Hide Archived": {},
     "Hide archived clients": {
       "localizations": {
         "it": {
@@ -612,6 +625,7 @@
       }
     },
     "Last sync %@": {
+      "extractionState": "stale",
       "localizations": {
         "it": {
           "stringUnit": {
@@ -651,7 +665,8 @@
         }
       }
     },
-    "Log Time": {
+    "Log time": {
+      "extractionState": "stale",
       "localizations": {
         "it": {
           "stringUnit": {
@@ -661,7 +676,7 @@
         }
       }
     },
-    "Log time": {
+    "Log Time": {
       "localizations": {
         "it": {
           "stringUnit": {
@@ -701,7 +716,9 @@
         }
       }
     },
+    "m": {},
     "M": {
+      "extractionState": "stale",
       "localizations": {
         "it": {
           "stringUnit": {
@@ -712,6 +729,7 @@
       }
     },
     "Min": {
+      "extractionState": "stale",
       "localizations": {
         "it": {
           "stringUnit": {
@@ -721,6 +739,7 @@
         }
       }
     },
+    "Minutes": {},
     "Mode": {
       "localizations": {
         "it": {
@@ -781,22 +800,22 @@
         }
       }
     },
-    "New Project": {
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nuovo progetto"
-          }
-        }
-      }
-    },
     "New label": {
       "localizations": {
         "it": {
           "stringUnit": {
             "state": "translated",
             "value": "Nuova etichetta"
+          }
+        }
+      }
+    },
+    "New Project": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuovo progetto"
           }
         }
       }
@@ -832,6 +851,7 @@
       }
     },
     "No client": {
+      "extractionState": "stale",
       "localizations": {
         "it": {
           "stringUnit": {
@@ -851,6 +871,7 @@
         }
       }
     },
+    "No entries today": {},
     "No project": {
       "localizations": {
         "it": {
@@ -882,6 +903,7 @@
       }
     },
     "Not connected": {
+      "extractionState": "stale",
       "localizations": {
         "it": {
           "stringUnit": {
@@ -921,6 +943,7 @@
         }
       }
     },
+    "Open session": {},
     "Optional": {
       "localizations": {
         "it": {
@@ -1071,6 +1094,7 @@
         }
       }
     },
+    "Remove %@": {},
     "Reset": {
       "localizations": {
         "it": {
@@ -1142,6 +1166,7 @@
       }
     },
     "Sa": {
+      "extractionState": "stale",
       "localizations": {
         "it": {
           "stringUnit": {
@@ -1192,6 +1217,7 @@
       }
     },
     "Session": {
+      "extractionState": "stale",
       "localizations": {
         "it": {
           "stringUnit": {
@@ -1222,6 +1248,7 @@
       }
     },
     "Show archived": {
+      "extractionState": "stale",
       "localizations": {
         "it": {
           "stringUnit": {
@@ -1231,6 +1258,7 @@
         }
       }
     },
+    "Show Archived": {},
     "Show archived clients": {
       "localizations": {
         "it": {
@@ -1242,6 +1270,7 @@
       }
     },
     "Show guide again": {
+      "extractionState": "stale",
       "localizations": {
         "it": {
           "stringUnit": {
@@ -1311,16 +1340,6 @@
         }
       }
     },
-    "Start Tracking": {
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Avvia tracciamento"
-          }
-        }
-      }
-    },
     "Start a new tracking session": {
       "localizations": {
         "it": {
@@ -1351,6 +1370,16 @@
         }
       }
     },
+    "Start Tracking": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avvia tracciamento"
+          }
+        }
+      }
+    },
     "Started": {
       "localizations": {
         "it": {
@@ -1367,16 +1396,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ferma e registra"
-          }
-        }
-      }
-    },
-    "Stop Tracking": {
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ferma tracciamento"
           }
         }
       }
@@ -1411,6 +1430,16 @@
         }
       }
     },
+    "Stop Tracking": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferma tracciamento"
+          }
+        }
+      }
+    },
     "Stopwatch": {
       "localizations": {
         "it": {
@@ -1422,6 +1451,7 @@
       }
     },
     "Su": {
+      "extractionState": "stale",
       "localizations": {
         "it": {
           "stringUnit": {
@@ -1452,6 +1482,7 @@
       }
     },
     "Sync": {
+      "extractionState": "stale",
       "localizations": {
         "it": {
           "stringUnit": {
@@ -1472,6 +1503,7 @@
       }
     },
     "Syncing…": {
+      "extractionState": "stale",
       "localizations": {
         "it": {
           "stringUnit": {
@@ -1481,7 +1513,9 @@
         }
       }
     },
+    "Teal": {},
     "Th": {
+      "extractionState": "stale",
       "localizations": {
         "it": {
           "stringUnit": {
@@ -1551,22 +1585,22 @@
         }
       }
     },
-    "Timelog Week Export": {
-      "localizations": {
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Esportazione settimanale Timelog"
-          }
-        }
-      }
-    },
     "Timelog — Week of": {
       "localizations": {
         "it": {
           "stringUnit": {
             "state": "translated",
             "value": "Timelog — Settimana del"
+          }
+        }
+      }
+    },
+    "Timelog Week Export": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esportazione settimanale Timelog"
           }
         }
       }
@@ -1611,6 +1645,16 @@
         }
       }
     },
+    "total": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "totale"
+          }
+        }
+      }
+    },
     "Total:": {
       "localizations": {
         "it": {
@@ -1642,6 +1686,7 @@
       }
     },
     "Tu": {
+      "extractionState": "stale",
       "localizations": {
         "it": {
           "stringUnit": {
@@ -1691,7 +1736,18 @@
         }
       }
     },
+    "Version %@ (%@)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Version %1$@ (%2$@)"
+          }
+        }
+      }
+    },
     "W": {
+      "extractionState": "stale",
       "localizations": {
         "it": {
           "stringUnit": {
@@ -1771,12 +1827,62 @@
         }
       }
     },
-    "total": {
+    "Tracking session in progress": {
       "localizations": {
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "totale"
+            "value": "Sessione di tracking in corso"
+          }
+        }
+      }
+    },
+    "quit_anyway_sessions_warning %lld": {
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "You have 1 active session. Quit anyway?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "You have %lld active sessions. Quit anyway?"
+                }
+              }
+            }
+          }
+        },
+        "it": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Hai una sessione attiva. Chiudi l'app comunque?"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Hai %lld sessioni attive. Chiudi l'app comunque?"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Quit Anyway": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chiudi comunque"
           }
         }
       }
