@@ -107,17 +107,13 @@ struct ProjectsMacView: View {
 
     @State private var showingAddProject = false
     @State private var projectToEdit: Project?
-    @State private var showArchived      = false
     @State private var selectedProjects  = Set<Project.ID>()
 
     @Query(sort: \Project.name) private var allProjects: [Project]
     @Query(sort: \ActiveSession.startDate) private var allSessions: [ActiveSession]
 
     private var visibleProjects: [Project] {
-        allProjects.filter {
-            $0.client?.persistentModelID == client.persistentModelID
-            && (showArchived || !$0.isArchived)
-        }
+        allProjects.filter { $0.client?.persistentModelID == client.persistentModelID && $0.deletedAt == nil }
     }
 
     private var activeSessions: [ActiveSession] {
@@ -173,12 +169,10 @@ struct ProjectsMacView: View {
                         .accessibilityHint(String(localized: "Click to edit project"))
                         .contextMenu {
                             Button("Edit") { projectToEdit = proj }
-                            Button(proj.isArchived ? "Unarchive" : "Archive") {
-                                proj.isArchived.toggle()
-                            }
                             Divider()
                             Button("Delete", role: .destructive) {
                                 proj.deletedAt = .now
+                                try? context.save()
                             }
                         }
                     }
@@ -190,10 +184,6 @@ struct ProjectsMacView: View {
             ToolbarItemGroup(placement: .secondaryAction) {
                 Button { showingAddProject = true } label: {
                     Label("Add Project", systemImage: "folder.badge.plus")
-                }
-                Button { showArchived.toggle() } label: {
-                    Label(showArchived ? "Hide Archived" : "Show Archived",
-                          systemImage: showArchived ? "eye.slash" : "eye")
                 }
             }
         }
@@ -248,7 +238,6 @@ private struct ProjectMacRow: View {
             VStack(alignment: .leading, spacing: 2) {
                 HStack(spacing: 6) {
                     Text(project.name)
-                        .foregroundStyle(project.isArchived ? .secondary : .primary)
                     if let code = project.code {
                         Text(code)
                             .font(.caption)
@@ -260,19 +249,13 @@ private struct ProjectMacRow: View {
                 }
             }
             Spacer()
-            if project.isArchived {
-                Text("Archived")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            } else {
-                Button(action: onQuickToggle) {
-                    Image(systemName: isActive ? "stop.circle.fill" : "play.circle")
-                        .foregroundStyle(isActive ? .red : .secondary)
-                }
-                .buttonStyle(.plain)
-                .help(isActive ? String(localized: "Stop session") : String(localized: "Start session"))
-                .accessibilityLabel(isActive ? String(localized: "Stop session") : String(localized: "Start session"))
+            Button(action: onQuickToggle) {
+                Image(systemName: isActive ? "stop.circle.fill" : "play.circle")
+                    .foregroundStyle(isActive ? .red : .secondary)
             }
+            .buttonStyle(.plain)
+            .help(isActive ? String(localized: "Stop session") : String(localized: "Start session"))
+            .accessibilityLabel(isActive ? String(localized: "Stop session") : String(localized: "Start session"))
         }
         .padding(.vertical, 2)
     }

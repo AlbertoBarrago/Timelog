@@ -50,7 +50,7 @@ struct ClientsView: View {
                                             .font(.caption)
                                             .foregroundStyle(.secondary)
                                     }
-                                    Text("\(client.projects.filter { !$0.isArchived }.count) projects")
+                                    Text("\(client.projects.filter { $0.deletedAt == nil }.count) projects")
                                         .font(.caption)
                                         .foregroundStyle(.secondary)
                                 }

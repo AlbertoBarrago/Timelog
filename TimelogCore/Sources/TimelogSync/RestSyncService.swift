@@ -45,7 +45,6 @@ private struct ProjectDTO: Codable {
     var _id: String
     var name: String
     var code: String?
-    var isArchived: Bool?
     var userId: String?
     var clientMongoId: String?
     var labels: [String]?
@@ -121,7 +120,7 @@ public final class RestSyncService {
 
     /// macOS: legge ~/.config/timelog/sync.local
     /// iOS:   legge SyncConfig.local dal bundle (gitignored, mai pushato)
-    /// In entrambi i casi salva in Keychain e non sovrascrive se già configurato.
+    /// Sovrascrive sempre il Keychain — aggiornare il file per cambiare URL o API key.
     public func loadConfigFromFile() {
         #if os(macOS)
         let fileURL = FileManager.default.homeDirectoryForCurrentUser
@@ -190,7 +189,13 @@ public final class RestSyncService {
         guard let url = serverURL(path: "/api/pull") else { return }
         isSyncing = true; lastError = nil; defer { isSyncing = false }
 
-        let response: PullResponse = try await get(url: url)
+        let response: PullResponse
+        do {
+            response = try await get(url: url)
+        } catch {
+            lastError = error.localizedDescription
+            throw error
+        }
 
         let existingClients = (try? context.fetch(FetchDescriptor<Client>())) ?? []
         var clientMap: [String: Client] = Dictionary(uniqueKeysWithValues: existingClients.compactMap { c in c.mongoId.map { ($0, c) } })
@@ -213,12 +218,11 @@ public final class RestSyncService {
             let deletedAt = dto.deletedAt.flatMap { Self.iso8601.date(from: $0) ?? Self.iso8601NoFrac.date(from: $0) }
             if let p = projectMap[dto._id] {
                 p.name = dto.name; p.code = dto.code
-                p.isArchived = dto.isArchived ?? p.isArchived
                 p.labels = dto.labels ?? p.labels
                 p.deletedAt = deletedAt
                 if let cid = dto.clientMongoId { p.client = clientMap[cid] }
             } else if deletedAt == nil {
-                let p = TimelogCore.Project(name: dto.name, code: dto.code, isArchived: dto.isArchived ?? false, userId: userId)
+                let p = TimelogCore.Project(name: dto.name, code: dto.code, userId: userId)
                 p.mongoId = dto._id
                 p.labels = dto.labels ?? []
                 if let cid = dto.clientMongoId { p.client = clientMap[cid] }
@@ -270,7 +274,12 @@ public final class RestSyncService {
                 context.delete(local)
             }
         }
-        try context.save()
+        do {
+            try context.save()
+        } catch {
+            lastError = error.localizedDescription
+            throw error
+        }
         lastSyncDate = .now
     }
 
@@ -282,7 +291,7 @@ public final class RestSyncService {
 
         let payload = SyncPayload(
             clients: clients.map { ClientDTO(_id: $0.mongoId ?? "", name: $0.name, colorHex: $0.colorHex, isArchived: $0.isArchived, userId: $0.userId, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }) },
-            projects: projects.map { ProjectDTO(_id: $0.mongoId ?? "", name: $0.name, code: $0.code, isArchived: $0.isArchived, userId: $0.userId, clientMongoId: $0.client?.mongoId, labels: $0.labels, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }) },
+            projects: projects.map { ProjectDTO(_id: $0.mongoId ?? "", name: $0.name, code: $0.code, userId: $0.userId, clientMongoId: $0.client?.mongoId, labels: $0.labels, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }) },
             entries: entries.map { EntryDTO(_id: $0.mongoId ?? "", date: Self.iso8601.string(from: $0.date), durationMinutes: $0.durationMinutes, notes: $0.notes, label: $0.label, userId: $0.userId, clientMongoId: $0.client?.mongoId, projectMongoId: $0.project?.mongoId, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }) },
             sessions: sessions.map { SessionDTO(_id: $0.mongoId ?? "", startDate: Self.iso8601.string(from: $0.startDate), notes: $0.notes, label: $0.label, userId: $0.userId, clientMongoId: $0.client?.mongoId, projectMongoId: $0.project?.mongoId, notificationID: $0.notificationID) }
         )

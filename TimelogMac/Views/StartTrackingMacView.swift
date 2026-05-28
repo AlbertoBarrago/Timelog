@@ -10,7 +10,7 @@ struct StartTrackingMacView: View {
 
     @Query(filter: #Predicate<Client> { !$0.isArchived && $0.deletedAt == nil }, sort: \Client.name)
     private var allClients: [Client]
-    @Query(filter: #Predicate<Project> { !$0.isArchived && $0.deletedAt == nil }, sort: \Project.name)
+    @Query(filter: #Predicate<Project> { $0.deletedAt == nil }, sort: \Project.name)
     private var allProjects: [Project]
 
     @State private var selectedClient: Client?

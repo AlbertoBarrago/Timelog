@@ -35,7 +35,6 @@ private struct ProjectDocument: Codable {
     var _id: ObjectId
     var name: String
     var code: String?
-    var isArchived: Bool
     var userId: String
     var clientMongoId: String?
     var labels: [String]
@@ -43,7 +42,7 @@ private struct ProjectDocument: Codable {
 
     init(from project: TimelogCore.Project) {
         _id = project.mongoId.flatMap { ObjectId($0) } ?? ObjectId()
-        name = project.name; code = project.code; isArchived = project.isArchived
+        name = project.name; code = project.code
         userId = project.userId; clientMongoId = project.client?.mongoId
         labels = project.labels
         deletedAt = project.deletedAt
@@ -54,7 +53,6 @@ private struct ProjectDocument: Codable {
         _id           = try c.decode(ObjectId.self, forKey: ._id)
         name          = try c.decode(String.self, forKey: .name)
         code          = try c.decodeIfPresent(String.self, forKey: .code)
-        isArchived    = try c.decodeIfPresent(Bool.self, forKey: .isArchived) ?? false
         userId        = try c.decodeIfPresent(String.self, forKey: .userId) ?? ""
         clientMongoId = try c.decodeIfPresent(String.self, forKey: .clientMongoId)
         labels        = try c.decodeIfPresent([String].self, forKey: .labels) ?? []
@@ -251,11 +249,11 @@ public final class MongoSyncService {
         for doc in docs {
             let id = doc._id.hexString
             if let p = localById[id] {
-                p.name = doc.name; p.code = doc.code; p.isArchived = doc.isArchived
+                p.name = doc.name; p.code = doc.code
                 p.labels = doc.labels
                 p.deletedAt = doc.deletedAt
             } else if doc.deletedAt == nil {
-                let p = TimelogCore.Project(name: doc.name, code: doc.code, isArchived: doc.isArchived, userId: userId)
+                let p = TimelogCore.Project(name: doc.name, code: doc.code, userId: userId)
                 p.mongoId = id
                 p.labels = doc.labels
                 if let cid = doc.clientMongoId { p.client = clientMap[cid] }

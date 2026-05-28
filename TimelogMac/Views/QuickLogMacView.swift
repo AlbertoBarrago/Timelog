@@ -7,7 +7,7 @@ struct QuickLogMacView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(SettingsStore.self) private var settings
     @Query(filter: #Predicate<Client> { !$0.isArchived && $0.deletedAt == nil }, sort: \Client.name) private var allClients: [Client]
-    @Query(filter: #Predicate<Project> { !$0.isArchived && $0.deletedAt == nil }, sort: \Project.name) private var allProjects: [Project]
+    @Query(filter: #Predicate<Project> { $0.deletedAt == nil }, sort: \Project.name) private var allProjects: [Project]
 
     var entry: TimeEntry?
 

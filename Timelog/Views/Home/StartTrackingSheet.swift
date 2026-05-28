@@ -15,7 +15,7 @@ struct StartTrackingSheet: View {
     @State private var newLabelText = ""
     @State private var notes = ""
 
-    @Query(filter: #Predicate<Project> { !$0.isArchived && $0.deletedAt == nil }, sort: \Project.name)
+    @Query(filter: #Predicate<Project> { $0.deletedAt == nil }, sort: \Project.name)
     private var allProjects: [Project]
 
     private var availableProjects: [Project] {

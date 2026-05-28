@@ -23,11 +23,8 @@ struct ProjectListView: View {
     @Query(sort: \ActiveSession.startDate) private var allSessions: [ActiveSession]
     @State private var activeSheet: ProjectSheet?
 
-    private var activeProjects: [Project] {
-        allProjects.filter { $0.client?.persistentModelID == client.persistentModelID && !$0.isArchived }
-    }
-    private var archivedProjects: [Project] {
-        allProjects.filter { $0.client?.persistentModelID == client.persistentModelID && $0.isArchived }
+    private var projects: [Project] {
+        allProjects.filter { $0.client?.persistentModelID == client.persistentModelID && $0.deletedAt == nil }
     }
     private var activeSessions: [ActiveSession] {
         allSessions.filter { $0.userId == settings.userId }
@@ -35,20 +32,11 @@ struct ProjectListView: View {
 
     var body: some View {
         List {
-            if activeProjects.isEmpty && archivedProjects.isEmpty {
+            if projects.isEmpty {
                 ContentUnavailableView("No projects", systemImage: "folder",
                     description: Text("Tap + to add a project"))
-            }
-
-            if !activeProjects.isEmpty {
-                Section("Active") {
-                    ForEach(activeProjects, content: projectRow)
-                }
-            }
-            if !archivedProjects.isEmpty {
-                Section("Archived") {
-                    ForEach(archivedProjects, content: projectRow)
-                }
+            } else {
+                ForEach(projects, content: projectRow)
             }
         }
         .navigationTitle(client.name)
@@ -82,39 +70,31 @@ struct ProjectListView: View {
                     .background(.secondary.opacity(0.15), in: Capsule())
             }
             Spacer()
-            if !project.isArchived {
-                Button {
-                    if isActive {
-                        autoStop(activeSessions.filter { $0.project?.persistentModelID == project.persistentModelID })
-                    } else {
-                        autoStop(activeSessions)
-                        quickStart(project: project)
-                    }
-                } label: {
-                    Image(systemName: isActive ? "stop.circle.fill" : "play.circle")
-                        .foregroundStyle(isActive ? .red : .secondary)
-                        .imageScale(.large)
+            Button {
+                if isActive {
+                    autoStop(activeSessions.filter { $0.project?.persistentModelID == project.persistentModelID })
+                } else {
+                    autoStop(activeSessions)
+                    quickStart(project: project)
                 }
-                .buttonStyle(.plain)
-                .accessibilityLabel(isActive ? String(localized: "Stop session") : String(localized: "Start session"))
+            } label: {
+                Image(systemName: isActive ? "stop.circle.fill" : "play.circle")
+                    .foregroundStyle(isActive ? .red : .secondary)
+                    .imageScale(.large)
             }
+            .buttonStyle(.plain)
+            .accessibilityLabel(isActive ? String(localized: "Stop session") : String(localized: "Start session"))
         }
         .swipeActions(edge: .trailing) {
-            Button(role: .destructive) { project.deletedAt = .now } label: {
+            Button(role: .destructive) {
+                project.deletedAt = .now
+                try? context.save()
+            } label: {
                 Label("Delete", systemImage: "trash")
             }
             Button { activeSheet = .edit(project) } label: {
                 Label("Edit", systemImage: "pencil")
             }
-        }
-        .swipeActions(edge: .leading) {
-            Button {
-                project.isArchived.toggle()
-            } label: {
-                Label(project.isArchived ? "Unarchive" : "Archive",
-                      systemImage: project.isArchived ? "tray.and.arrow.up" : "archivebox")
-            }
-            .tint(.orange)
         }
     }
 

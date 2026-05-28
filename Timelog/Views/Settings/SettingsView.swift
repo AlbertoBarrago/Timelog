@@ -196,6 +196,13 @@ private struct RestSyncStatusRow: View {
                   systemImage: "checkmark.circle")
                 .font(.caption).foregroundStyle(.green)
         }
+        if let url = sync.readServerURL() {
+            Text(url)
+                .font(.caption2)
+                .foregroundStyle(.tertiary)
+                .lineLimit(1)
+                .truncationMode(.middle)
+        }
     }
 }
 
