@@ -20,6 +20,7 @@ struct ClientsView: View {
 
     @State private var activeSheet: ClientSheet?
     @State private var showArchived = false
+    @State private var clientToDelete: Client?
 
     private var visibleClients: [Client] {
         allClients.filter { $0.userId == settings.userId && (showArchived || !$0.isArchived) }
@@ -56,7 +57,7 @@ struct ClientsView: View {
                                 }
                             }
                             .swipeActions(edge: .trailing) {
-                                Button(role: .destructive) { client.deletedAt = .now } label: {
+                                Button(role: .destructive) { clientToDelete = client } label: {
                                     Label("Delete", systemImage: "trash")
                                 }
                                 Button { activeSheet = .edit(client) } label: {
@@ -75,6 +76,26 @@ struct ClientsView: View {
                         }
                     }
                 }
+            }
+            .confirmationDialog(
+                clientToDelete.map { "Delete \"\($0.name)\"?" } ?? "",
+                isPresented: Binding(get: { clientToDelete != nil }, set: { if !$0 { clientToDelete = nil } }),
+                titleVisibility: .visible
+            ) {
+                if let client = clientToDelete {
+                    let projectCount = client.projects.filter { $0.deletedAt == nil }.count
+                    let minutes = client.projects.flatMap { $0.entries }.reduce(0) { $0 + $1.durationMinutes }
+                    let detail = [
+                        projectCount > 0 ? "\(projectCount) project\(projectCount == 1 ? "" : "s")" : nil,
+                        minutes > 0 ? "\(minutes.formattedDuration) of tracked time" : nil
+                    ].compactMap { $0 }.joined(separator: " and ")
+                    Button("Delete client\(detail.isEmpty ? "" : " and \(detail)")", role: .destructive) {
+                        client.deletedAt = .now
+                        try? context.save()
+                        clientToDelete = nil
+                    }
+                }
+                Button("Cancel", role: .cancel) { clientToDelete = nil }
             }
             .navigationTitle("Clients")
             .toolbar {

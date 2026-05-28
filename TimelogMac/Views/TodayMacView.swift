@@ -88,17 +88,17 @@ struct TodayMacView: View {
                 Button { showingHistory = true } label: {
                     Label("History", systemImage: "calendar")
                 }
-                .help("Open history")
+                .help(String(localized: "Open history"))
 
                 Button { showingStartTracking = true } label: {
                     Label("Track", systemImage: "play.circle")
                 }
-                .help("Start a new tracking session")
+                .help(String(localized: "Start a new tracking session"))
 
                 Button { showingQuickLog = true } label: {
                     Label("Log", systemImage: "plus")
                 }
-                .help("Log time manually")
+                .help(String(localized: "Log time manually"))
             }
         }
         .sheet(isPresented: $showingQuickLog)      { QuickLogMacView() }
@@ -151,7 +151,7 @@ struct ActiveSessionMacRow: View {
                         .imageScale(.large)
                 }
                 .buttonStyle(.plain)
-                .help("Stop and log")
+                .help(String(localized: "Stop and log"))
                 .accessibilityLabel(String(localized: "Stop and log session"))
             } else {
                 Image(systemName: "stop.circle.fill")

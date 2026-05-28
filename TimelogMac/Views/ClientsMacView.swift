@@ -11,6 +11,7 @@ struct ClientsMacView: View {
     @State private var selectedClientID: PersistentIdentifier?
     @State private var showingAddClient  = false
     @State private var clientToEdit: Client?
+    @State private var clientToDelete: Client?
     @State private var showArchived      = false
 
     private var visibleClients: [Client] {
@@ -36,10 +37,7 @@ struct ClientsMacView: View {
                             }
                             Divider()
                             Button("Delete", role: .destructive) {
-                                if selectedClientID == client.persistentModelID {
-                                    selectedClientID = nil
-                                }
-                                client.deletedAt = .now
+                                clientToDelete = client
                             }
                         }
                 }
@@ -62,17 +60,38 @@ struct ClientsMacView: View {
                 Button { showingAddClient = true } label: {
                     Label("Add Client", systemImage: "plus")
                 }
-                .help("Add a new client")
+                .help(String(localized: "Add a new client"))
 
                 Button { showArchived.toggle() } label: {
                     Label(showArchived ? "Hide Archived" : "Show Archived",
                           systemImage: showArchived ? "archivebox.fill" : "archivebox")
                 }
-                .help(showArchived ? "Hide archived clients" : "Show archived clients")
+                .help(showArchived ? String(localized: "Hide archived clients") : String(localized: "Show archived clients"))
             }
         }
         .sheet(isPresented: $showingAddClient)  { ClientMacFormView() }
         .sheet(item: $clientToEdit)             { ClientMacFormView(client: $0) }
+        .confirmationDialog(
+            clientToDelete.map { "Delete \"\($0.name)\"?" } ?? "",
+            isPresented: Binding(get: { clientToDelete != nil }, set: { if !$0 { clientToDelete = nil } }),
+            titleVisibility: .visible
+        ) {
+            if let client = clientToDelete {
+                let projectCount = client.projects.filter { $0.deletedAt == nil }.count
+                let minutes = client.projects.flatMap { $0.entries }.reduce(0) { $0 + $1.durationMinutes }
+                let detail = [
+                    projectCount > 0 ? "\(projectCount) project\(projectCount == 1 ? "" : "s")" : nil,
+                    minutes > 0 ? "\(minutes.formattedDuration) of tracked time" : nil
+                ].compactMap { $0 }.joined(separator: " and ")
+                Button("Delete client\(detail.isEmpty ? "" : " and \(detail)")", role: .destructive) {
+                    if selectedClientID == client.persistentModelID { selectedClientID = nil }
+                    client.deletedAt = .now
+                    try? context.save()
+                    clientToDelete = nil
+                }
+            }
+            Button("Cancel", role: .cancel) { clientToDelete = nil }
+        }
         .syncGated(while: $showingAddClient)
         .syncGated(whilePresent: $clientToEdit)
         .onReceive(NotificationCenter.default.publisher(for: MongoSyncService.willWipeDataNotification)) { _ in
@@ -107,6 +126,7 @@ struct ProjectsMacView: View {
 
     @State private var showingAddProject = false
     @State private var projectToEdit: Project?
+    @State private var projectToDelete: Project?
     @State private var selectedProjects  = Set<Project.ID>()
 
     @Query(sort: \Project.name) private var allProjects: [Project]
@@ -171,8 +191,7 @@ struct ProjectsMacView: View {
                             Button("Edit") { projectToEdit = proj }
                             Divider()
                             Button("Delete", role: .destructive) {
-                                proj.deletedAt = .now
-                                try? context.save()
+                                projectToDelete = proj
                             }
                         }
                     }
@@ -189,6 +208,21 @@ struct ProjectsMacView: View {
         }
         .sheet(isPresented: $showingAddProject) { ProjectMacFormView(client: client) }
         .sheet(item: $projectToEdit)            { ProjectMacFormView(client: client, project: $0) }
+        .confirmationDialog(
+            projectToDelete.map { "Delete \"\($0.name)\"?" } ?? "",
+            isPresented: Binding(get: { projectToDelete != nil }, set: { if !$0 { projectToDelete = nil } }),
+            titleVisibility: .visible
+        ) {
+            if let project = projectToDelete {
+                let minutes = project.entries.reduce(0) { $0 + $1.durationMinutes }
+                Button("Delete project\(minutes > 0 ? " and \(minutes.formattedDuration) of tracked time" : "")", role: .destructive) {
+                    project.deletedAt = .now
+                    try? context.save()
+                    projectToDelete = nil
+                }
+            }
+            Button("Cancel", role: .cancel) { projectToDelete = nil }
+        }
         .syncGated(while: $showingAddProject)
         .syncGated(whilePresent: $projectToEdit)
         .onReceive(NotificationCenter.default.publisher(for: MongoSyncService.willWipeDataNotification)) { _ in

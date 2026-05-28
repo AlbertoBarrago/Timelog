@@ -102,7 +102,7 @@ struct MenuBarView: View {
                     }
                     .buttonStyle(.bordered)
                     .controlSize(.small)
-                    .help("Show/hide Timelog window")
+                    .help(String(localized: "Show/hide Timelog window"))
                     .accessibilityLabel(String(localized: "Toggle Timelog window"))
                 }
                 .padding(.horizontal, 12)
@@ -229,7 +229,7 @@ private struct MenuSessionRow: View {
                 Image(systemName: "stop.circle.fill").foregroundStyle(.red)
             }
             .buttonStyle(.plain)
-            .help("Stop and log")
+            .help(String(localized: "Stop and log"))
             .accessibilityLabel(String(localized: "Stop and log session"))
         }
         .padding(.horizontal, 12)
