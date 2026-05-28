@@ -22,6 +22,7 @@ struct ProjectListView: View {
     @Query(sort: \Project.name) private var allProjects: [Project]
     @Query(sort: \ActiveSession.startDate) private var allSessions: [ActiveSession]
     @State private var activeSheet: ProjectSheet?
+    @State private var projectToDelete: Project?
 
     private var projects: [Project] {
         allProjects.filter { $0.client?.persistentModelID == client.persistentModelID && $0.deletedAt == nil }
@@ -40,6 +41,21 @@ struct ProjectListView: View {
             }
         }
         .navigationTitle(client.name)
+        .confirmationDialog(
+            projectToDelete.map { "Delete \"\($0.name)\"?" } ?? "",
+            isPresented: Binding(get: { projectToDelete != nil }, set: { if !$0 { projectToDelete = nil } }),
+            titleVisibility: .visible
+        ) {
+            if let project = projectToDelete {
+                let minutes = project.entries.reduce(0) { $0 + $1.durationMinutes }
+                Button("Delete project\(minutes > 0 ? " and \(minutes.formattedDuration) of tracked time" : "")", role: .destructive) {
+                    project.deletedAt = .now
+                    try? context.save()
+                    projectToDelete = nil
+                }
+            }
+            Button("Cancel", role: .cancel) { projectToDelete = nil }
+        }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button { activeSheet = .add } label: { Image(systemName: "plus") }
@@ -87,8 +103,7 @@ struct ProjectListView: View {
         }
         .swipeActions(edge: .trailing) {
             Button(role: .destructive) {
-                project.deletedAt = .now
-                try? context.save()
+                projectToDelete = project
             } label: {
                 Label("Delete", systemImage: "trash")
             }

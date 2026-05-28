@@ -1,5 +1,5 @@
 {
   "functions": {
-    "api/**/*.ts": { "maxDuration": 10 }
+    "api/*.ts": { "maxDuration": 10 }
   }
 }

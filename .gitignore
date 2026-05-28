@@ -48,3 +48,4 @@ CLAUDE.local.md
 .claude
 server/node_modules
 Timelog/SyncConfig.local
+.vercel
