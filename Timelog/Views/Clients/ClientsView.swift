@@ -68,6 +68,7 @@ struct ClientsView: View {
                             .swipeActions(edge: .leading) {
                                 Button {
                                     client.isArchived.toggle()
+                                    try? context.save()
                                 } label: {
                                     Label(client.isArchived ? "Unarchive" : "Archive",
                                           systemImage: client.isArchived ? "tray.and.arrow.up" : "archivebox")

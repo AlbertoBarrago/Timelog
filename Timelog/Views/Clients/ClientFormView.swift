@@ -102,5 +102,6 @@ struct ClientFormView: View {
         } else {
             context.insert(Client(name: name, colorHex: colorHex, userId: settings.userId))
         }
+        try? context.save()
     }
 }

@@ -154,6 +154,7 @@ struct QuickLogSheet: View {
                 userId: settings.userId
             )
             context.insert(e)
+            try? context.save()
         }
         dismiss()
     }

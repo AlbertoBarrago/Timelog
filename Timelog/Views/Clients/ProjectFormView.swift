@@ -79,5 +79,6 @@ struct ProjectFormView: View {
             p.labels = labels
             context.insert(p)
         }
+        try? context.save()
     }
 }
