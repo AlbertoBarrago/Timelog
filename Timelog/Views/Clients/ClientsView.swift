@@ -18,12 +18,18 @@ struct ClientsView: View {
     @Environment(SettingsStore.self) private var settings
     @Query(filter: #Predicate<Client> { $0.deletedAt == nil }, sort: \Client.name) private var allClients: [Client]
 
+    @Query(sort: \Project.name) private var allProjects: [Project]
+
     @State private var activeSheet: ClientSheet?
     @State private var showArchived = false
     @State private var clientToDelete: Client?
 
     private var visibleClients: [Client] {
         allClients.filter { $0.userId == settings.userId && (showArchived || !$0.isArchived) }
+    }
+
+    private func projectCount(for client: Client) -> Int {
+        allProjects.filter { $0.client?.persistentModelID == client.persistentModelID && $0.deletedAt == nil }.count
     }
 
     var body: some View {
@@ -52,7 +58,7 @@ struct ClientsView: View {
                                             .font(.caption)
                                             .foregroundStyle(.secondary)
                                     }
-                                    Text("\(client.projects.filter { $0.deletedAt == nil }.count) projects")
+                                    Text("\(projectCount(for: client)) projects")
                                         .font(.caption)
                                         .foregroundStyle(.secondary)
                                 }
