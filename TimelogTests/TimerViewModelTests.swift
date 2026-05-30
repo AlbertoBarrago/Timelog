@@ -127,4 +127,28 @@ struct TimerViewModelTests {
         #expect(vm.completedPomodoros == 2)
         #expect(vm.isRunning == false)
     }
+
+    // MARK: restoreState — a running timer resumes after relaunch (does not freeze)
+
+    @Test func runningStopwatchResumesAfterRelaunch() {
+        let ud = UserDefaults.standard
+        let keys = ["timerVM.isRunning", "timerVM.elapsed", "timerVM.pomodoroEnabled",
+                    "timerVM.phase", "timerVM.completedPomodoros", "timerVM.savedAt", "timerVM.savedDate"]
+        defer { keys.forEach { ud.removeObject(forKey: $0) } }
+
+        // Simulate a stopwatch that was running 10s ago with 5s already elapsed.
+        ud.set(true, forKey: "timerVM.isRunning")
+        ud.set(5.0, forKey: "timerVM.elapsed")
+        ud.set(false, forKey: "timerVM.pomodoroEnabled")
+        ud.set(0, forKey: "timerVM.phase")
+        ud.set(0, forKey: "timerVM.completedPomodoros")
+        ud.set(Date().timeIntervalSince1970 - 10, forKey: "timerVM.savedAt")
+        ud.set("ignored", forKey: "timerVM.savedDate")
+
+        let vm = TimerViewModel()
+        defer { vm.pause() } // invalidate the live timer started by restore
+
+        #expect(vm.isRunning == true)            // previously froze as paused
+        #expect(vm.elapsed >= 15)                // 5s saved + ~10s wall-clock
+    }
 }

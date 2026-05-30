@@ -312,8 +312,10 @@ public final class MongoSyncService {
             let doc = ActiveSessionDocument(from: s)
             try await col.upsertEncoded(doc, where: "_id" == doc._id)
         }
-        // Delete remote sessions no longer present locally (e.g. stopped on this device)
-        let remoteDocs = try await col.find().decode(ActiveSessionDocument.self).drain()
+        // Delete remote sessions no longer present locally (e.g. stopped on this device).
+        // Scoped to this user's documents so a shared Atlas cluster never wipes another
+        // user's active sessions.
+        let remoteDocs = try await col.find("userId" == userId).decode(ActiveSessionDocument.self).drain()
         for remote in remoteDocs where !localIds.contains(remote._id.hexString) {
             try await col.deleteAll(where: "_id" == remote._id)
         }

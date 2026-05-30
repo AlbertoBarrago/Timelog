@@ -67,22 +67,22 @@ sequenceDiagram
     Note over App: isPulling = true
 
     App->>RSS: pullAll(into: modelContext) [async]
-    RSS->>VCL: GET /api/pull  X-API-Key: ...
-    VCL-->>RSS: { clients, projects, entries }
+    RSS->>VCL: GET /api/pull?userId=…  X-API-Key: ...
+    VCL-->>RSS: { clients, projects, entries, sessions }
 
-    RSS->>SD: post willWipeDataNotification
-    RSS->>SD: delete all TimeEntry / Project / Client
-    RSS->>SD: insert clients → save
-    RSS->>SD: insert projects (link client) → save
-    RSS->>SD: insert entries (link client+project) → save
+    RSS->>SD: upsert clients by mongoId → save
+    RSS->>SD: upsert projects (link client) by mongoId
+    RSS->>SD: upsert entries (link client+project) by mongoId
+    RSS->>SD: replace sessions scoped to userId → save
     RSS->>RSS: lastSyncDate = .now
     Note over App: isPulling = false\nSyncFlashOverlay: green flash + haptic
 
-    Note over App: onChange(clients/projects/entries)
+    Note over App: onChange(clients/projects/entries/sessions)
     App->>RSS: triggerSync() [if !isPulling]
     RSS->>RSS: debounce 2s
     RSS->>SD: fetch all data via dataProvider
-    RSS->>VCL: POST /api/sync { clients, projects, entries }
+    RSS->>VCL: POST /api/sync { userId, clients, projects, entries, sessions }
+    Note over VCL: upsert all + delete this user's\nsessions absent from payload
     RSS->>RSS: lastSyncDate = .now
 ```
 

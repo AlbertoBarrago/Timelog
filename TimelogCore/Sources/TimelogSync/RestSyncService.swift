@@ -64,6 +64,7 @@ private struct EntryDTO: Codable {
 }
 
 private struct SyncPayload: Encodable {
+    var userId:   String
     var clients:  [ClientDTO]
     var projects: [ProjectDTO]
     var entries:  [EntryDTO]
@@ -186,7 +187,7 @@ public final class RestSyncService {
     // MARK: - Pull (server → SwiftData)
 
     public func pullAll(into context: ModelContext) async throws {
-        guard let url = serverURL(path: "/api/pull") else { return }
+        guard let url = pullURL() else { return }
         isSyncing = true; lastError = nil; defer { isSyncing = false }
 
         let response: PullResponse
@@ -248,11 +249,12 @@ public final class RestSyncService {
                 e.mongoId = dto._id; context.insert(e)
             }
         }
-        // Sessions: replace strategy (remote is authoritative)
+        // Sessions: replace strategy (remote is authoritative), scoped to this user.
+        let mySessions = response.sessions.filter { $0.userId == nil || $0.userId == userId }
         let allLocalSessions = (try? context.fetch(FetchDescriptor<ActiveSession>())) ?? []
         let localSessionById = Dictionary(uniqueKeysWithValues: allLocalSessions.compactMap { s in s.mongoId.map { ($0, s) } })
-        let remoteSessionIds = Set(response.sessions.map { $0._id })
-        for dto in response.sessions {
+        let remoteSessionIds = Set(mySessions.map { $0._id })
+        for dto in mySessions {
             let startDate = dto.startDate.flatMap { Self.iso8601.date(from: $0) ?? Self.iso8601NoFrac.date(from: $0) } ?? Date()
             if let s = localSessionById[dto._id] {
                 s.startDate = startDate; s.notes = dto.notes; s.label = dto.label
@@ -260,7 +262,7 @@ public final class RestSyncService {
                 let s = ActiveSession(
                     client: dto.clientMongoId.flatMap { clientMap[$0] },
                     project: dto.projectMongoId.flatMap { projectMap[$0] },
-                    notes: dto.notes, label: dto.label
+                    notes: dto.notes, label: dto.label, userId: userId
                 )
                 s.startDate = startDate
                 s.mongoId = dto._id
@@ -268,7 +270,7 @@ public final class RestSyncService {
                 context.insert(s)
             }
         }
-        for local in allLocalSessions {
+        for local in allLocalSessions where local.userId == userId {
             if let mid = local.mongoId, !remoteSessionIds.contains(mid) {
                 NotificationManager.shared.cancelSession(id: local.notificationID)
                 context.delete(local)
@@ -290,6 +292,7 @@ public final class RestSyncService {
         isSyncing = true; lastError = nil; defer { isSyncing = false }
 
         let payload = SyncPayload(
+            userId: userId,
             clients: clients.map { ClientDTO(_id: $0.mongoId ?? "", name: $0.name, colorHex: $0.colorHex, isArchived: $0.isArchived, userId: $0.userId, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }) },
             projects: projects.map { ProjectDTO(_id: $0.mongoId ?? "", name: $0.name, code: $0.code, userId: $0.userId, clientMongoId: $0.client?.mongoId, labels: $0.labels, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }) },
             entries: entries.map { EntryDTO(_id: $0.mongoId ?? "", date: Self.iso8601.string(from: $0.date), durationMinutes: $0.durationMinutes, notes: $0.notes, label: $0.label, userId: $0.userId, clientMongoId: $0.client?.mongoId, projectMongoId: $0.project?.mongoId, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }) },
@@ -306,13 +309,22 @@ public final class RestSyncService {
         return URL(string: base.trimmingCharacters(in: .init(charactersIn: "/")) + path)
     }
 
+    /// `/api/pull` with the current `userId` as a query item so the server can scope
+    /// the response per user (defense-in-depth — the client also filters on receipt).
+    private func pullURL() -> URL? {
+        guard let base = serverURL(path: "/api/pull"),
+              var comps = URLComponents(url: base, resolvingAgainstBaseURL: false) else { return serverURL(path: "/api/pull") }
+        if !userId.isEmpty {
+            comps.queryItems = (comps.queryItems ?? []) + [URLQueryItem(name: "userId", value: userId)]
+        }
+        return comps.url ?? base
+    }
+
     private func get<T: Decodable>(url: URL) async throws -> T {
         var req = URLRequest(url: url)
         req.setValue(readApiKey(), forHTTPHeaderField: "X-API-Key")
         let (data, response) = try await URLSession.shared.data(for: req)
         let status = (response as? HTTPURLResponse)?.statusCode ?? -1
-        print("[RestSync] GET \(url.path) → \(status)")
-        print("[RestSync] body: \(String(data: data, encoding: .utf8) ?? "<non-utf8>")")
         guard status == 200 else {
             throw RestSyncError.httpError(status, String(data: data, encoding: .utf8) ?? "")
         }
@@ -325,6 +337,10 @@ public final class RestSyncService {
         req.setValue("application/json", forHTTPHeaderField: "Content-Type")
         req.setValue(readApiKey(), forHTTPHeaderField: "X-API-Key")
         req.httpBody = try JSONEncoder().encode(body)
-        _ = try await URLSession.shared.data(for: req)
+        let (data, response) = try await URLSession.shared.data(for: req)
+        let status = (response as? HTTPURLResponse)?.statusCode ?? -1
+        guard (200..<300).contains(status) else {
+            throw RestSyncError.httpError(status, String(data: data, encoding: .utf8) ?? "")
+        }
     }
 }

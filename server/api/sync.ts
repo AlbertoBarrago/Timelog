@@ -46,6 +46,7 @@ interface SessionDTO {
 }
 
 interface SyncPayload {
+  userId?:  string
   clients:  ClientDTO[]
   projects: ProjectDTO[]
   entries:  EntryDTO[]
@@ -57,7 +58,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!checkApiKey(req)) return res.status(401).json({ error: 'Unauthorized' })
   if (req.method !== 'POST') return res.status(405).end()
 
-  const { clients = [], projects = [], entries = [], sessions = [] } = req.body as SyncPayload
+  const { userId, clients = [], projects = [], entries = [], sessions = [] } = req.body as SyncPayload
   const db = await getDb()
 
   const toOid = (id: string) => ObjectId.isValid(id) ? new ObjectId(id) : new ObjectId()
@@ -92,6 +93,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       )
     ),
   ])
+
+  // Reconcile sessions: a session stopped on the client is removed from the payload.
+  // Delete this user's remote sessions that are no longer present so they don't
+  // reappear as "ghost" sessions on the next pull. Scoped to userId to never touch
+  // another user's data on a shared cluster.
+  if (typeof userId === 'string' && userId.length > 0) {
+    const keepIds = sessions.map(s => toOid(s._id))
+    await db.collection('active_sessions').deleteMany({
+      userId,
+      _id: { $nin: keepIds },
+    })
+  }
 
   res.json({ ok: true })
 }

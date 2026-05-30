@@ -13,17 +13,18 @@ erDiagram
         Date    deletedAt   "optional — soft delete"
     }
     PROJECT {
-        String  name
-        String  code        "optional"
-        Bool    isArchived
-        String  mongoId
-        String  userId      "owner identifier — multi-user isolation"
-        Date    deletedAt   "optional — soft delete"
+        String     name
+        String     code        "optional"
+        String[]   labels
+        String     mongoId
+        String     userId      "owner identifier — multi-user isolation"
+        Date       deletedAt   "optional — soft delete"
     }
     TIME_ENTRY {
         Date    date
         Int     durationMinutes
         String  notes       "optional"
+        String  label       "optional"
         String  mongoId
         String  userId      "owner identifier — multi-user isolation"
         Date    deletedAt   "optional — soft delete"
@@ -31,6 +32,7 @@ erDiagram
     ACTIVE_SESSION {
         Date    startDate
         String  notes       "optional"
+        String  label       "optional"
         String  notificationID
         String  mongoId
         String  userId      "owner identifier — multi-user isolation"
@@ -57,6 +59,8 @@ Represents a client. Holds the list of projects (cascade delete) and is referenc
 ### `Project`
 Project belonging to a client. The `code` field is optional (job number, e.g. "PRJ-001").
 
+- `labels` — free-form string tags (`[String]`, defaults to `[]`); synced as an array
+- `Project` has **no** `isArchived` flag — only `Client` is archivable
 - Relationship with `TimeEntry`: deleteRule `.nullify` — deleting a project does not delete entries, just unlinks them
 - `mongoId` — same as above
 - `userId` — same as above; identifies the owner and is used for multi-user isolation on a shared database
@@ -66,6 +70,7 @@ Project belonging to a client. The `code` field is optional (job number, e.g. "P
 A logged time record. The core data structure of the app.
 
 - `durationMinutes` — duration in whole minutes; formatted via `Int.formattedDuration` ("1h 30m")
+- `notes` and `label` — optional free-form text fields
 - `client` and `project` are optional — an entry can be unassigned
 - `userId` — same as above; identifies the owner and is used for multi-user isolation on a shared database
 - `deletedAt` — same as above (soft delete)
@@ -75,6 +80,7 @@ An in-progress tracking session. At most one per active client/project combinati
 
 - `client` and `project` optional — a session can be unassigned
 - `notes` — optional notes transferred to the `TimeEntry` on stop
+- `label` — optional tag transferred to the `TimeEntry` on stop
 - `mongoId` — same as above; the session is multi-device syncable
 - `userId` — same as above; identifies the owner and is used for multi-user isolation on a shared database
 - `elapsedDisplay` — `"HH:MM:SS"` string computed at runtime from `startDate`
@@ -95,8 +101,8 @@ flowchart LR
         SD_iOS -->|"onChange + debounce 2s"| RSS["RestSyncService"]
         RSS -->|"POST /api/sync"| VCL["Vercel Functions"]
         VCL -->|"upsert"| MDB[("MongoDB Atlas")]
-        MDB -->|"GET /api/pull\n(on launch)"| RSS
-        RSS -->|"delete-all + re-insert"| SD_iOS
+        MDB -->|"GET /api/pull?userId=…\n(on launch)"| RSS
+        RSS -->|"upsert by mongoId"| SD_iOS
     end
 
     subgraph macOS
@@ -130,17 +136,19 @@ TimelogWidgetSnapshot
 Every SwiftData entity has a `mongoId: String?` field used as the sync key by both implementations.
 
 ### iOS pull (RestSyncService)
-The pull **deletes all** local data and re-inserts from scratch what the server returns. It is not an incremental upsert — it is a full replacement. The `willWipeDataNotification` notification is posted before deletion to let views silence animations during the wipe.
+The pull is an **incremental upsert keyed by `mongoId`** (not a delete-all + re-insert). Records are matched by `mongoId`: existing ones are updated in place, new ones are inserted. Soft-deleted records (`deletedAt != nil`) are applied to existing rows but never inserted fresh. Server responses are filtered client-side to the current `userId` (legacy records with no `userId` are kept).
 
 | Step | Action |
 |------|--------|
-| 1. Wipe | Delete all TimeEntry, then Project, then Client from SwiftData |
-| 2. Insert clients | Create each `Client` with `mongoId = dto._id`, save context |
-| 3. Insert projects | Create each `Project`, link `Client` via `clientMongoId`, save |
-| 4. Insert entries | Create each `TimeEntry`, link Client and Project via mongoId, save |
+| 1. Clients | Build `mongoId → Client` map; update matches, insert new (skip if `deletedAt`) |
+| 2. Projects | Same, linking `Client` via `clientMongoId` |
+| 3. Entries  | Same, linking Client + Project via mongoId |
+| 4. Sessions | Replace strategy scoped to `userId`: upsert this user's remote sessions, delete local sessions of this user no longer present remotely |
+
+> Sessions are the only entity hard-deleted on pull; Client/Project/TimeEntry use soft delete (`deletedAt`) and are never removed by the pull.
 
 ### macOS pull (MongoSyncService)
-Uses incremental upsert: finds each document by `mongoId` in SwiftData and updates if found, creates if absent.
+Uses incremental upsert: finds each document by `mongoId` in SwiftData and updates if found, creates if absent. Documents absent from the remote (per-`userId` query) are deleted locally; sessions removed remotely also cancel their local notification.
 
 ### Push (both platforms)
 Each entity is serialised with its `mongoId` and sent to the server (Vercel for iOS, MongoKitten for macOS) via upsert on `_id`.

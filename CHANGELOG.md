@@ -7,6 +7,20 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+- **Ghost session after stop (iOS sync)** — a session stopped on iOS could reappear on the next pull because the REST server never removed it. The push payload now carries the user's `userId` and `/api/sync` reconciles `active_sessions`, deleting that user's sessions absent from the payload.
+- **Multi-user session data loss (macOS sync)** — `MongoSyncService` reconciled remote sessions with an unscoped `find()`, which could delete other users' active sessions on a shared cluster. The query is now scoped to the current `userId`.
+- **Cross-user session leak (iOS pull)** — pulled sessions are now filtered by `userId` and stamped with the owner, matching how clients/projects/entries are handled.
+- **Silent push failures (iOS sync)** — `RestSyncService` now validates the HTTP status of `POST /api/sync` and surfaces an error instead of reporting a successful sync.
+- **Running timer froze after relaunch** — a timer that was running on termination now resumes its ticking loop on launch instead of displaying a frozen elapsed time.
+
+### Security / Privacy
+- **Removed verbose sync logging (iOS)** — `RestSyncService` no longer prints full pull responses (client/project/entry data) to the console.
+- **Per-user pull scoping (server)** — `GET /api/pull` now filters by `userId` (legacy records with no `userId` remain visible), so a client no longer receives other users' data over the wire.
+
+### Docs
+- Updated `docs/02-data-model.md`, `03-flows.md`, `04-mongodb-sync.md` to match the current sync implementation: incremental upsert-by-`mongoId` on iOS pull (no more delete-all + re-insert), session sync, the `label`/`labels` fields, the `active_sessions` collection name, and removal of the non-existent `Project.isArchived`.
+
 ---
 
 ## [1.2.6] — 2026-05-29

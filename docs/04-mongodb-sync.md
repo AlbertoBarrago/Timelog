@@ -33,8 +33,8 @@ flowchart TD
     KCH --> RSS
 
     MDB -->|"pullAll(into:)\non app launch"| Pull
-    Pull -->|"{ clients, projects, entries }"| RSS
-    RSS -->|"delete-all + re-insert"| SD
+    Pull -->|"{ clients, projects, entries, sessions }"| RSS
+    RSS -->|"upsert by mongoId"| SD
 
     SD -->|"onChange + debounce 2s"| RSS
     RSS -->|"POST payload"| Sync
@@ -47,15 +47,17 @@ flowchart TD
 2. `setDataProvider` — registers the closure that fetches all data from `container.mainContext`
 3. `isPulling = true` — blocks push during pull to prevent loops
 4. `pullAll(into:)`:
-   - GET `/api/pull` with `X-API-Key` header
-   - Post `willWipeDataNotification` → waits 150ms (lets views silence animations)
-   - Delete TimeEntry, then Project, then Client from SwiftData
-   - Re-insert from scratch in order: clients → projects → entries, linking relationships in memory
+   - GET `/api/pull?userId=…` with `X-API-Key` header (the server scopes the response per user; the client also filters on receipt)
+   - Upsert by `mongoId` in order: clients → projects → entries → sessions, linking relationships in memory
+   - Existing records are updated in place; new records are inserted; soft-deleted records (`deletedAt`) are applied but never inserted fresh
+   - Sessions use a replace strategy scoped to `userId`
 5. `isPulling = false` — `SyncFlashOverlay` shows green flash + haptic
 
 ### Auto-push
 
-`onChange` on clients/projects/entries → `triggerSync()` (only if `!isPulling`) → debounce 2s → POST `/api/sync`
+`onChange` on clients/projects/entries/sessions → `triggerSync()` (only if `!isPulling`) → debounce 2s → POST `/api/sync`
+
+The push payload carries a top-level `userId`. The server upserts every collection and then **reconciles sessions**: any `active_sessions` document for that `userId` not present in the payload is deleted, so a session stopped on one device does not reappear as a "ghost" on the next pull.
 
 > **userId filtering (RestSyncService)**: DTOs sent to and received from Vercel Functions include `userId`. On pull, `RestSyncService` filters the returned records client-side, keeping only those where `userId == settings.userId` (or where `userId` is absent/empty for legacy records). On push, each serialised document includes the current `settings.userId`.
 
@@ -160,20 +162,21 @@ Documents are identical regardless of which platform wrote them (iOS via Vercel,
 
 ### `projects`
 ```json
-{ "_id": ObjectId("..."), "name": "Website", "code": "PRJ-01", "isArchived": false, "clientMongoId": "64abc...", "userId": "alice", "deletedAt": null }
+{ "_id": ObjectId("..."), "name": "Website", "code": "PRJ-01", "labels": ["frontend"], "clientMongoId": "64abc...", "userId": "alice", "deletedAt": null }
 ```
+> `projects` have no `isArchived` flag — only `clients` are archivable.
 
 ### `time_entries`
 ```json
-{ "_id": ObjectId("..."), "date": "2025-05-15T09:00:00.000Z", "durationMinutes": 90, "notes": "...", "clientMongoId": "...", "projectMongoId": "...", "userId": "alice", "deletedAt": null }
+{ "_id": ObjectId("..."), "date": "2025-05-15T09:00:00.000Z", "durationMinutes": 90, "notes": "...", "label": "...", "clientMongoId": "...", "projectMongoId": "...", "userId": "alice", "deletedAt": null }
 ```
 
-### `sessions` (ActiveSession)
+### `active_sessions` (ActiveSession)
 ```json
-{ "_id": ObjectId("..."), "startDate": "2025-05-15T09:00:00.000Z", "notes": "...", "clientMongoId": "...", "projectMongoId": "...", "userId": "alice" }
+{ "_id": ObjectId("..."), "startDate": "2025-05-15T09:00:00.000Z", "notes": "...", "label": "...", "clientMongoId": "...", "projectMongoId": "...", "notificationID": "...", "userId": "alice" }
 ```
 
-> **`deletedAt` note**: the field is `null` for active records, set to the deletion date for logically deleted records. During sync, records with `deletedAt != null` are removed from local SwiftData after pull.
+> **`deletedAt` note**: applies to `clients`, `projects` and `time_entries` only. It is `null` for active records and set to the deletion date for logically deleted ones; the value is propagated on pull (rows are kept locally and hidden by `deletedAt`-filtered `@Query`s, not hard-deleted). `active_sessions` have no `deletedAt`: a stopped session is hard-deleted and reconciled server-side per `userId`.
 
 > **`userId` note**: every document written by either platform includes a `userId` field containing the owner's nickname (from `SettingsStore.userId`). This enables multiple users to share a single MongoDB database without their data colliding. Legacy documents with a missing or empty `userId` are treated as nil-tolerant by `RestSyncService` (iOS) and are still visible to the user; `MongoSyncService` (macOS) filters at query time so they are simply not returned. A compound index on `{ userId: 1, _id: 1 }` is recommended for each collection to keep per-user queries efficient.
 
@@ -190,4 +193,4 @@ Every SwiftData entity has a `mongoId: String?` field used as the sync key by bo
 | Push — `mongoId` present | Use as `_id` for upsert | Use as `ObjectId` for upsert |
 | Push — `mongoId` absent | Leave empty (`""`) — server generates a new `_id` | Generate a new valid `ObjectId` |
 
-> **iOS note**: pull is a full replacement (delete-all + re-insert), not an incremental upsert. This guarantees consistency without having to handle merge conflicts.
+> **iOS note**: pull is an incremental upsert keyed by `mongoId` (existing rows updated in place, new rows inserted). Sessions use a replace strategy scoped to `userId`; Client/Project/TimeEntry rely on soft delete (`deletedAt`) rather than removal.

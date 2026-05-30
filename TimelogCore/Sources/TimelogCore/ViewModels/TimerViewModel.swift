@@ -82,13 +82,17 @@ public final class TimerViewModel {
 
     public func toggle() { isRunning ? pause() : start() }
 
-    public func start() {
-        isRunning = true
+    private func startTimerLoop() {
         let t = Timer(timeInterval: 1, repeats: true) { [weak self] _ in
             MainActor.assumeIsolated { self?.tick() }
         }
         RunLoop.main.add(t, forMode: .common)
         timer = t
+    }
+
+    public func start() {
+        isRunning = true
+        startTimerLoop()
         if pomodoroEnabled {
             NotificationManager.shared.schedulePomodoroEnd(phase: phase.label, in: phaseTotal - elapsed, completedCount: completedPomodoros)
         }
@@ -201,6 +205,19 @@ public final class TimerViewModel {
             elapsed = savedElapsed + max(0, Date().timeIntervalSince1970 - savedAt)
         } else {
             elapsed = savedElapsed
+        }
+        guard wasRunning else { return }
+        // The timer was running when the app was last suspended/terminated. Resume the
+        // ticking loop so the display keeps advancing instead of freezing at restore time.
+        if pomodoroEnabled && elapsed >= phaseTotal {
+            // The current phase already elapsed while the app was closed — resolve it now.
+            phaseComplete()
+        } else {
+            isRunning = true
+            startTimerLoop()
+            if pomodoroEnabled {
+                NotificationManager.shared.schedulePomodoroEnd(phase: phase.label, in: max(phaseTotal - elapsed, 0), completedCount: completedPomodoros)
+            }
         }
     }
 
