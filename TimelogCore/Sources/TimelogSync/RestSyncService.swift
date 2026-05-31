@@ -154,16 +154,7 @@ public final class RestSyncService {
 
     public func triggerSyncNow() {
         debounceTask?.cancel()
-        debounceTask = Task { [weak self] in
-            guard let self, let data = self.dataProvider?() else { return }
-            do {
-                try await self.push(clients: data.clients, projects: data.projects, entries: data.entries, sessions: data.sessions)
-            } catch is CancellationError {
-                // superseded by a newer sync request — not an error
-            } catch {
-                self.lastError = error.localizedDescription
-            }
-        }
+        debounceTask = Task { [weak self] in await self?.runPush() }
     }
 
     public func stopAutoSync() { debounceTask?.cancel(); dataProvider = nil }
@@ -172,15 +163,21 @@ public final class RestSyncService {
         debounceTask?.cancel()
         debounceTask = Task { [weak self] in
             try? await Task.sleep(for: .seconds(Self.debounceSeconds))
-            guard !Task.isCancelled, let self else { return }
-            guard let data = self.dataProvider?() else { return }
-            do {
-                try await self.push(clients: data.clients, projects: data.projects, entries: data.entries, sessions: data.sessions)
-            } catch is CancellationError {
-                // superseded by a newer sync request — not an error
-            } catch {
-                self.lastError = error.localizedDescription
-            }
+            guard !Task.isCancelled else { return }
+            await self?.runPush()
+        }
+    }
+
+    /// Pulls the latest snapshot from the data provider and pushes it. A cancellation
+    /// means a newer sync superseded this one, so it is not surfaced as an error.
+    private func runPush() async {
+        guard let data = dataProvider?() else { return }
+        do {
+            try await push(clients: data.clients, projects: data.projects, entries: data.entries, sessions: data.sessions)
+        } catch is CancellationError {
+            // superseded by a newer sync request — not an error
+        } catch {
+            lastError = error.localizedDescription
         }
     }
 
@@ -312,11 +309,10 @@ public final class RestSyncService {
     /// `/api/pull` with the current `userId` as a query item so the server can scope
     /// the response per user (defense-in-depth — the client also filters on receipt).
     private func pullURL() -> URL? {
-        guard let base = serverURL(path: "/api/pull"),
-              var comps = URLComponents(url: base, resolvingAgainstBaseURL: false) else { return serverURL(path: "/api/pull") }
-        if !userId.isEmpty {
-            comps.queryItems = (comps.queryItems ?? []) + [URLQueryItem(name: "userId", value: userId)]
-        }
+        guard let base = serverURL(path: "/api/pull") else { return nil }
+        guard !userId.isEmpty,
+              var comps = URLComponents(url: base, resolvingAgainstBaseURL: false) else { return base }
+        comps.queryItems = (comps.queryItems ?? []) + [URLQueryItem(name: "userId", value: userId)]
         return comps.url ?? base
     }
 
