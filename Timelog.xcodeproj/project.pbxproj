@@ -70,14 +70,6 @@
 			);
 			target = E901B6DB2FB0C3E300EA36A5 /* TimelogWidgetExtensionExtension */;
 		};
-		E94969E72FC8478A00F36B38 /* Exceptions for "TimelogWidgetExtension" folder in "Timelog" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				ProjectsWidget.swift,
-				TrackingLiveActivity.swift,
-			);
-			target = E97A4C702FAFE9D100C528C1 /* Timelog */;
-		};
 		E97A4C942FAFE9D300C528C1 /* Exceptions for "Timelog" folder in "Timelog" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -91,7 +83,6 @@
 		E901B6E22FB0C3E300EA36A5 /* TimelogWidgetExtension */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				E94969E72FC8478A00F36B38 /* Exceptions for "TimelogWidgetExtension" folder in "Timelog" target */,
 				E901B6F72FB0C3E400EA36A5 /* Exceptions for "TimelogWidgetExtension" folder in "TimelogWidgetExtensionExtension" target */,
 			);
 			path = TimelogWidgetExtension;
