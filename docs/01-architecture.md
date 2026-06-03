@@ -12,14 +12,15 @@ TimeLog/
 ├── TimelogCore/                 ← shared Swift Package
 │   └── Sources/
 │       ├── TimelogCore/         ← models, VM, stores, helpers
-│       └── TimelogSync/         ← MongoSyncService (macOS) + RestSyncService (iOS)
+│       └── TimelogSync/         ← RestSyncService + SSEClient (iOS + macOS)
 ├── Timelog/                     ← iOS Views
 ├── TimelogMac/                  ← macOS Views
 ├── TimelogWidgetExtension/      ← Widget + Live Activity (iOS)
 └── server/                      ← Vercel middleware (Node.js/TypeScript)
     └── api/
         ├── pull.ts              ← GET  /api/pull
-        └── sync.ts              ← POST /api/sync
+        ├── sync.ts              ← POST /api/sync
+        └── events.ts            ← GET  /api/events  (SSE — Change Stream)
 ```
 
 ## Application Layers
@@ -49,8 +50,8 @@ graph TD
     end
 
     subgraph Sync["TimelogSync (Swift Package)"]
-        RestSvc["RestSyncService\n(iOS — URLSession → Vercel)"]
-        MongoSvc["MongoSyncService\n(macOS — MongoKitten → Atlas)"]
+        RestSvc["RestSyncService\n(iOS + macOS — URLSession → Vercel)"]
+        SSESvc["SSEClient\n(real-time Change Stream events)"]
     end
 
     subgraph Infra["Infrastructure"]
@@ -58,7 +59,7 @@ graph TD
         KCH[("Keychain")]
         UNS["UNUserNotificationCenter"]
         MDB[("MongoDB Atlas")]
-        VCL["Vercel Functions\nGET /api/pull · POST /api/sync"]
+        VCL["Vercel Functions\nGET /api/pull · POST /api/sync · GET /api/events"]
         AG["App Group\ngroup.me.albz.timelog"]
     end
 
@@ -78,11 +79,10 @@ graph TD
     Widget --> AG
 
     RestSvc --> KCH
-    RestSvc -->|"iOS only"| VCL
+    RestSvc --> VCL
     VCL -->|"upsert"| MDB
-
-    MongoSvc --> KCH
-    MongoSvc -->|"macOS only"| MDB
+    VCL -->|"SSE events"| SSESvc
+    MDB -->|"Change Stream"| VCL
 ```
 
 ## Architectural Rules
@@ -92,7 +92,7 @@ graph TD
 | Business logic only in `TimelogCore` | Apps contain exclusively Views |
 | Everything `public` in TimelogCore | Visible from both apps and the widget |
 | One `ModelContainer` per app | Avoids SwiftData conflicts; on macOS it is `static let` shared between WindowGroup and MenuBarExtra |
-| iOS uses `RestSyncService`, macOS uses `MongoSyncService` | iOS cannot use MongoKitten (ARM-only binary, heavy dependencies); the same public signature separates the implementations |
+| Both platforms use `RestSyncService` | Single unified sync implementation; no direct MongoDB access from clients; real-time via SSE Change Streams |
 | `#if os(iOS)` for ActivityKit and UIKit haptics | Do not use `#if targetEnvironment(macCatalyst)` — the project does not use Catalyst |
 | `deletedAt: Date?` on Client, Project, TimeEntry | Soft delete: deleted records are marked but not removed from the database until sync has propagated them to all devices. `ActiveSession` has no `deletedAt` because it is always converted to a `TimeEntry` on stop. |
 
@@ -102,10 +102,8 @@ graph TD
 graph LR
     TimelogCore["TimelogCore"]
     TimelogSync["TimelogSync"]
-    MongoKitten["MongoKitten 7.9.0+\n(macOS only)"]
 
     TimelogSync --> TimelogCore
-    TimelogSync -->|"#if os(macOS)"| MongoKitten
 ```
 
 ## Entry Points by Platform
@@ -129,7 +127,7 @@ App
  ├─ WindowGroup "main"
  │   └─ MainMacView
  │       ├─ NavigationSplitView: Today · Clients · Tracking · Settings
- │       └─ MongoSyncSetup (modifier — connects and starts auto-sync)
+ │       └─ RestSyncSetup (modifier — pull on launch, SSE listener, push debounced 2s)
  ├─ MenuBarExtra
  │   └─ MenuBarView (window style)
  │       └─ MenuBarStatusLabel (shows timer if running)

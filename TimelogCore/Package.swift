@@ -8,9 +8,7 @@ let package = Package(
         .library(name: "TimelogCore", targets: ["TimelogCore"]),
         .library(name: "TimelogSync", targets: ["TimelogSync"])
     ],
-    dependencies: [
-        .package(url: "https://github.com/orlandos-nl/MongoKitten.git", from: "7.9.0")
-    ],
+    dependencies: [],
     targets: [
         .target(
             name: "TimelogCore",
@@ -20,10 +18,7 @@ let package = Package(
         ),
         .target(
             name: "TimelogSync",
-            dependencies: [
-                "TimelogCore",
-                .product(name: "MongoKitten", package: "MongoKitten", condition: .when(platforms: [.macOS]))
-            ],
+            dependencies: ["TimelogCore"],
             path: "Sources/TimelogSync",
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),

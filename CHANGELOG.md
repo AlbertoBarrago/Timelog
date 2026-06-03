@@ -7,8 +7,29 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- **Real-time sync via Server-Sent Events** — both iOS and macOS now receive a `{ type: "change" }` event from `GET /api/events` within ~1 s of any remote change, triggering an immediate pull. Latency drops from up to 30 s (polling) to under 1 s in both directions.
+- **`GET /api/events` server endpoint** — Vercel function that opens a MongoDB Change Stream on the entire `timelog` database and forwards events as SSE. Sends heartbeats every 25 s; closes cleanly on client disconnect.
+- **`SSEClient`** (`TimelogSync`) — `@Observable @MainActor` class using `URLSession.bytes(for:)` async streaming. Parses SSE lines, fires `onChangeEvent` callback, reconnects with exponential backoff (1 s → 2 s → max 30 s).
+
+### Changed
+- **Unified sync architecture** — macOS now uses `RestSyncService` (same as iOS) instead of `MongoSyncService`. Both platforms push via `POST /api/sync` and pull via `GET /api/pull`; the server is the only component with a direct MongoDB connection.
+- **`RestSyncService` extended for macOS** — `loadConfigFromFile()` on macOS reads `~/.config/timelog/sync.local` (key `URL` + `API_KEY`), same format as iOS `SyncConfig.local`. No manual input required.
+- **Race-condition guard** — `hasPendingPush` flag in `RestSyncService` defers SSE-triggered pulls until any in-flight or queued push completes, preventing a server pull from restoring data the user just deleted locally.
+- **`isUserEditing` on `RestSyncService`** — macOS `SyncGate` modifier now targets `RestSyncService`; SSE-triggered pulls are deferred while a modal form is open, same behaviour as before.
+- **`willWipeDataNotification`** moved from `MongoSyncService` to `RestSyncService` (`RestSyncServiceWillWipeData`); macOS views updated.
+- **macOS `RestSyncSetup` modifier** replaces `MongoSyncSetup`; polling loop removed entirely.
+- **iOS `RestSyncSetup` modifier** — SSE stream started after initial pull on app launch; stopped on `.background` and restarted on `.active`.
+
+### Removed
+- **`MongoSyncService`** — macOS direct MongoDB sync service deleted entirely.
+- **MongoKitten dependency** — removed from `TimelogCore/Package.swift`; macOS apps no longer connect directly to MongoDB Atlas.
+- **30-second polling loop** — replaced by SSE push notifications.
+
 ### Fixed
 - **Ghost session after stop (iOS sync)** — a session stopped on iOS could reappear on the next pull because the REST server never removed it. The push payload now carries the user's `userId` and `/api/sync` reconciles `active_sessions`, deleting that user's sessions absent from the payload.
+- **Item reappears after delete** — a race where the 30-second macOS poll fired before the local delete was pushed to the server has been eliminated; SSE-triggered pulls are deferred until the push completes.
+- **Deleted items not removed on other devices** — `RestSyncService.pullAll` now reconciles clients, projects, and entries against the server response: local records with a `mongoId` absent from the server are hard-deleted (matching the existing session reconciliation logic). Previously only sessions were reconciled; hard-deletes of clients/projects/entries were invisible to other devices until the next full reset.
 - **Multi-user session data loss (macOS sync)** — `MongoSyncService` reconciled remote sessions with an unscoped `find()`, which could delete other users' active sessions on a shared cluster. The query is now scoped to the current `userId`.
 - **Cross-user session leak (iOS pull)** — pulled sessions are now filtered by `userId` and stamped with the owner, matching how clients/projects/entries are handled.
 - **Silent push failures (iOS sync)** — `RestSyncService` now validates the HTTP status of `POST /api/sync` and surfaces an error instead of reporting a successful sync.
@@ -17,9 +38,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Security / Privacy
 - **Removed verbose sync logging (iOS)** — `RestSyncService` no longer prints full pull responses (client/project/entry data) to the console.
 - **Per-user pull scoping (server)** — `GET /api/pull` now filters by `userId` (legacy records with no `userId` remain visible), so a client no longer receives other users' data over the wire.
+- **No direct database access from clients** — MongoDB Atlas credentials are no longer stored on device; both platforms authenticate to the Vercel middleware with an API key only.
 
 ### Docs
-- Updated `docs/02-data-model.md`, `03-flows.md`, `04-mongodb-sync.md` to match the current sync implementation: incremental upsert-by-`mongoId` on iOS pull (no more delete-all + re-insert), session sync, the `label`/`labels` fields, the `active_sessions` collection name, and removal of the non-existent `Project.isArchived`.
+- `docs/04-mongodb-sync.md` renamed to `docs/04-sync.md` and fully rewritten for the unified SSE architecture.
+- `docs/01-architecture.md`: updated diagrams and dependency graph (MongoKitten removed).
+- `docs/SETUP_SYNC_SERVER.md`: macOS setup now uses `~/.config/timelog/sync.local`; MongoDB connection string section removed.
+- `CLAUDE.md`: Package TimelogSync section updated.
 
 ---
 

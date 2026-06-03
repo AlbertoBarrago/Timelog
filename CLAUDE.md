@@ -59,12 +59,14 @@ TimeLog/
 
 ## Package TimelogSync
 
-- Contains `MongoSyncService` — bidirectional SwiftData ↔ MongoDB Atlas sync
-- `pullAll(into:)` downloads everything from MongoDB → SwiftData on launch (multi-device, multi-user)
-- Auto-push via `NSManagedObjectContextDidSaveNotification` with 2-second debounce
-- macOS: full implementation with MongoKitten 7.9+
-- iOS: no-op stub (same public signature, no code)
-- Connection string: `~/.config/timelog/mongo.local` → Keychain (never in the repo)
+- Contains `RestSyncService` (shared iOS + macOS) and `SSEClient` — unified sync via Vercel REST API
+- Both platforms push via `POST /api/sync` and receive real-time events via `GET /api/events` (Server-Sent Events backed by MongoDB Change Streams)
+- `pullAll(into:)` downloads everything from the server; triggered on launch and on each SSE change event
+- Auto-push: `triggerSync()` debounced 2 s → POST payload to Vercel
+- Race guard: `hasPendingPush` flag defers SSE-triggered pulls until the in-flight push completes (prevents local deletes being overwritten)
+- `isUserEditing` flag (macOS): defers SSE-triggered pulls while a form is open
+- Credentials: iOS reads `SyncConfig.local` from bundle; macOS reads `~/.config/timelog/sync.local` → Keychain (never in the repo)
+- No direct MongoDB connection from clients; no MongoKitten dependency
 
 ## SwiftUI / Swift conventions
 

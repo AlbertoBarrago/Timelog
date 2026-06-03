@@ -5,22 +5,21 @@ import TimelogCore
 import TimelogSync
 import AppKit
 
-private struct MongoSyncSetup: ViewModifier {
+private struct RestSyncSetup: ViewModifier {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.scenePhase) private var scenePhase
     @Query private var clients: [Client]
     @Query private var projects: [Project]
     @Query private var entries: [TimeEntry]
     @Query private var sessions: [ActiveSession]
-    @State private var pollTask: Task<Void, Never>?
-    @State private var isPulling = false
 
     func body(content: Content) -> some View {
         content
             .onAppear {
                 let container = modelContext.container
-                MongoSyncService.shared.loadConnectionStringFromFile()
-                MongoSyncService.shared.setDataProvider { [container] in
+                RestSyncService.shared.loadConfigFromFile()
+                RestSyncService.shared.storedContext = modelContext
+                RestSyncService.shared.setDataProvider { [container] in
                     let ctx = container.mainContext
                     let clients  = (try? ctx.fetch(FetchDescriptor<Client>()))        ?? []
                     let projects = (try? ctx.fetch(FetchDescriptor<Project>()))       ?? []
@@ -30,44 +29,20 @@ private struct MongoSyncSetup: ViewModifier {
                 }
                 Task {
                     try? await Task.sleep(for: .milliseconds(300))
-                    try? await MongoSyncService.shared.connect()
-                    try? await MongoSyncService.shared.pullAll(into: modelContext)
-                    MongoSyncService.shared.triggerSync()
+                    try? await RestSyncService.shared.pullAll(into: modelContext)
+                    RestSyncService.shared.triggerSync()
                 }
-                startPolling()
+                RestSyncService.shared.startListening()
             }
-            .onDisappear { stopPolling() }
+            .onDisappear {
+                RestSyncService.shared.stopListening()
+            }
             .onChange(of: scenePhase) { _, newPhase in
-                if newPhase == .active { pullLatest() }
+                if newPhase == .active {
+                    Task { try? await RestSyncService.shared.pullAll(into: modelContext) }
+                }
             }
-            .onChange(of: dataFingerprint) { _, _ in MongoSyncService.shared.triggerSync() }
-    }
-
-    private func pullLatest() {
-        guard !isPulling else { return }
-        isPulling = true
-        let ctx = modelContext
-        Task {
-            defer { isPulling = false }
-            try? await MongoSyncService.shared.connect()
-            try? await MongoSyncService.shared.pullAll(into: ctx)
-        }
-    }
-
-    private func startPolling() {
-        pollTask?.cancel()
-        pollTask = Task {
-            while !Task.isCancelled {
-                try? await Task.sleep(for: .seconds(30))
-                guard !Task.isCancelled else { break }
-                pullLatest()
-            }
-        }
-    }
-
-    private func stopPolling() {
-        pollTask?.cancel()
-        pollTask = nil
+            .onChange(of: dataFingerprint) { _, _ in RestSyncService.shared.triggerSync() }
     }
 
     private var dataFingerprint: Int {
@@ -156,9 +131,9 @@ struct TimelogMacApp: App {
                     timerVM.applySettings(settings)
                     NotificationManager.shared.requestPermission()
                     settings.applyReminders()
-                    MongoSyncService.shared.userId = settings.userId
+                    RestSyncService.shared.userId = settings.userId
                 }
-                .modifier(MongoSyncSetup())
+                .modifier(RestSyncSetup())
                 .modifier(IdleAlertModifier())
                 .environment(settings)
                 .environment(timerVM)
@@ -174,7 +149,7 @@ struct TimelogMacApp: App {
             }
             CommandGroup(after: .appInfo) {
                 Button(String(localized: "Sync Now")) {
-                    MongoSyncService.shared.triggerSyncNow()
+                    RestSyncService.shared.triggerSyncNow()
                 }
                 .keyboardShortcut("s", modifiers: .command)
             }

@@ -67,34 +67,33 @@ struct MacSettingsView: View {
                 Text("Sends a notification if a session is still running at this time, or if you have no active session after the idle threshold.")
             }
 
-            // MARK: MongoDB Sync — native macOS layout
+            // MARK: Sync — native macOS layout
             Section {
                 HStack(spacing: 10) {
-                    MongoStatusDot()
+                    SyncStatusDotSettings()
                     Spacer()
                     Button("Sync Now") {
-                        MongoSyncService.shared.triggerSync()
+                        RestSyncService.shared.triggerSync()
                     }
                     .controlSize(.small)
-                    .disabled(MongoSyncService.shared.readConnectionString() == nil)
+                    .disabled(!RestSyncService.shared.isConfigured)
 
                     Divider().frame(height: 16)
 
                     Button("Reset & Pull") {
                         Task {
-                            try? await MongoSyncService.shared.connect()
-                            try? await MongoSyncService.shared.pullAll(into: modelContext)
-                            MongoSyncService.shared.triggerSync()
+                            try? await RestSyncService.shared.pullAll(into: modelContext)
+                            RestSyncService.shared.triggerSync()
                         }
                     }
                     .controlSize(.small)
                     .foregroundStyle(.orange)
-                    .disabled(MongoSyncService.shared.readConnectionString() == nil)
+                    .disabled(!RestSyncService.shared.isConfigured)
                 }
             } header: {
-                Text("MongoDB Sync")
+                Text("Sync")
             } footer: {
-                Text("Reset & Pull wipes local data and re-downloads everything from MongoDB.")
+                Text("Reset & Pull re-downloads all data from the server.")
             }
 
             // MARK: Export
@@ -248,8 +247,8 @@ private struct NicknameRevealRow: View {
     }
 }
 
-private struct MongoStatusDot: View {
-    private var sync: MongoSyncService { MongoSyncService.shared }
+private struct SyncStatusDotSettings: View {
+    private var sync: RestSyncService { RestSyncService.shared }
     @State private var pulse = false
 
     var body: some View {

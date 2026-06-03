@@ -1166,7 +1166,7 @@
           <li>Today view — active sessions with live ticker and context menus</li>
           <li>Clients &amp; Projects — NavigationSplitView with native Table</li>
           <li>Pomodoro / stopwatch window — Space to start/pause</li>
-          <li>MongoDB Atlas sync via MongoKitten — credentials in Keychain</li>
+          <li>Real-time sync via SSE — changes from iPhone appear in &lt;1 s</li>
           <li>Settings window accessible via ⌘,</li>
         </ul>
       </div>
@@ -1205,8 +1205,8 @@
       </div>
       <div class="feature-cell">
         <span class="feature-emoji">🔄</span>
-        <h4>Bidirectional sync</h4>
-        <p>Data entered on Mac arrives on iPhone automatically. Push and pull via a tiny Vercel middleware you host yourself.</p>
+        <h4>Real-time sync</h4>
+        <p>Stop a session on iPhone and your Mac updates in under a second — no polling. Push and pull via Server-Sent Events backed by MongoDB Change Streams.</p>
       </div>
       <div class="feature-cell">
         <span class="feature-emoji">🏝</span>
@@ -1245,25 +1245,26 @@
   <section class="sync-section" id="sync">
     <p class="section-eyebrow">Architecture</p>
     <h2 class="section-title">Sync you control.</h2>
-    <p class="section-sub">A tiny Vercel serverless function sits between your iPhone and MongoDB Atlas. You own the infra, you own the data.</p>
+    <p class="section-sub">A tiny Vercel middleware sits between your devices and MongoDB Atlas. Both iOS and macOS share the same sync engine — real-time, push-based, zero polling.</p>
 
     <div class="sync-diagram fade-in">
       <div class="sync-row">
         <div class="sync-node">
           <span class="node-icon">📱</span>
           <div class="node-label">iPhone / iPad</div>
-          <div class="node-sub">RestSyncService · URLSession</div>
+          <div class="node-sub">RestSyncService · SSEClient</div>
         </div>
         <div class="sync-arrow">
-          <span class="arrow-label">GET /api/pull<br/>POST /api/sync</span>
+          <span class="arrow-label">push · pull · SSE</span>
           <div class="arrow-line"></div>
         </div>
         <div class="sync-node">
           <span class="node-icon">▲</span>
           <div class="node-label">Vercel Functions</div>
-          <div class="node-sub">Node.js · TypeScript · X-API-Key auth</div>
+          <div class="node-sub">pull · sync · events (SSE)</div>
         </div>
         <div class="sync-arrow">
+          <span class="arrow-label">Change Stream</span>
           <div class="arrow-line"></div>
         </div>
         <div class="sync-node">
@@ -1276,16 +1277,16 @@
         <div class="sync-node">
           <span class="node-icon">🖥</span>
           <div class="node-label">Mac</div>
-          <div class="node-sub">MongoSyncService · direct connection</div>
+          <div class="node-sub">RestSyncService · SSEClient</div>
         </div>
         <div class="sync-arrow">
-          <span class="arrow-label">Wire protocol</span>
+          <span class="arrow-label">push · pull · SSE</span>
           <div class="arrow-line"></div>
         </div>
         <div class="sync-node">
-          <span class="node-icon">🍃</span>
-          <div class="node-label">MongoDB Atlas</div>
-          <div class="node-sub">Same cluster · same collections</div>
+          <span class="node-icon">▲</span>
+          <div class="node-label">Vercel Functions</div>
+          <div class="node-sub">same endpoints · same auth</div>
         </div>
         <div class="sync-arrow" style="visibility:hidden"></div>
         <div class="sync-node" style="visibility:hidden"></div>
@@ -1294,19 +1295,19 @@
 
     <div class="sync-cards fade-in">
       <div class="sync-card">
-        <span class="tag">iOS</span>
+        <span class="tag">iOS + macOS</span>
         <h4>RestSyncService</h4>
-        <p>Pure URLSession, zero external dependencies. Pulls at every launch, pushes changes with a 2-second debounce. Credentials auto-loaded from a gitignored bundle file.</p>
+        <p>Unified sync engine for both platforms. Pure URLSession, zero external dependencies. Pulls at launch, pushes with 2-second debounce. Credentials auto-loaded from a gitignored config file.</p>
       </div>
       <div class="sync-card">
-        <span class="tag" style="background:rgba(48,209,88,0.12); border-color:rgba(48,209,88,0.3); color:var(--accent2);">macOS</span>
-        <h4>MongoSyncService</h4>
-        <p>Direct connection to MongoDB Atlas. Connection string stored in Keychain, never in code or UserDefaults. Auto-push on every SwiftData save, with 2-second debounce.</p>
+        <span class="tag" style="background:rgba(48,209,88,0.12); border-color:rgba(48,209,88,0.3); color:var(--accent2);">Real-time</span>
+        <h4>SSEClient</h4>
+        <p>Server-Sent Events client backed by MongoDB Change Streams. Stop a session on your iPhone — your Mac updates in under a second, with no polling and no wasted battery.</p>
       </div>
       <div class="sync-card">
         <span class="tag" style="background:rgba(191,90,242,0.12); border-color:rgba(191,90,242,0.3); color:var(--accent4);">Server</span>
         <h4>Vercel Middleware</h4>
-        <p>Two serverless functions — GET /api/pull and POST /api/sync. Auth via X-API-Key header. Full Swagger UI at your deployment URL. Runs on the free tier.</p>
+        <p>Three serverless functions — GET /api/pull, POST /api/sync, GET /api/events. Auth via X-API-Key. Full Swagger UI at your deployment URL. Runs on the free tier.</p>
       </div>
     </div>
   </section>
@@ -1326,7 +1327,7 @@
       <span class="tech-pill"><span class="dot" style="background:#0071e3"></span>MenuBarExtra</span>
       <span class="tech-pill"><span class="dot" style="background:#30d158"></span>UserNotifications</span>
       <span class="tech-pill"><span class="dot" style="background:#64d2ff"></span>Keychain</span>
-      <span class="tech-pill"><span class="dot" style="background:#47a248"></span>MongoKitten (macOS)</span>
+      <span class="tech-pill"><span class="dot" style="background:#ff9f0a"></span>Server-Sent Events</span>
       <span class="tech-pill"><span class="dot" style="background:#fff"></span>Vercel</span>
       <span class="tech-pill"><span class="dot" style="background:#3178c6"></span>TypeScript</span>
       <span class="tech-pill"><span class="dot" style="background:#f05138"></span>Xcode 16+</span>
@@ -1383,11 +1384,11 @@
         <div class="install-step">
           <div class="step-num" style="background:rgba(191,90,242,0.12); border-color:rgba(191,90,242,0.3); color:var(--accent4);">✦</div>
           <div class="step-body">
-            <div class="step-title">Optional — Enable MongoDB Sync</div>
-            <div class="step-desc">Create the file below with your MongoDB Atlas connection string. Timelog reads it on first launch and saves it to Keychain — the file is only needed once.</div>
+            <div class="step-title">Optional — Enable Sync</div>
+            <div class="step-desc">Create the file below with your Vercel server URL and API key. Timelog reads it on first launch and saves it to Keychain — the file is only needed once.</div>
             <div class="code-block">
-              <span class="code-text">~/.config/timelog/mongo.local</span>
-              <button class="copy-btn" onclick="navigator.clipboard.writeText('~/.config/timelog/mongo.local').then(()=>{this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',1800)})">Copy</button>
+              <span class="code-text">~/.config/timelog/sync.local</span>
+              <button class="copy-btn" onclick="navigator.clipboard.writeText('~/.config/timelog/sync.local').then(()=>{this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',1800)})">Copy</button>
             </div>
             <div class="step-desc" style="margin-top:10px;">
               <a href="https://github.com/AlbertoBarrago/Timelog/blob/main/docs/SETUP_SYNC_SERVER.md" target="_blank" rel="noopener" style="color:var(--accent);">Full setup guide →</a>

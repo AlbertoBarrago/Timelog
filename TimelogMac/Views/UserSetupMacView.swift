@@ -47,11 +47,10 @@ struct UserSetupMacView: View {
         guard !trimmed.isEmpty else { return }
         migrateExistingRecords(to: trimmed)
         settings.userId = trimmed
-        MongoSyncService.shared.userId = trimmed
+        RestSyncService.shared.userId = trimmed
         Task {
-            try? await MongoSyncService.shared.connect()
-            try? await MongoSyncService.shared.pullAll(into: context)
-            MongoSyncService.shared.triggerSync()
+            try? await RestSyncService.shared.pullAll(into: context)
+            RestSyncService.shared.triggerSync()
         }
     }
 

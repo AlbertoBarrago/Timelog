@@ -115,7 +115,7 @@ struct StopSessionMacView: View {
         NotificationManager.shared.cancelSession(id: session.notificationID)
         context.delete(session)
         try? context.save()
-        MongoSyncService.shared.triggerSyncNow()
+        RestSyncService.shared.triggerSyncNow()
         dismissSelf()
     }
 
@@ -129,7 +129,7 @@ struct StopSessionMacView: View {
         NotificationManager.shared.cancelSession(id: session.notificationID)
         context.delete(session)
         try? context.save()
-        MongoSyncService.shared.triggerSyncNow()
+        RestSyncService.shared.triggerSyncNow()
         dismissSelf()
     }
 }

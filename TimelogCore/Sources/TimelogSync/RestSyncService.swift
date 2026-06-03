@@ -82,6 +82,29 @@ public final class RestSyncService {
 
     private var dataProvider: DataProvider?
     private var debounceTask: Task<Void, Never>?
+    private let sseClient = SSEClient()
+
+    // Race-condition guard: when a push is queued or in-flight, SSE-triggered pulls
+    // are deferred until after the push completes so local deletes are not overwritten.
+    private var hasPendingPush = false
+    private var needsPullAfterPush = false
+
+    // Stored by the view modifier so SSE-triggered pulls have a context to write into.
+    public var storedContext: ModelContext?
+
+    /// Set to true while a modal form is open to defer SSE-triggered pulls until editing ends.
+    public var isUserEditing = false {
+        didSet {
+            guard !isUserEditing, !hasPendingPush, needsPullAfterPush,
+                  let ctx = storedContext else { return }
+            needsPullAfterPush = false
+            Task { try? await pullAll(into: ctx) }
+        }
+    }
+
+    /// Posted on the main actor just before `pullAll` deletes local records that are no
+    /// longer present on the server — gives views a chance to clear their selection state.
+    public static let willWipeDataNotification = Notification.Name("RestSyncServiceWillWipeData")
 
     public private(set) var isSyncing = false
     public private(set) var lastSyncDate: Date?
@@ -150,14 +173,50 @@ public final class RestSyncService {
 
     public func setDataProvider(_ provider: @escaping DataProvider) { dataProvider = provider }
 
-    public func triggerSync() { scheduleDebounced() }
+    public func triggerSync() {
+        hasPendingPush = true
+        scheduleDebounced()
+    }
 
     public func triggerSyncNow() {
         debounceTask?.cancel()
+        hasPendingPush = true
         debounceTask = Task { [weak self] in await self?.runPush() }
     }
 
     public func stopAutoSync() { debounceTask?.cancel(); dataProvider = nil }
+
+    // MARK: - SSE (real-time incoming changes)
+
+    /// Exposed so the UI can show connection state (e.g. a sync indicator).
+    public var sseState: SSEClient.State { sseClient.state }
+
+    /// Opens the SSE event stream. Call once on app appear after `userId` is set.
+    public func startListening() {
+        guard let base = readServerURL(), let apiKey = readApiKey(), !userId.isEmpty else { return }
+        let trimmed = base.trimmingCharacters(in: .init(charactersIn: "/"))
+        guard var comps = URLComponents(string: trimmed) else { return }
+        comps.path = (comps.path.isEmpty ? "" : comps.path) + "/api/events"
+        comps.queryItems = [URLQueryItem(name: "userId", value: userId)]
+        guard let url = comps.url else { return }
+        sseClient.onChangeEvent = { [weak self] in self?.handleSSEChange() }
+        sseClient.start(url: url, apiKey: apiKey)
+    }
+
+    /// Closes the SSE stream. Call on scene disappear / app background.
+    public func stopListening() {
+        sseClient.stop()
+    }
+
+    private func handleSSEChange() {
+        if hasPendingPush || isUserEditing {
+            // Defer: either a push is pending (avoid overwriting local delete) or the
+            // user has a form open (avoid changing data under their hands).
+            needsPullAfterPush = true
+        } else if let ctx = storedContext {
+            Task { try? await self.pullAll(into: ctx) }
+        }
+    }
 
     private func scheduleDebounced() {
         debounceTask?.cancel()
@@ -171,6 +230,13 @@ public final class RestSyncService {
     /// Pulls the latest snapshot from the data provider and pushes it. A cancellation
     /// means a newer sync superseded this one, so it is not surfaced as an error.
     private func runPush() async {
+        defer {
+            hasPendingPush = false
+            if needsPullAfterPush, let ctx = storedContext {
+                needsPullAfterPush = false
+                Task { try? await self.pullAll(into: ctx) }
+            }
+        }
         guard let data = dataProvider?() else { return }
         do {
             try await push(clients: data.clients, projects: data.projects, entries: data.entries, sessions: data.sessions)
@@ -197,6 +263,7 @@ public final class RestSyncService {
 
         let existingClients = (try? context.fetch(FetchDescriptor<Client>())) ?? []
         var clientMap: [String: Client] = Dictionary(uniqueKeysWithValues: existingClients.compactMap { c in c.mongoId.map { ($0, c) } })
+        let remoteClientIds = Set(response.clients.map { $0._id })
         for dto in response.clients where dto.userId == nil || dto.userId == userId {
             let deletedAt = dto.deletedAt.flatMap { Self.iso8601.date(from: $0) ?? Self.iso8601NoFrac.date(from: $0) }
             if let c = clientMap[dto._id] {
@@ -210,8 +277,14 @@ public final class RestSyncService {
                 context.insert(c); clientMap[dto._id] = c
             }
         }
+        // Hard-delete local clients that were removed from the server (mongoId known but absent from response).
+        let clientsToDelete = existingClients.filter { c in
+            c.userId == userId && c.mongoId.map { !remoteClientIds.contains($0) } ?? false
+        }
+
         let existingProjects = (try? context.fetch(FetchDescriptor<TimelogCore.Project>())) ?? []
         var projectMap: [String: TimelogCore.Project] = Dictionary(uniqueKeysWithValues: existingProjects.compactMap { p in p.mongoId.map { ($0, p) } })
+        let remoteProjectIds = Set(response.projects.map { $0._id })
         for dto in response.projects where dto.userId == nil || dto.userId == userId {
             let deletedAt = dto.deletedAt.flatMap { Self.iso8601.date(from: $0) ?? Self.iso8601NoFrac.date(from: $0) }
             if let p = projectMap[dto._id] {
@@ -227,8 +300,13 @@ public final class RestSyncService {
                 context.insert(p); projectMap[dto._id] = p
             }
         }
+        let projectsToDelete = existingProjects.filter { p in
+            p.userId == userId && p.mongoId.map { !remoteProjectIds.contains($0) } ?? false
+        }
+
         let existingEntries = (try? context.fetch(FetchDescriptor<TimeEntry>())) ?? []
         let entryMap: [String: TimeEntry] = Dictionary(uniqueKeysWithValues: existingEntries.compactMap { e in e.mongoId.map { ($0, e) } })
+        let remoteEntryIds = Set(response.entries.map { $0._id })
         for dto in response.entries {
             let dateStr = dto.date ?? ""
             let date = Self.iso8601.date(from: dateStr) ?? Self.iso8601NoFrac.date(from: dateStr) ?? Date()
@@ -246,6 +324,18 @@ public final class RestSyncService {
                 e.mongoId = dto._id; context.insert(e)
             }
         }
+        let entriesToDelete = existingEntries.filter { e in
+            e.userId == userId && e.mongoId.map { !remoteEntryIds.contains($0) } ?? false
+        }
+
+        // Fire one notification before any wipe so views can clear their selection state.
+        if !clientsToDelete.isEmpty || !projectsToDelete.isEmpty || !entriesToDelete.isEmpty {
+            NotificationCenter.default.post(name: Self.willWipeDataNotification, object: nil)
+        }
+        clientsToDelete.forEach  { context.delete($0) }
+        projectsToDelete.forEach { context.delete($0) }
+        entriesToDelete.forEach  { context.delete($0) }
+
         // Sessions: replace strategy (remote is authoritative), scoped to this user.
         let mySessions = response.sessions.filter { $0.userId == nil || $0.userId == userId }
         let allLocalSessions = (try? context.fetch(FetchDescriptor<ActiveSession>())) ?? []
@@ -267,11 +357,15 @@ public final class RestSyncService {
                 context.insert(s)
             }
         }
-        for local in allLocalSessions where local.userId == userId {
-            if let mid = local.mongoId, !remoteSessionIds.contains(mid) {
-                NotificationManager.shared.cancelSession(id: local.notificationID)
-                context.delete(local)
-            }
+        let sessionsToDelete = allLocalSessions.filter { s in
+            s.userId == userId && s.mongoId.map { !remoteSessionIds.contains($0) } ?? false
+        }
+        if !sessionsToDelete.isEmpty {
+            NotificationCenter.default.post(name: Self.willWipeDataNotification, object: nil)
+        }
+        for local in sessionsToDelete {
+            NotificationManager.shared.cancelSession(id: local.notificationID)
+            context.delete(local)
         }
         do {
             try context.save()

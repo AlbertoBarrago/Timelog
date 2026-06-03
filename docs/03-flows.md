@@ -45,26 +45,26 @@ flowchart TD
     E -->|Yes| G[Log with client and project]
     D & F & G --> H[insert TimeEntry\ndate=today, durationMinutes, notes]
     H --> I[Dismiss sheet]
-    I --> J[HomeView updated\nSync debounced 2s\niOS: RestSyncService · macOS: MongoSyncService]
+    I --> J[HomeView updated\nSync debounced 2s → RestSyncService (both platforms)]
 ```
 
-## 3. iOS Sync — RestSyncService
+## 3. Sync — Launch sequence (iOS + macOS)
 
 ```mermaid
 sequenceDiagram
-    participant App as TimelogApp (onAppear)
+    participant App as App (onAppear)
     participant RSS as RestSyncService
     participant KCH as Keychain
-    participant File as SyncConfig.local (bundle)
+    participant File as SyncConfig.local / sync.local
     participant SD as SwiftData
     participant VCL as Vercel Functions
 
     App->>RSS: loadConfigFromFile()
-    RSS->>File: reads SyncConfig.local (URL + API_KEY)
+    RSS->>File: reads URL + API_KEY
     RSS->>KCH: saveConfig(serverURL, apiKey)
 
+    App->>RSS: storedContext = modelContext
     App->>RSS: setDataProvider { container.mainContext }
-    Note over App: isPulling = true
 
     App->>RSS: pullAll(into: modelContext) [async]
     RSS->>VCL: GET /api/pull?userId=…  X-API-Key: ...
@@ -75,55 +75,43 @@ sequenceDiagram
     RSS->>SD: upsert entries (link client+project) by mongoId
     RSS->>SD: replace sessions scoped to userId → save
     RSS->>RSS: lastSyncDate = .now
-    Note over App: isPulling = false\nSyncFlashOverlay: green flash + haptic
+
+    App->>RSS: startListening()
+    RSS->>VCL: GET /api/events?userId=… [SSE, persistent]
+    Note over VCL: MongoDB Change Stream\nforwards events
 
     Note over App: onChange(clients/projects/entries/sessions)
-    App->>RSS: triggerSync() [if !isPulling]
-    RSS->>RSS: debounce 2s
+    App->>RSS: triggerSync()
+    RSS->>RSS: hasPendingPush = true · debounce 2s
     RSS->>SD: fetch all data via dataProvider
     RSS->>VCL: POST /api/sync { userId, clients, projects, entries, sessions }
-    Note over VCL: upsert all + delete this user's\nsessions absent from payload
-    RSS->>RSS: lastSyncDate = .now
+    Note over VCL: upsert all + reconcile sessions
+    RSS->>RSS: hasPendingPush = false · lastSyncDate = .now
 ```
 
-## 4. macOS Sync — MongoSyncService
+## 4. Real-time sync — SSE event flow
 
 ```mermaid
 sequenceDiagram
-    participant App as TimelogMacApp (onAppear)
-    participant MSS as MongoSyncService
-    participant KCH as Keychain
-    participant File as mongo.local
-    participant SD as SwiftData
+    participant iOS as iOS App
+    participant VCL as Vercel /api/events
     participant MDB as MongoDB Atlas
+    participant Mac as macOS App
 
-    App->>MSS: loadConnectionStringFromFile()
-    MSS->>KCH: readConnectionString()
-    alt Keychain empty
-        KCH-->>MSS: nil
-        MSS->>File: reads ~/.config/timelog/mongo.local
-        MSS->>KCH: saveConnectionString(trimmed)
+    iOS->>VCL: POST /api/sync (session stopped)
+    VCL->>MDB: upsert + delete session
+
+    MDB-->>VCL: Change Stream event
+    VCL-->>Mac: data: {"type":"change","collection":"active_sessions"}
+
+    alt No pending push on Mac
+        Mac->>VCL: GET /api/pull?userId=…
+        VCL-->>Mac: updated data (session gone)
+        Mac->>Mac: context.save() → UI updates < 1s
+    else Mac has pending push
+        Mac->>Mac: needsPullAfterPush = true
+        Note over Mac: Pull deferred until push completes
     end
-
-    App->>MSS: setDataProvider { container.mainContext }
-    App->>MSS: connect() [async]
-    MSS->>MDB: MongoDatabase.connect(uri)
-
-    alt SwiftData empty (first launch)
-        App->>MSS: pullAll(into: modelContext)
-        MSS->>MDB: find all clients/projects/time_entries
-        MDB-->>MSS: documents
-        MSS->>SD: upsert by mongoId → context.save()
-    end
-
-    App->>MSS: triggerSync()
-    MSS->>SD: dataProvider() — fetch all data
-    MSS->>MDB: upsertEncoded on clients/projects/time_entries
-    MSS->>MSS: lastSyncDate = .now
-
-    Note over App: onChange(clients/projects/entries)
-    App->>MSS: triggerSync()
-    MSS->>MSS: debounce 2s → push
 ```
 
 ## 5. Pomodoro Timer

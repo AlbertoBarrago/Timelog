@@ -18,8 +18,20 @@ private struct RestSyncSetup: ViewModifier {
     func body(content: Content) -> some View {
         content
             .onAppear { setup() }
+            .onDisappear { RestSyncService.shared.stopListening() }
             .onChange(of: scenePhase) { _, newPhase in
-                if newPhase == .active { pullLatest() }
+                switch newPhase {
+                case .active:
+                    // Re-open SSE stream if it was dropped while in background, then
+                    // do a catch-up pull for any changes missed while disconnected.
+                    RestSyncService.shared.startListening()
+                    pullLatest()
+                case .background:
+                    // iOS suspends network connections in the background — stop cleanly.
+                    RestSyncService.shared.stopListening()
+                default:
+                    break
+                }
             }
             .onChange(of: clients.count)  { _, _ in if !isPulling { RestSyncService.shared.triggerSync() } }
             .onChange(of: projects.count) { _, _ in if !isPulling { RestSyncService.shared.triggerSync() } }
@@ -40,6 +52,7 @@ private struct RestSyncSetup: ViewModifier {
     private func setup() {
         RestSyncService.shared.userId = settings.userId
         RestSyncService.shared.loadConfigFromFile()
+        RestSyncService.shared.storedContext = modelContext
         let container = modelContext.container
         RestSyncService.shared.setDataProvider { [container] in
             let ctx = container.mainContext
@@ -55,6 +68,7 @@ private struct RestSyncSetup: ViewModifier {
         Task {
             try? await RestSyncService.shared.pullAll(into: modelContext)
             isPulling = false
+            RestSyncService.shared.startListening()
         }
     }
 }

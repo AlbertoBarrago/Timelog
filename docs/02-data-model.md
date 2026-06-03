@@ -107,10 +107,11 @@ flowchart LR
 
     subgraph macOS
         mApp["macOS App"] -->|"read/write"| SD_MAC[("SwiftData\nlocal SQLite")]
-        SD_MAC -->|"NSManagedObjectContextDidSave\n+ debounce 2s"| MSS["MongoSyncService"]
-        MSS -->|"upsert"| MDB
-        MDB -->|"pullAll (on first launch)"| MSS
-        MSS -->|"upsert"| SD_MAC
+        SD_MAC -->|"onChange + debounce 2s"| mRSS["RestSyncService"]
+        mRSS -->|"POST /api/sync"| VCL
+        VCL -->|"GET /api/pull?userId=…\n(on launch)"| mRSS
+        mRSS -->|"upsert by mongoId"| SD_MAC
+        VCL -->|"GET /api/events (SSE)\nChange Stream"| mRSS
     end
 
     subgraph Widget
@@ -147,8 +148,8 @@ The pull is an **incremental upsert keyed by `mongoId`** (not a delete-all + re-
 
 > Sessions are the only entity hard-deleted on pull; Client/Project/TimeEntry use soft delete (`deletedAt`) and are never removed by the pull.
 
-### macOS pull (MongoSyncService)
-Uses incremental upsert: finds each document by `mongoId` in SwiftData and updates if found, creates if absent. Documents absent from the remote (per-`userId` query) are deleted locally; sessions removed remotely also cancel their local notification.
+### Pull (both platforms)
+Uses incremental upsert keyed by `mongoId`: existing records updated in place, new records inserted. Soft-deleted records are applied but never inserted fresh. Sessions use a replace strategy scoped to `userId`. Triggered on launch, on SSE change event, and on app activation.
 
 ### Push (both platforms)
-Each entity is serialised with its `mongoId` and sent to the server (Vercel for iOS, MongoKitten for macOS) via upsert on `_id`.
+Each entity is serialised with its `mongoId` and sent via `POST /api/sync`, which upserts on `_id` and reconciles sessions server-side.

@@ -180,6 +180,28 @@ const spec = {
           "401": { description: "Invalid or missing API key" }
         }
       }
+    },
+    "/api/events": {
+      get: {
+        summary: "Real-time change stream (SSE)",
+        description: "Server-Sent Events stream. Sends a `{type:\"change\",collection}` event whenever any document in the timelog database changes (via MongoDB Change Streams). Heartbeat every 25 s. The client reconnects automatically on disconnect.",
+        tags: ["Sync"],
+        parameters: [
+          { in: "query", name: "userId", required: true, schema: { type: "string" }, description: "Owner identifier — used to scope future filtering" }
+        ],
+        responses: {
+          "200": {
+            description: "SSE stream",
+            content: {
+              "text/event-stream": {
+                schema: { type: "string", example: "data: {\"type\":\"change\",\"collection\":\"time_entries\"}\n\n" }
+              }
+            }
+          },
+          "400": { description: "Missing userId" },
+          "401": { description: "Invalid or missing API key" }
+        }
+      }
     }
   }
 };

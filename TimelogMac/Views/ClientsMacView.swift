@@ -94,7 +94,7 @@ struct ClientsMacView: View {
         }
         .syncGated(while: $showingAddClient)
         .syncGated(whilePresent: $clientToEdit)
-        .onReceive(NotificationCenter.default.publisher(for: MongoSyncService.willWipeDataNotification)) { _ in
+        .onReceive(NotificationCenter.default.publisher(for: RestSyncService.willWipeDataNotification)) { _ in
             selectedClientID = nil
             clientToEdit     = nil
         }
@@ -229,7 +229,7 @@ struct ProjectsMacView: View {
         }
         .syncGated(while: $showingAddProject)
         .syncGated(whilePresent: $projectToEdit)
-        .onReceive(NotificationCenter.default.publisher(for: MongoSyncService.willWipeDataNotification)) { _ in
+        .onReceive(NotificationCenter.default.publisher(for: RestSyncService.willWipeDataNotification)) { _ in
             projectToEdit    = nil
             selectedProjects = []
         }

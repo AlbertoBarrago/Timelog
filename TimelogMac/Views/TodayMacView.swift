@@ -56,7 +56,7 @@ struct TodayMacView: View {
                                             NotificationManager.shared.cancelSession(id: session.notificationID)
                                             context.delete(session)
                                             try? context.save()
-                                            MongoSyncService.shared.triggerSyncNow()
+                                            RestSyncService.shared.triggerSyncNow()
                                         }
                                     }
                                 }

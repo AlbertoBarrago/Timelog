@@ -108,7 +108,7 @@ struct MainMacView: View {
 }
 
 private struct SyncStatusDot: View {
-    private var sync: MongoSyncService { MongoSyncService.shared }
+    private var sync: RestSyncService { RestSyncService.shared }
     @State private var pulse = false
     @State private var showHint = false
     @AppStorage("syncHintDismissed") private var hintDismissed: Bool = false
