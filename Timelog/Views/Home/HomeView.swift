@@ -95,6 +95,9 @@ struct HomeView: View {
                         }
                     }
                     .listStyle(.inset)
+                    .refreshable {
+                        try? await RestSyncService.shared.pullAll(into: context)
+                    }
                 }
             }
             .navigationTitle("Timelog")
