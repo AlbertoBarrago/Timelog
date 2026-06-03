@@ -135,6 +135,29 @@ public final class NotificationManager {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [Self.idleNotificationID])
     }
 
+    // MARK: - Missing hours alert
+
+    private static let missingHoursNotificationID = "timelog_missing_hours"
+
+    public func scheduleMissingHoursAlert(endHour: Int, endMinute: Int) {
+        cancelMissingHoursAlert()
+        let calendar = Calendar.current
+        guard let fireDate = calendar.date(bySettingHour: endHour, minute: endMinute, second: 0, of: Date()),
+              fireDate > .now else { return }
+        let content = UNMutableNotificationContent()
+        content.title = String(localized: "Did you forget to track today?")
+        content.body = String(localized: "Your office hours are ending. Log your time before you go.")
+        content.sound = .default
+        let components = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: fireDate)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+        let request = UNNotificationRequest(identifier: Self.missingHoursNotificationID, content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request)
+    }
+
+    public func cancelMissingHoursAlert() {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [Self.missingHoursNotificationID])
+    }
+
     public func notifyPhaseTransition(to phase: String, completedCount: Int) {
         let content = UNMutableNotificationContent()
         content.sound = .default

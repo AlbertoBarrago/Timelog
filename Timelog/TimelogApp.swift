@@ -127,6 +127,39 @@ private struct IdleAlertModifier: ViewModifier {
     }
 }
 
+private struct EndOfDayAlertModifier: ViewModifier {
+    @Environment(\.scenePhase) private var scenePhase
+    @Environment(SettingsStore.self) private var settings
+    @Query(sort: \TimeEntry.date, order: .reverse) private var entries: [TimeEntry]
+
+    func body(content: Content) -> some View {
+        content
+            .onAppear { updateAlert() }
+            .onChange(of: entries.count) { _, _ in updateAlert() }
+            .onChange(of: scenePhase) { _, phase in if phase == .active { updateAlert() } }
+            .onChange(of: settings.missingHoursAlertEnabled) { _, _ in updateAlert() }
+            .onChange(of: settings.trackingEndHour) { _, _ in updateAlert() }
+            .onChange(of: settings.trackingEndMinute) { _, _ in updateAlert() }
+    }
+
+    private func updateAlert() {
+        guard settings.missingHoursAlertEnabled else {
+            NotificationManager.shared.cancelMissingHoursAlert()
+            return
+        }
+        let todayStart = Calendar.current.startOfDay(for: Date())
+        let hasEntriesForToday = entries.contains { $0.date >= todayStart && $0.deletedAt == nil }
+        if hasEntriesForToday {
+            NotificationManager.shared.cancelMissingHoursAlert()
+        } else {
+            NotificationManager.shared.scheduleMissingHoursAlert(
+                endHour: settings.trackingEndHour,
+                endMinute: settings.trackingEndMinute
+            )
+        }
+    }
+}
+
 @main
 struct TimelogApp: App {
     @State private var settings  = SettingsStore()
@@ -147,6 +180,7 @@ struct TimelogApp: App {
                     .modifier(RestSyncSetup())
                     .modifier(SyncFlashOverlay())
                     .modifier(IdleAlertModifier())
+                    .modifier(EndOfDayAlertModifier())
 
                 if showSplash {
                     SplashView(isShowing: $showSplash)

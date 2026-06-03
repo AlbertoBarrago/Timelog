@@ -54,10 +54,11 @@ struct SettingsView: View {
                     if store.idleAlertEnabled {
                         Stepper("After \(store.idleAlertMinutes) min", value: $store.idleAlertMinutes, in: 1...120)
                     }
+                    Toggle("Alert if no hours logged", isOn: $store.missingHoursAlertEnabled)
                 } header: {
                     Text("Smart Tracking")
                 } footer: {
-                    Text("You'll receive a notification if a session is still running at this time, or if you have no active session after the idle threshold.")
+                    Text("You'll receive a notification if a session is still running at this time, if you have no active session after the idle threshold, or if no hours have been logged for the day by closing time.")
                 }
 
                 Section {
