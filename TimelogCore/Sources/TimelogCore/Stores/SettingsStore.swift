@@ -22,6 +22,7 @@ public final class SettingsStore {
     public var idleAlertEnabled: Bool = false { didSet { save() } }
     public var idleAlertMinutes: Int = 10 { didSet { save() } }
 
+    public var showHistory: Bool = true { didSet { save() } }
     public var missingHoursAlertEnabled: Bool = false { didSet { save() } }
 
     private let defaults: UserDefaults
@@ -57,6 +58,7 @@ public final class SettingsStore {
         trackingEndMinute = defaults.object(forKey: "tracking_end_minute") != nil ? defaults.integer(forKey: "tracking_end_minute") : 0
         idleAlertEnabled  = defaults.bool(forKey: "idle_alert_enabled")
         idleAlertMinutes  = defaults.object(forKey: "idle_alert_minutes")  != nil ? defaults.integer(forKey: "idle_alert_minutes")  : 10
+        showHistory       = defaults.object(forKey: "show_history") != nil ? defaults.bool(forKey: "show_history") : true
         missingHoursAlertEnabled = defaults.bool(forKey: "missing_hours_alert_enabled")
     }
 
@@ -76,6 +78,7 @@ public final class SettingsStore {
         defaults.set(trackingEndMinute,  forKey: "tracking_end_minute")
         defaults.set(idleAlertEnabled,   forKey: "idle_alert_enabled")
         defaults.set(idleAlertMinutes,   forKey: "idle_alert_minutes")
+        defaults.set(showHistory,        forKey: "show_history")
         defaults.set(missingHoursAlertEnabled, forKey: "missing_hours_alert_enabled")
     }
 

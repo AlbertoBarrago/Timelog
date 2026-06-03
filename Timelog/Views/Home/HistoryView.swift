@@ -3,6 +3,8 @@ import SwiftData
 import SwiftUI
 
 struct HistoryView: View {
+    var embedded: Bool = false
+
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
     @Environment(SettingsStore.self) private var settings
@@ -71,8 +73,10 @@ struct HistoryView: View {
             }
             .navigationTitle("History")
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Done") { dismiss() }
+                if !embedded {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Done") { dismiss() }
+                    }
                 }
             }
             .sheet(item: $entryToEdit) { QuickLogSheet(entry: $0) }

@@ -97,6 +97,15 @@ struct MacSettingsView: View {
                 Text("Reset & Pull re-downloads all data from the server.")
             }
 
+            // MARK: Navigation
+            Section {
+                Toggle(String(localized: "Show History in sidebar"), isOn: $store.showHistory)
+            } header: {
+                Text("Navigation")
+            } footer: {
+                Text("When disabled, the History item is removed from the sidebar.")
+            }
+
             // MARK: Export
             Section("Export") {
                 Button("Export this week via Email") { exportEmail() }

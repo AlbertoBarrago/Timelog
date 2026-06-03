@@ -12,6 +12,11 @@ struct ContentView: View {
             HomeView()
                 .tabItem { Label(AppTab.today.title, systemImage: AppTab.today.icon) }
                 .tag(AppTab.today)
+            if settings.showHistory {
+                HistoryView(embedded: true)
+                    .tabItem { Label(AppTab.history.title, systemImage: AppTab.history.icon) }
+                    .tag(AppTab.history)
+            }
             ClientsView()
                 .tabItem { Label(AppTab.clients.title, systemImage: AppTab.clients.icon) }
                 .tag(AppTab.clients)

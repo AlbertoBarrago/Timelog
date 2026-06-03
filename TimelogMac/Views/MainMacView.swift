@@ -9,7 +9,8 @@ enum SidebarItem: String, CaseIterable, Identifiable {
     case timer    = "Timer"
     case settings = "Settings"
 
-    static let primaryItems: [SidebarItem] = [.today, .history, .clients, .timer]
+    static let primaryItemsWithHistory: [SidebarItem] = [.today, .history, .clients, .timer]
+    static let primaryItemsWithoutHistory: [SidebarItem] = [.today, .clients, .timer]
 
     var id: String { rawValue }
     var icon: String {
@@ -46,11 +47,16 @@ struct MainMacView: View {
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
             VStack(spacing: 0) {
-                List(SidebarItem.primaryItems, selection: $selection) { item in
+                List(settings.showHistory ? SidebarItem.primaryItemsWithHistory : SidebarItem.primaryItemsWithoutHistory, selection: $selection) { item in
                     Label(LocalizedStringKey(item.rawValue), systemImage: item.icon)
                         .tag(item)
                 }
                 .listStyle(.sidebar)
+                .onChange(of: settings.showHistory) { _, showHistory in
+                    if !showHistory && selection == .history {
+                        selection = .today
+                    }
+                }
 
                 Spacer(minLength: 0)
 
