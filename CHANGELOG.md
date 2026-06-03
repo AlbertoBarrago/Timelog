@@ -7,6 +7,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [1.3.0] — 2026-06-03
+
 ### Added
 - **Real-time sync via Server-Sent Events** — both iOS and macOS now receive a `{ type: "change" }` event from `GET /api/events` within ~1 s of any remote change, triggering an immediate pull. Latency drops from up to 30 s (polling) to under 1 s in both directions.
 - **`GET /api/events` server endpoint** — Vercel function that opens a MongoDB Change Stream on the entire `timelog` database and forwards events as SSE. Sends heartbeats every 25 s; closes cleanly on client disconnect.
