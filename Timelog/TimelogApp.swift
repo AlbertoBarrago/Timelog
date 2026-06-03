@@ -7,6 +7,7 @@ import UserNotifications
 
 private struct RestSyncSetup: ViewModifier {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.scenePhase) private var scenePhase
     @Environment(SettingsStore.self) private var settings
     @Query private var clients:  [Client]
     @Query private var projects: [Project]
@@ -17,10 +18,23 @@ private struct RestSyncSetup: ViewModifier {
     func body(content: Content) -> some View {
         content
             .onAppear { setup() }
+            .onChange(of: scenePhase) { _, newPhase in
+                if newPhase == .active { pullLatest() }
+            }
             .onChange(of: clients.count)  { _, _ in if !isPulling { RestSyncService.shared.triggerSync() } }
             .onChange(of: projects.count) { _, _ in if !isPulling { RestSyncService.shared.triggerSync() } }
             .onChange(of: entries.count)  { _, _ in if !isPulling { RestSyncService.shared.triggerSync() } }
             .onChange(of: sessions.count) { _, _ in if !isPulling { RestSyncService.shared.triggerSync() } }
+    }
+
+    private func pullLatest() {
+        guard RestSyncService.shared.isConfigured, !isPulling else { return }
+        let ctx = modelContext
+        Task {
+            isPulling = true
+            try? await RestSyncService.shared.pullAll(into: ctx)
+            isPulling = false
+        }
     }
 
     private func setup() {

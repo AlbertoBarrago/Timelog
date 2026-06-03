@@ -7,10 +7,12 @@ import AppKit
 
 private struct MongoSyncSetup: ViewModifier {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.scenePhase) private var scenePhase
     @Query private var clients: [Client]
     @Query private var projects: [Project]
     @Query private var entries: [TimeEntry]
     @Query private var sessions: [ActiveSession]
+    @State private var pollTask: Task<Void, Never>?
 
     func body(content: Content) -> some View {
         content
@@ -31,8 +33,38 @@ private struct MongoSyncSetup: ViewModifier {
                     try? await MongoSyncService.shared.pullAll(into: modelContext)
                     MongoSyncService.shared.triggerSync()
                 }
+                startPolling()
+            }
+            .onDisappear { stopPolling() }
+            .onChange(of: scenePhase) { _, newPhase in
+                if newPhase == .active { pullLatest() }
             }
             .onChange(of: dataFingerprint) { _, _ in MongoSyncService.shared.triggerSync() }
+    }
+
+    private func pullLatest() {
+        let ctx = modelContext
+        Task {
+            guard !MongoSyncService.shared.isSyncing else { return }
+            try? await MongoSyncService.shared.connect()
+            try? await MongoSyncService.shared.pullAll(into: ctx)
+        }
+    }
+
+    private func startPolling() {
+        pollTask?.cancel()
+        pollTask = Task {
+            while !Task.isCancelled {
+                try? await Task.sleep(for: .seconds(30))
+                guard !Task.isCancelled else { break }
+                pullLatest()
+            }
+        }
+    }
+
+    private func stopPolling() {
+        pollTask?.cancel()
+        pollTask = nil
     }
 
     private var dataFingerprint: Int {
