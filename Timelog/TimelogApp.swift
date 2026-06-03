@@ -29,9 +29,9 @@ private struct RestSyncSetup: ViewModifier {
 
     private func pullLatest() {
         guard RestSyncService.shared.isConfigured, !isPulling else { return }
+        isPulling = true
         let ctx = modelContext
         Task {
-            isPulling = true
             try? await RestSyncService.shared.pullAll(into: ctx)
             isPulling = false
         }
@@ -51,8 +51,8 @@ private struct RestSyncSetup: ViewModifier {
             )
         }
         guard RestSyncService.shared.isConfigured else { return }
+        isPulling = true
         Task {
-            isPulling = true
             try? await RestSyncService.shared.pullAll(into: modelContext)
             isPulling = false
         }

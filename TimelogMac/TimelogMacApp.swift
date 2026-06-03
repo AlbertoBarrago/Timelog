@@ -13,6 +13,7 @@ private struct MongoSyncSetup: ViewModifier {
     @Query private var entries: [TimeEntry]
     @Query private var sessions: [ActiveSession]
     @State private var pollTask: Task<Void, Never>?
+    @State private var isPulling = false
 
     func body(content: Content) -> some View {
         content
@@ -43,9 +44,11 @@ private struct MongoSyncSetup: ViewModifier {
     }
 
     private func pullLatest() {
+        guard !isPulling else { return }
+        isPulling = true
         let ctx = modelContext
         Task {
-            guard !MongoSyncService.shared.isSyncing else { return }
+            defer { isPulling = false }
             try? await MongoSyncService.shared.connect()
             try? await MongoSyncService.shared.pullAll(into: ctx)
         }
