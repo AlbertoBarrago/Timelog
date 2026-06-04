@@ -117,6 +117,58 @@ struct HistoryMacView: View {
         weekDays.map { minutesForDay($0) }.max() ?? 0
     }
 
+    // MARK: - Heatmap data
+
+    /// Trailing ~17-week window ending on the selected date (GitHub-style range).
+    private var heatmapRange: (start: Date, end: Date) {
+        let cal = Calendar.current
+        let end = cal.startOfDay(for: selectedDate)
+        let start = cal.date(byAdding: .day, value: -118, to: end) ?? end
+        return (start, end)
+    }
+
+    private func clientKey(_ client: Client?) -> String? {
+        guard let client else { return nil }
+        return client.mongoId ?? client.name
+    }
+
+    private var heatmapEntriesInRange: [TimeEntry] {
+        let (start, end) = heatmapRange
+        let cal = Calendar.current
+        let endExclusive = cal.date(byAdding: .day, value: 1, to: end) ?? end
+        return userEntries.filter { $0.date >= start && $0.date < endExclusive }
+    }
+
+    private var heatmapDays: [HeatmapDay] {
+        let (start, end) = heatmapRange
+        let entries = heatmapEntriesInRange.map {
+            HistoryHeatmap.Entry(date: $0.date, clientId: clientKey($0.client), minutes: $0.durationMinutes)
+        }
+        return HistoryHeatmap.days(entries: entries, from: start, to: end)
+    }
+
+    private var heatmapMaxMinutes: Int { heatmapDays.map(\.minutes).max() ?? 0 }
+
+    private var heatmapClientColors: [String: Color] {
+        var map: [String: Color] = [:]
+        for entry in heatmapEntriesInRange {
+            if let key = clientKey(entry.client) {
+                map[key] = entry.client?.color ?? Color.secondary.opacity(0.5)
+            }
+        }
+        return map
+    }
+
+    private var heatmapClientNames: [String: String] {
+        var map: [String: String] = [:]
+        for entry in heatmapEntriesInRange {
+            if let key = clientKey(entry.client) {
+                map[key] = entry.client?.name ?? ""
+            }
+        }
+        return map
+    }
+
     // MARK: - Grouped entries
 
     private struct ClientGroup: Identifiable {
@@ -171,18 +223,29 @@ struct HistoryMacView: View {
             // Accordion: hours per project
             Section {
                 DisclosureGroup(isExpanded: $isChartExpanded) {
-                    Picker("", selection: $bubblePeriod) {
-                        ForEach(BubblePeriod.allCases) { p in
-                            Text(p.localizedLabel).tag(p)
+                    if settings.historyChartStyle == .donut {
+                        Picker("", selection: $bubblePeriod) {
+                            ForEach(BubblePeriod.allCases) { p in
+                                Text(p.localizedLabel).tag(p)
+                            }
                         }
-                    }
-                    .pickerStyle(.segmented)
-                    .labelsHidden()
-                    .padding(.top, 4)
+                        .pickerStyle(.segmented)
+                        .labelsHidden()
+                        .padding(.top, 4)
 
-                    DonutChartView(bubbles: projectBubbles)
+                        DonutChartView(bubbles: projectBubbles)
+                    } else {
+                        ContributionHeatmapView(
+                            days: heatmapDays,
+                            maxMinutes: heatmapMaxMinutes,
+                            colorForClient: { id in id.flatMap { heatmapClientColors[$0] } ?? Color.gray.opacity(0.55) },
+                            nameForClient: { id in id.flatMap { heatmapClientNames[$0] } ?? String(localized: "No client") }
+                        )
+                    }
                 } label: {
-                    Text(String(localized: "Hours by project"))
+                    Text(settings.historyChartStyle == .donut
+                         ? String(localized: "Hours by project")
+                         : String(localized: "Activity"))
                         .font(.caption.weight(.semibold))
                         .foregroundStyle(.secondary)
                 }

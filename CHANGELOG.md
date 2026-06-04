@@ -7,6 +7,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- **GitHub-style activity heatmap (macOS)** — the History "Hours by project" section can now display a contribution-style grid of day cells coloured by each day's prevailing client, with opacity scaled by minutes logged (trailing ~17 weeks). Selectable via Settings → History → "History chart style" (Donut / Heatmap).
+- **`HistoryHeatmap`** (`TimelogCore`) — pure, unit-tested aggregation that buckets entries into per-day cells with the dominant client; covered by `HistoryHeatmapTests`.
+
+### Changed
+- **`SettingsStore.historyChartStyle`** — new persisted preference (`history_chart_style`) replacing the previous `showHistory` flag.
+
+### Removed
+- **"Show History" toggle** — the option to hide the History tab (iOS) / sidebar item (macOS) added in 1.3.0 has been removed; History is always available.
+
 ---
 
 ## [1.3.0] — 2026-06-03

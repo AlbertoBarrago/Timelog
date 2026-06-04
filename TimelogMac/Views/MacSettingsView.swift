@@ -97,13 +97,16 @@ struct MacSettingsView: View {
                 Text("Reset & Pull re-downloads all data from the server.")
             }
 
-            // MARK: Navigation
+            // MARK: History
             Section {
-                Toggle(String(localized: "Show History in sidebar"), isOn: $store.showHistory)
+                Picker(String(localized: "History chart style"), selection: $store.historyChartStyle) {
+                    Text("Donut").tag(HistoryChartStyle.donut)
+                    Text("Heatmap").tag(HistoryChartStyle.heatmap)
+                }
             } header: {
-                Text("Navigation")
+                Text("History")
             } footer: {
-                Text("When disabled, the History item is removed from the sidebar.")
+                Text("Donut shows hours by project; Heatmap shows a GitHub-style activity grid coloured by the day's main client.")
             }
 
             // MARK: Export

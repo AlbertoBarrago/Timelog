@@ -76,14 +76,6 @@ struct SettingsView: View {
                 }
 
                 Section {
-                    Toggle("Show History tab", isOn: $store.showHistory)
-                } header: {
-                    Text("Navigation")
-                } footer: {
-                    Text("When enabled, a History tab appears in the tab bar for quick access to past entries.")
-                }
-
-                Section {
                     Button("Show guide again") { onboardingCompleted = false }
                 }
 
