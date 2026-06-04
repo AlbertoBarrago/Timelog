@@ -95,7 +95,9 @@ ok "Commit creato"
 # ── Ripristina modifiche locali su MAC_PROJ ───────────────────────────
 if $MAC_SKIP_WORKTREE; then
   if [[ -s "$MAC_LOCAL_PATCH" ]]; then
-    git apply --fuzz=5 "$MAC_LOCAL_PATCH" 2>/dev/null || warn "Patch locale MAC_PROJ non applicata — riverifica manualmente il signing"
+    # Aggiorna il build number nel patch (il context è già cambiato dopo il bump)
+    sed -i "" "s/ CURRENT_PROJECT_VERSION = $CURRENT_BUILD;$/ CURRENT_PROJECT_VERSION = $NEW_BUILD;/g" "$MAC_LOCAL_PATCH"
+    git apply "$MAC_LOCAL_PATCH" 2>/dev/null || warn "Patch locale MAC_PROJ non applicata — riverifica manualmente il signing"
   fi
   git update-index --skip-worktree "$MAC_PROJ"
   ok "skip-worktree ripristinato su TimelogMac.xcodeproj"
