@@ -58,6 +58,16 @@ echo ""
 echo -e "  ${YELLOW}${CURRENT}${NC} → ${GREEN}${NEW_VERSION}${NC}  (build ${CURRENT_BUILD} → ${NEW_BUILD})"
 echo ""
 
+# ── Gestisci skip-worktree su MAC_PROJ ────────────────────────────────
+MAC_SKIP_WORKTREE=false
+MAC_LOCAL_PATCH="/tmp/timelog_mac_local.patch"
+if git ls-files -v "$MAC_PROJ" | grep -q "^S"; then
+  MAC_SKIP_WORKTREE=true
+  git update-index --no-skip-worktree "$MAC_PROJ"
+  git diff "$MAC_PROJ" > "$MAC_LOCAL_PATCH"
+  git checkout -- "$MAC_PROJ"
+fi
+
 # ── Bump versioni nei .xcodeproj ──────────────────────────────────────
 perl -i -p -e \
   "s/MARKETING_VERSION = [0-9]+\.[0-9]+(\.[0-9]+)?;/MARKETING_VERSION = $NEW_VERSION;/g" \
@@ -81,6 +91,15 @@ ok "CHANGELOG aggiornato → [$NEW_VERSION] — $TODAY"
 git add "$IOS_PROJ" "$MAC_PROJ" "$CHANGELOG"
 git commit -m "chore: release $NEW_VERSION (build $NEW_BUILD)"
 ok "Commit creato"
+
+# ── Ripristina modifiche locali su MAC_PROJ ───────────────────────────
+if $MAC_SKIP_WORKTREE; then
+  if [[ -s "$MAC_LOCAL_PATCH" ]]; then
+    git apply --fuzz=5 "$MAC_LOCAL_PATCH" 2>/dev/null || warn "Patch locale MAC_PROJ non applicata — riverifica manualmente il signing"
+  fi
+  git update-index --skip-worktree "$MAC_PROJ"
+  ok "skip-worktree ripristinato su TimelogMac.xcodeproj"
+fi
 
 # ── Tag ───────────────────────────────────────────────────────────────
 git tag -f "v$NEW_VERSION"
