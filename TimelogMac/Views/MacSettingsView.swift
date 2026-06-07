@@ -147,6 +147,7 @@ struct MacSettingsView: View {
                             NotificationManager.shared.cancelSession(id: s.notificationID)
                             modelContext.delete(s)
                         }
+                        try? modelContext.save()
                     }
                     Button("Cancel", role: .cancel) {}
                 } message: {

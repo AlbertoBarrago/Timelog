@@ -389,6 +389,11 @@ private struct DayBar: View {
         }
         .buttonStyle(.plain)
         .disabled(isFuture)
+        .accessibilityLabel(
+            minutes > 0 && !isFuture
+                ? "\(date.formatted(.dateTime.weekday(.long).month().day())), \(minutes) min tracked"
+                : date.formatted(.dateTime.weekday(.long).month().day())
+        )
     }
 }
 

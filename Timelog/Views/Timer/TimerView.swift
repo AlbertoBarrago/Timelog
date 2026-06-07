@@ -61,9 +61,6 @@ struct TimerView: View {
                     }
                     .buttonStyle(.plain)
                     .accessibilityLabel(vm.isRunning ? String(localized: "Pause timer") : String(localized: "Start timer"))
-                    #if targetEnvironment(macCatalyst)
-                    .keyboardShortcut(.space, modifiers: [])
-                    #endif
 
                     Toggle(isOn: Binding(
                         get: { vm.pomodoroEnabled },

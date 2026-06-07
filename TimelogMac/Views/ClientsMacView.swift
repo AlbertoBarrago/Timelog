@@ -386,9 +386,10 @@ struct ClientMacFormView: View {
     }
 
     private func save() {
-        dismiss()
         if let c = client { c.name = name; c.colorHex = colorHex }
         else { context.insert(Client(name: name, colorHex: colorHex, userId: settings.userId)) }
+        try? context.save()
+        dismiss()
     }
 }
 
@@ -471,7 +472,6 @@ struct ProjectMacFormView: View {
     }
 
     private func save() {
-        dismiss()
         if let p = project {
             p.name = name
             p.code = code.isEmpty ? nil : code
@@ -482,5 +482,7 @@ struct ProjectMacFormView: View {
             p.labels = labels
             context.insert(p)
         }
+        try? context.save()
+        dismiss()
     }
 }

@@ -120,11 +120,6 @@ struct HomeView: View {
                     }
                     .accessibilityLabel(String(localized: "Log time"))
                 }
-                #if targetEnvironment(macCatalyst)
-                ToolbarItem(placement: .secondaryAction) {
-                    TimerQuickToggle()
-                }
-                #endif
             }
             .sheet(item: $activeSheet) { sheet in
                 switch sheet {

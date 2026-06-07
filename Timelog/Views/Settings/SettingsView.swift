@@ -66,6 +66,7 @@ struct SettingsView: View {
                         Task { try? await RestSyncService.shared.pullAll(into: context) }
                     }
                     .disabled(!RestSyncService.shared.isConfigured)
+                    .accessibilityLabel(String(localized: "Sync Now"))
                     RestSyncStatusRow()
                 } header: {
                     Text("Sync")
@@ -73,10 +74,12 @@ struct SettingsView: View {
 
                 Section("Export") {
                     Button("Export this week via Email") { exportEmail() }
+                        .accessibilityLabel(String(localized: "Export this week via Email"))
                 }
 
                 Section {
                     Button("Show guide again") { onboardingCompleted = false }
+                        .accessibilityLabel(String(localized: "Show guide again"))
                 }
 
                 Section("Account") {
@@ -108,6 +111,7 @@ struct SettingsView: View {
                                 NotificationManager.shared.cancelSession(id: s.notificationID)
                                 context.delete(s)
                             }
+                            try? context.save()
                         }
                         Button("Cancel", role: .cancel) {}
                     } message: {
@@ -118,11 +122,6 @@ struct SettingsView: View {
             .formStyle(.grouped)
             .navigationTitle("Settings")
             .toolbar {
-                #if targetEnvironment(macCatalyst)
-                ToolbarItem(placement: .secondaryAction) {
-                    TimerQuickToggle()
-                }
-                #endif
             }
         }
     }
