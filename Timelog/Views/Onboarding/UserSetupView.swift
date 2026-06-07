@@ -51,6 +51,7 @@ struct UserSetupView: View {
                     .foregroundStyle(.white)
             }
             .disabled(trimmed.isEmpty)
+            .accessibilityLabel(String(localized: "Get Started"))
             .padding(.horizontal, 24)
             .padding(.bottom, 32)
         }

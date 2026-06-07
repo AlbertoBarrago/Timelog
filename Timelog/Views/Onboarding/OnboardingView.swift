@@ -66,6 +66,7 @@ struct OnboardingView: View {
                         .background(Color.accentColor, in: RoundedRectangle(cornerRadius: 14))
                         .foregroundStyle(.white)
                 }
+                .accessibilityLabel(String(localized: "Get Started"))
                 .padding(.horizontal, 24)
                 .padding(.bottom, 16)
             } else {
@@ -77,6 +78,7 @@ struct OnboardingView: View {
                         .background(Color.accentColor, in: RoundedRectangle(cornerRadius: 14))
                         .foregroundStyle(.white)
                 }
+                .accessibilityLabel(String(localized: "Next page"))
                 .padding(.horizontal, 24)
                 .padding(.bottom, 16)
             }
@@ -87,8 +89,8 @@ struct OnboardingView: View {
 private struct OnboardingPage {
     let symbol: String
     let color: Color
-    let title: String
-    let body: String
+    let title: LocalizedStringKey
+    let body: LocalizedStringKey
 }
 
 private struct PageView: View {

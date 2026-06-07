@@ -90,7 +90,9 @@ private struct SyncFlashOverlay: ViewModifier {
                     .animation(.easeOut(duration: 0.5), value: flash)
             )
             .onChange(of: RestSyncService.shared.lastSyncDate) { _, _ in
+                #if os(iOS)
                 UINotificationFeedbackGenerator().notificationOccurred(.success)
+                #endif
                 flash = true
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { flash = false }
             }

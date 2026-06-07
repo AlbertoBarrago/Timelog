@@ -67,9 +67,11 @@ struct ClientsView: View {
                                 Button(role: .destructive) { clientToDelete = client } label: {
                                     Label("Delete", systemImage: "trash")
                                 }
+                                .accessibilityLabel(String(localized: "Delete client"))
                                 Button { activeSheet = .edit(client) } label: {
                                     Label("Edit", systemImage: "pencil")
                                 }
+                                .accessibilityLabel(String(localized: "Edit client"))
                             }
                             .swipeActions(edge: .leading) {
                                 Button {
@@ -80,6 +82,9 @@ struct ClientsView: View {
                                           systemImage: client.isArchived ? "tray.and.arrow.up" : "archivebox")
                                 }
                                 .tint(.orange)
+                                .accessibilityLabel(client.isArchived
+                                    ? String(localized: "Unarchive client")
+                                    : String(localized: "Archive client"))
                             }
                         }
                     }
@@ -118,12 +123,10 @@ struct ClientsView: View {
                         Label(showArchived ? "Hide archived" : "Show archived",
                               systemImage: showArchived ? "archivebox.fill" : "archivebox")
                     }
+                    .accessibilityLabel(showArchived
+                        ? String(localized: "Hide archived clients")
+                        : String(localized: "Show archived clients"))
                 }
-                #if targetEnvironment(macCatalyst)
-                ToolbarItem(placement: .secondaryAction) {
-                    TimerQuickToggle()
-                }
-                #endif
             }
             .sheet(item: $activeSheet) { sheet in
                 switch sheet {
