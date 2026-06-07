@@ -7,6 +7,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+- **Missing `context.save()` after insert/delete** — `ClientsMacView` (new Client, new Project forms) and `SettingsView` / `MacSettingsView` (delete-all action) now call `try? context.save()` explicitly, preventing data loss on app termination before auto-save fires.
+- **Dead `#if targetEnvironment(macCatalyst)` blocks removed** — four Catalyst toolbar guards in `ClientsView`, `SettingsView`, `HomeView`, `TimerView` are gone; the iOS project has no Catalyst target so the code was unreachable.
+- **`UINotificationFeedbackGenerator` wrapped in `#if os(iOS)`** — prevents a theoretical build failure if the sync-flash modifier were ever compiled outside iOS.
+
+### Changed
+- **`OnboardingPage.title/body` use `LocalizedStringKey`** — titles and body text in the onboarding carousel are now properly resolved through the localisation system instead of being displayed verbatim.
+
+### Accessibility
+- Added `.accessibilityLabel` to 10 previously unlabelled interactive elements: Delete / Edit / Archive swipe buttons and "Show archived" toolbar button in `ClientsView`; Sync Now, Export, Show guide buttons in `SettingsView`; Get Started and Next buttons in `OnboardingView` / `UserSetupView`; calendar day-bar button in `HistoryMacView` (announces date and minutes tracked).
+
 ---
 
 ## [1.3.1] — 2026-06-04
