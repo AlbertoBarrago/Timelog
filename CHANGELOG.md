@@ -11,6 +11,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [1.3.2] — 2026-06-07
 
+---
+
+## [1.3.2] — 2026-06-07
+
 ### Fixed
 - **Missing `context.save()` after insert/delete** — `ClientsMacView` (new Client, new Project forms) and `SettingsView` / `MacSettingsView` (delete-all action) now call `try? context.save()` explicitly, preventing data loss on app termination before auto-save fires.
 - **Dead `#if targetEnvironment(macCatalyst)` blocks removed** — four Catalyst toolbar guards in `ClientsView`, `SettingsView`, `HomeView`, `TimerView` are gone; the iOS project has no Catalyst target so the code was unreachable.
