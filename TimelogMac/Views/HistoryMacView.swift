@@ -391,8 +391,8 @@ private struct DayBar: View {
         .disabled(isFuture)
         .accessibilityLabel(
             minutes > 0 && !isFuture
-                ? "\(date.formatted(.dateTime.weekday(.long).month().day())), \(minutes) min tracked"
-                : date.formatted(.dateTime.weekday(.long).month().day())
+                ? "\(date.formatted(.dateTime.weekday(.wide).month().day())), \(minutes) min tracked"
+                : date.formatted(.dateTime.weekday(.wide).month().day())
         )
     }
 }
