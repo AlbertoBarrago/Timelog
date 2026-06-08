@@ -12,9 +12,18 @@ struct ContributionHeatmapView: View {
     /// Maps a client id (or `nil`) to its display name (used for tooltip / a11y).
     let nameForClient: (String?) -> String
 
-    private let cellSize: CGFloat = 13
+    @State private var availableWidth: CGFloat = 0
     private let spacing: CGFloat = 3
     private var cal: Calendar { .current }
+
+    /// Dynamic cell size that fills the full container width.
+    /// Formula: availableWidth = 14 (weekday col) + nCols*(cs+spacing) - spacing
+    private var cellSize: CGFloat {
+        guard availableWidth > 20, !columns.isEmpty else { return 13 }
+        let nCols = CGFloat(columns.count)
+        let cs = (availableWidth - 14) / nCols - spacing
+        return max(9, min(18, cs))
+    }
 
     private var neutral: Color { Color.secondary.opacity(0.12) }
 
@@ -47,19 +56,18 @@ struct ContributionHeatmapView: View {
             VStack(alignment: .leading, spacing: 8) {
                 HStack(alignment: .top, spacing: spacing) {
                     weekdayColumn
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: spacing) {
-                            ForEach(Array(columns.enumerated()), id: \.offset) { _, column in
-                                VStack(spacing: spacing) {
-                                    ForEach(0 ..< 7, id: \.self) { row in
-                                        cell(row < column.count ? column[row] : nil)
-                                    }
+                    HStack(spacing: spacing) {
+                        ForEach(Array(columns.enumerated()), id: \.offset) { _, column in
+                            VStack(spacing: spacing) {
+                                ForEach(0 ..< 7, id: \.self) { row in
+                                    cell(row < column.count ? column[row] : nil)
                                 }
                             }
                         }
                     }
-                    .defaultScrollAnchor(.trailing)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .onGeometryChange(for: CGFloat.self, of: { $0.size.width }) { availableWidth = $0 }
                 legend
             }
             .padding(.top, 4)
