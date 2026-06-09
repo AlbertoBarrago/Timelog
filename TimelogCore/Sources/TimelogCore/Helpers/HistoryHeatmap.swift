@@ -9,13 +9,16 @@ public struct HeatmapDay: Identifiable, Sendable, Equatable {
     /// Identifier of the client with the most minutes this day (`nil` when the
     /// day is empty or the prevailing bucket has no client).
     public let dominantClientId: String?
+    /// Minutes per client id for this day; nil key = entries with no client.
+    public let clientMinutes: [String?: Int]
 
     public var id: Date { date }
 
-    public init(date: Date, minutes: Int, dominantClientId: String?) {
+    public init(date: Date, minutes: Int, dominantClientId: String?, clientMinutes: [String?: Int] = [:]) {
         self.date = date
         self.minutes = minutes
         self.dominantClientId = dominantClientId
+        self.clientMinutes = clientMinutes
     }
 }
 
@@ -71,7 +74,7 @@ public enum HistoryHeatmap {
                     // Deterministic tie-break: nil sorts before any id, then lexicographic.
                     return (lhs.key ?? "") < (rhs.key ?? "")
                 }?.key ?? nil
-                result.append(HeatmapDay(date: cursor, minutes: total, dominantClientId: dominant))
+                result.append(HeatmapDay(date: cursor, minutes: total, dominantClientId: dominant, clientMinutes: perClient))
             } else {
                 result.append(HeatmapDay(date: cursor, minutes: 0, dominantClientId: nil))
             }

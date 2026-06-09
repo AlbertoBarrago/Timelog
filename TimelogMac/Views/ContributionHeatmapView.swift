@@ -13,6 +13,8 @@ struct ContributionHeatmapView: View {
     let nameForClient: (String?) -> String
 
     @State private var availableWidth: CGFloat = 0
+    // @Observable so mutating hover state does NOT re-render the cells themselves.
+    @State private var hover = HoverTracker()
     private let spacing: CGFloat = 3
     private var cal: Calendar { .current }
 
@@ -56,6 +58,8 @@ struct ContributionHeatmapView: View {
             VStack(alignment: .leading, spacing: 8) {
                 HStack(alignment: .top, spacing: spacing) {
                     weekdayColumn
+                    // Cell grid — onContinuousHover on the whole grid avoids
+                    // per-cell GeometryReader which caused re-render flicker.
                     HStack(spacing: spacing) {
                         ForEach(Array(columns.enumerated()), id: \.offset) { _, column in
                             VStack(spacing: spacing) {
@@ -64,6 +68,34 @@ struct ContributionHeatmapView: View {
                                 }
                             }
                         }
+                    }
+                    .onContinuousHover { phase in
+                        let cs = cellSize
+                        switch phase {
+                        case .active(let loc):
+                            let col = Int(loc.x / (cs + spacing))
+                            let row = Int(loc.y / (cs + spacing))
+                            guard col >= 0, col < columns.count, row >= 0, row < 7 else {
+                                hover.day = nil; return
+                            }
+                            let column = columns[col]
+                            let d = row < column.count ? column[row] : nil
+                            if let d, d.minutes > 0 {
+                                hover.day = d
+                                hover.position = loc
+                            } else {
+                                hover.day = nil
+                            }
+                        case .ended:
+                            hover.day = nil
+                        }
+                    }
+                    .overlay(alignment: .topLeading) {
+                        // Separate view reads hover state — cells never re-render on hover change.
+                        HoverCardOverlay(hover: hover,
+                                         nameForClient: nameForClient,
+                                         colorForClient: colorForClient,
+                                         cellSize: cellSize)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -99,9 +131,10 @@ struct ContributionHeatmapView: View {
     }
 
     private func cell(_ day: HeatmapDay?) -> some View {
-        RoundedRectangle(cornerRadius: 3)
+        let cs = cellSize
+        return RoundedRectangle(cornerRadius: 3)
             .fill(fill(for: day))
-            .frame(width: cellSize, height: cellSize)
+            .frame(width: cs, height: cs)
             .help(tooltip(for: day))
             .accessibilityLabel(accessibilityLabel(for: day))
     }
@@ -140,5 +173,101 @@ struct ContributionHeatmapView: View {
 
     private func accessibilityLabel(for day: HeatmapDay?) -> Text {
         Text(tooltip(for: day))
+    }
+}
+
+// MARK: - Hover state
+
+/// @Observable so only HoverCardOverlay re-renders on changes; cells are unaffected.
+@Observable private final class HoverTracker {
+    var day: HeatmapDay?
+    var position: CGPoint = .zero
+}
+
+// MARK: - Hover card overlay
+
+private struct HoverCardOverlay: View {
+    let hover: HoverTracker
+    let nameForClient: (String?) -> String
+    let colorForClient: (String?) -> Color
+    let cellSize: CGFloat
+
+    var body: some View {
+        if let day = hover.day {
+            let pos = hover.position
+            let gridH = 7 * cellSize + 6 * CGFloat(3)
+            let cardEstH: CGFloat = 80
+            // Center the card on the cursor, clamped to stay within the grid bounds.
+            let y = max(0, min(pos.y - cardEstH / 2, gridH - cardEstH))
+
+            DayHoverCard(day: day, nameForClient: nameForClient, colorForClient: colorForClient)
+                .fixedSize()
+                .offset(x: max(0, pos.x - 90), y: y)
+                .allowsHitTesting(false)
+                .transition(.opacity)
+                .animation(.easeInOut(duration: 0.1), value: pos)
+        }
+    }
+}
+
+// MARK: - Hover card
+
+private struct DayHoverCard: View {
+    let day: HeatmapDay
+    let nameForClient: (String?) -> String
+    let colorForClient: (String?) -> Color
+
+    private var sortedClients: [(id: String?, color: Color, minutes: Int)] {
+        day.clientMinutes
+            .sorted { $0.value > $1.value }
+            .map { (id: $0.key, color: colorForClient($0.key), minutes: $0.value) }
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text(day.date.formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated).year()))
+                .font(.caption2.weight(.semibold))
+                .foregroundStyle(.secondary)
+                .padding(.horizontal, 10)
+                .padding(.top, 8)
+                .padding(.bottom, 5)
+
+            Divider()
+
+            VStack(alignment: .leading, spacing: 4) {
+                ForEach(Array(sortedClients.enumerated()), id: \.offset) { _, client in
+                    HStack(spacing: 6) {
+                        Circle()
+                            .fill(client.color)
+                            .frame(width: 7, height: 7)
+                        Text(nameForClient(client.id))
+                            .font(.caption2)
+                            .lineLimit(1)
+                        Spacer(minLength: 12)
+                        Text(client.minutes.formattedDuration)
+                            .font(.caption2.monospacedDigit())
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+
+            if sortedClients.count > 1 {
+                Divider()
+                HStack {
+                    Text("Total")
+                        .font(.caption2.weight(.semibold))
+                    Spacer()
+                    Text(day.minutes.formattedDuration)
+                        .font(.caption2.weight(.semibold).monospacedDigit())
+                }
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
+            }
+        }
+        .frame(minWidth: 160, maxWidth: 220)
+        .background(.background, in: RoundedRectangle(cornerRadius: 8))
+        .shadow(color: .black.opacity(0.18), radius: 6, y: 2)
     }
 }
