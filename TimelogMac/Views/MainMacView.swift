@@ -28,12 +28,33 @@ private struct WindowAccessor: NSViewRepresentable {
         let view = NSView()
         DispatchQueue.main.async {
             AppDelegate.mainWindow = view.window
+            Self.lockToolbarDisplayMode(of: view.window)
+        }
+        // La toolbar di NavigationSplitView viene creata in modo lazy:
+        // al primo tick async potrebbe non esistere ancora.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            Self.lockToolbarDisplayMode(of: view.window)
         }
         return view
     }
     func updateNSView(_ nsView: NSView, context: Context) {
         if AppDelegate.mainWindow == nil {
             AppDelegate.mainWindow = nsView.window
+        }
+        Self.lockToolbarDisplayMode(of: nsView.window)
+    }
+
+    /// Cambiare la modalità di visualizzazione della toolbar ("Icona e testo",
+    /// "Solo testo") dal menu contestuale rompe il layout di NavigationSplitView:
+    /// il toggle della sidebar sparisce dal bordo sinistro e riappare in fondo a
+    /// destra. Forziamo .iconOnly e, dove l'API esiste, togliamo le voci dal menu.
+    static func lockToolbarDisplayMode(of window: NSWindow?) {
+        guard let toolbar = window?.toolbar else { return }
+        if toolbar.displayMode != .iconOnly {
+            toolbar.displayMode = .iconOnly
+        }
+        if #available(macOS 15.0, *) {
+            toolbar.allowsDisplayModeCustomization = false
         }
     }
 }
