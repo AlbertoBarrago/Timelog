@@ -148,6 +148,8 @@ private struct SyncStatusDot: View {
                 .fill(dotColor)
                 .frame(width: 7, height: 7)
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(syncStatusDescription)
         .onAppear { pulse = true }
         .onChange(of: sync.isUserEditing) { _, isEditing in
             guard !isEditing, !hintDismissed else { return }
@@ -174,6 +176,13 @@ private struct SyncStatusDot: View {
         if sync.lastError != nil    { return .red }
         if sync.lastSyncDate != nil { return .green }
         return .clear
+    }
+
+    private var syncStatusDescription: String {
+        if sync.isSyncing           { return String(localized: "Sync in progress") }
+        if sync.lastError != nil    { return String(localized: "Sync error") }
+        if sync.lastSyncDate != nil { return String(localized: "Synced") }
+        return String(localized: "Sync not yet run")
     }
 }
 

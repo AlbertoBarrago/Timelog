@@ -106,7 +106,9 @@ struct TodayMacView: View {
         .sheet(isPresented: $showingStartTracking)  { StartTrackingMacView().environment(settings) }
         .sheet(isPresented: $showingHistory)        { HistoryMacView().frame(minWidth: 520, minHeight: 420) }
         .sheet(item: $entryToEdit)                  { QuickLogMacView(entry: $0) }
-        .sheet(item: $sessionToStop)                { StopSessionMacView(session: $0) }
+        .sheet(item: $sessionToStop)                { StopSessionMacView(session: $0,
+                                                                         endHour: settings.trackingEndHour,
+                                                                         endMinute: settings.trackingEndMinute) }
         .syncGated(while: $showingQuickLog)
         .syncGated(while: $showingStartTracking)
         .syncGated(whilePresent: $entryToEdit)

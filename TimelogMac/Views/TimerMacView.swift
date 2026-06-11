@@ -143,6 +143,8 @@ struct TimerMacView: View {
                             .frame(width: 28, height: 6)
                     }
                 }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(String(localized: "\(vm.completedPomodoros % vm.pomodorosBeforeLong) of \(vm.pomodorosBeforeLong) pomodoros completed"))
                 .padding(.top, 2)
             }
         }

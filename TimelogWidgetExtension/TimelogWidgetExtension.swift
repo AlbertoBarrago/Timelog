@@ -63,7 +63,9 @@ struct TimelogWidgetExtensionEntryView: View {
         if let client = entry.snapshot.lastClientName, !client.isEmpty {
             return client
         }
-        return entry.snapshot.activeSessions.isEmpty ? "No entries today" : "Tracking now"
+        return entry.snapshot.activeSessions.isEmpty
+            ? String(localized: "No entries today")
+            : String(localized: "Tracking now")
     }
 
     var body: some View {
@@ -89,7 +91,9 @@ struct TimelogWidgetExtensionEntryView: View {
                 Text(subtitle)
                     .font(.caption)
                     .lineLimit(1)
-                Text(entry.snapshot.activeSessions.isEmpty ? "Logged" : "\(activeMinutes.formattedDuration) active")
+                Text(entry.snapshot.activeSessions.isEmpty
+                     ? String(localized: "Logged")
+                     : String(localized: "\(activeMinutes.formattedDuration) active"))
                     .font(.caption2)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)

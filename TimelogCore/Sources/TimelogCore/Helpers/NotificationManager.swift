@@ -14,8 +14,8 @@ public final class NotificationManager {
     public func reschedule(hour: Int, minute: Int, days: Set<Int>) {
         cancelAllReminders()
         let content = UNMutableNotificationContent()
-        content.title = "Time to log!"
-        content.body = "Don't forget to fill in your timesheet for today."
+        content.title = String(localized: "Time to log!", bundle: Bundle.module)
+        content.body = String(localized: "Don't forget to fill in your timesheet for today.", bundle: Bundle.module)
         content.sound = .default
         for weekday in days {
             var components = DateComponents()
@@ -38,9 +38,11 @@ public final class NotificationManager {
     public func scheduleSessionOverdue(id: String, clientName: String, projectName: String?,
                                        startDate: Date, endHour: Int, endMinute: Int) {
         let content = UNMutableNotificationContent()
-        content.title = "Did you forget to stop tracking?"
+        content.title = String(localized: "Did you forget to stop tracking?", bundle: Bundle.module)
         let projectText = projectName.map { " / \($0)" } ?? ""
-        content.body = "\(clientName)\(projectText) started at \(startDate.formatted(date: .omitted, time: .shortened)) is still running."
+        let sessionName = "\(clientName)\(projectText)"
+        let startTime = startDate.formatted(date: .omitted, time: .shortened)
+        content.body = String(localized: "\(sessionName) started at \(startTime) is still running.", bundle: Bundle.module)
         content.sound = .default
         content.userInfo = ["sessionID": id]
         let calendar = Calendar.current
@@ -74,36 +76,53 @@ public final class NotificationManager {
         switch phase {
         case "Focus":
             let messages: [(String, String)] = [
-                ("Focus #\(completedCount) done!", "Guarda fuori dalla finestra per 20 secondi. Sul serio."),
-                ("Pomodoro \(completedCount) completato!", "Alzati. Stiracchiati. Il codice può aspettarti."),
-                ("Ottimo lavoro!", "Regola 20-20-20: 20 piedi di distanza, 20 secondi. I tuoi occhi ti ringrazieranno."),
-                ("Session \(completedCount) in the bag!", "Ruota le spalle. Bevi dell'acqua. Sei una macchina biologica, non solo digitale."),
-                ("Focus finito!", "Gira la faccia dal monitor. Anche solo 5 minuti fanno la differenza."),
+                (String(localized: "Focus #\(completedCount) done!", bundle: Bundle.module),
+                 String(localized: "Look out the window for 20 seconds. Seriously.", bundle: Bundle.module)),
+                (String(localized: "Pomodoro \(completedCount) complete!", bundle: Bundle.module),
+                 String(localized: "Stand up. Stretch. The code can wait.", bundle: Bundle.module)),
+                (String(localized: "Great work!", bundle: Bundle.module),
+                 String(localized: "20-20-20 rule: look 20 feet away for 20 seconds. Your eyes will thank you.", bundle: Bundle.module)),
+                (String(localized: "Session \(completedCount) in the bag!", bundle: Bundle.module),
+                 String(localized: "Roll your shoulders. Drink some water. You're a biological machine, not just a digital one.", bundle: Bundle.module)),
+                (String(localized: "Focus finished!", bundle: Bundle.module),
+                 String(localized: "Look away from the monitor. Even 5 minutes make a difference.", bundle: Bundle.module)),
             ]
-            let (title, body) = messages.randomElement()!
-            content.title = title; content.body = body
+            if let (title, body) = messages.randomElement() {
+                content.title = title; content.body = body
+            }
         case "Short Break":
             let messages: [(String, String)] = [
-                ("Pausa finita, si torna!", "La mente è ricaricata. Diamoci dentro."),
-                ("Break over!", "Il prossimo focus inizia adesso. Ce la puoi fare."),
-                ("Pronti?", "Respiro profondo e via — un pomodoro alla volta."),
-                ("Torna alla scrivania!", "La pausa ha fatto il suo lavoro. Ora tocca a te."),
-                ("Si riparte!", "Focus mode attivata. Silenzio e concentrazione."),
+                (String(localized: "Break's over, back to it!", bundle: Bundle.module),
+                 String(localized: "Your mind is recharged. Let's dive in.", bundle: Bundle.module)),
+                (String(localized: "Break over!", bundle: Bundle.module),
+                 String(localized: "The next focus starts now. You've got this.", bundle: Bundle.module)),
+                (String(localized: "Ready?", bundle: Bundle.module),
+                 String(localized: "Deep breath and go — one pomodoro at a time.", bundle: Bundle.module)),
+                (String(localized: "Back to the desk!", bundle: Bundle.module),
+                 String(localized: "The break did its job. Now it's your turn.", bundle: Bundle.module)),
+                (String(localized: "Here we go again!", bundle: Bundle.module),
+                 String(localized: "Focus mode on. Silence and concentration.", bundle: Bundle.module)),
             ]
-            let (title, body) = messages.randomElement()!
-            content.title = title; content.body = body
+            if let (title, body) = messages.randomElement() {
+                content.title = title; content.body = body
+            }
         case "Long Break":
             let messages: [(String, String)] = [
-                ("Lunga pausa finita!", "Speriamo tu abbia fatto una passeggiata. Ora si lavora."),
-                ("Bentornato!", "La pausa lunga è servita. Rimettiamoci in carreggiata."),
-                ("Riposato?", "Perché ora inizia un nuovo set di pomodori."),
-                ("Ci sei?", "Dopo una bella pausa lunga, il cervello è al massimo. Usiamolo."),
+                (String(localized: "Long break's over!", bundle: Bundle.module),
+                 String(localized: "Hope you took a walk. Time to get back to work.", bundle: Bundle.module)),
+                (String(localized: "Welcome back!", bundle: Bundle.module),
+                 String(localized: "The long break did its job. Let's get back on track.", bundle: Bundle.module)),
+                (String(localized: "Rested?", bundle: Bundle.module),
+                 String(localized: "Because a new set of pomodoros starts now.", bundle: Bundle.module)),
+                (String(localized: "You there?", bundle: Bundle.module),
+                 String(localized: "After a good long break, your brain is at its best. Let's use it.", bundle: Bundle.module)),
             ]
-            let (title, body) = messages.randomElement()!
-            content.title = title; content.body = body
+            if let (title, body) = messages.randomElement() {
+                content.title = title; content.body = body
+            }
         default:
-            content.title = "\(phase) complete!"
-            content.body = "Time for a break."
+            content.title = String(localized: "\(phase) complete!", bundle: Bundle.module)
+            content.body = String(localized: "Time for a break.", bundle: Bundle.module)
         }
 
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: seconds, repeats: false)
@@ -123,8 +142,8 @@ public final class NotificationManager {
         cancelIdleAlert()
         guard minutes > 0 else { return }
         let content = UNMutableNotificationContent()
-        content.title = String(localized: "You're not tracking anything")
-        content.body = String(localized: "What are you working on?")
+        content.title = String(localized: "You're not tracking anything", bundle: Bundle.module)
+        content.body = String(localized: "What are you working on?", bundle: Bundle.module)
         content.sound = .default
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(minutes * 60), repeats: false)
         let request = UNNotificationRequest(identifier: Self.idleNotificationID, content: content, trigger: trigger)
@@ -145,8 +164,8 @@ public final class NotificationManager {
         guard let fireDate = calendar.date(bySettingHour: endHour, minute: endMinute, second: 0, of: Date()),
               fireDate > .now else { return }
         let content = UNMutableNotificationContent()
-        content.title = String(localized: "Did you forget to track today?")
-        content.body = String(localized: "Your office hours are ending. Log your time before you go.")
+        content.title = String(localized: "Did you forget to track today?", bundle: Bundle.module)
+        content.body = String(localized: "Your office hours are ending. Log your time before you go.", bundle: Bundle.module)
         content.sound = .default
         let components = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: fireDate)
         let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
@@ -163,16 +182,16 @@ public final class NotificationManager {
         content.sound = .default
         switch phase {
         case "Focus":
-            content.title = "Si riparte!"
-            content.body = "Pausa finita — focus mode attivata. Un pomodoro alla volta."
+            content.title = String(localized: "Here we go again!", bundle: Bundle.module)
+            content.body = String(localized: "Break's over — focus mode on. One pomodoro at a time.", bundle: Bundle.module)
         case "Short Break":
-            content.title = "Focus #\(completedCount) completato!"
-            content.body = "Guarda fuori dalla finestra per 20 secondi. I tuoi occhi ti ringrazieranno."
+            content.title = String(localized: "Focus #\(completedCount) done!", bundle: Bundle.module)
+            content.body = String(localized: "Look out the window for 20 seconds. Your eyes will thank you.", bundle: Bundle.module)
         case "Long Break":
-            content.title = "Ottimo lavoro! \(completedCount) pomodori completati."
-            content.body = "Meriti una pausa lunga. Alzati e stiracchiati."
+            content.title = String(localized: "Great work! \(completedCount) pomodoros completed.", bundle: Bundle.module)
+            content.body = String(localized: "You deserve a long break. Stand up and stretch.", bundle: Bundle.module)
         default:
-            content.title = "\(phase) started"
+            content.title = String(localized: "\(phase) started", bundle: Bundle.module)
             content.body = ""
         }
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0.5, repeats: false)

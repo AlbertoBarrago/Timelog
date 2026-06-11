@@ -36,7 +36,10 @@ struct MenuBarView: View {
                 StartTrackingMacView(onDismiss: { showingStartTracking = false })
                     .environment(settings)
             } else if let session = sessionToStop {
-                StopSessionMacView(session: session, onDismiss: { sessionToStop = nil })
+                StopSessionMacView(session: session,
+                                   endHour: settings.trackingEndHour,
+                                   endMinute: settings.trackingEndMinute,
+                                   onDismiss: { sessionToStop = nil })
                     .background(Color(nsColor: .windowBackgroundColor))
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color(nsColor: .separatorColor), lineWidth: 1))

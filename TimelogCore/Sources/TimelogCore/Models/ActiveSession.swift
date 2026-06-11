@@ -37,6 +37,23 @@ public final class ActiveSession {
         max(0, Int(Date().timeIntervalSince(startDate) / 60))
     }
 
+    /// Minuti trascorsi con tetto alla prima fine di giornata lavorativa
+    /// successiva all'avvio: una sessione dimenticata aperta per giorni
+    /// non produce voci di durata abnorme (es. 150 ore).
+    public func cappedElapsedMinutes(endHour: Int, endMinute: Int) -> Int {
+        let seconds = max(0, Date().timeIntervalSince(startDate))
+        let raw = max(1, Int((seconds / 60).rounded()))
+        let calendar = Calendar.current
+        guard var boundary = calendar.date(bySettingHour: endHour, minute: endMinute,
+                                           second: 0, of: startDate) else { return raw }
+        if boundary <= startDate {
+            // Sessione avviata dopo l'orario di fine: vale la fine del giorno dopo
+            boundary = calendar.date(byAdding: .day, value: 1, to: boundary) ?? boundary
+        }
+        guard boundary < Date() else { return raw }
+        return max(1, Int(boundary.timeIntervalSince(startDate) / 60))
+    }
+
     public func asTimeEntry(durationMinutes: Int, notes: String?, label: String? = nil) -> TimeEntry {
         TimeEntry(
             date: startDate,

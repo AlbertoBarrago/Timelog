@@ -25,9 +25,10 @@ struct TimerView: View {
                                     .fill(i < vm.completedPomodoros % vm.pomodorosBeforeLong
                                           ? Color.accentColor : Color.secondary.opacity(0.25))
                                     .frame(width: 10, height: 10)
-                                    .accessibilityHidden(true)
                             }
                         }
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel(String(localized: "\(vm.completedPomodoros % vm.pomodorosBeforeLong) of \(vm.pomodorosBeforeLong) pomodoros completed"))
                     }
                 }
 

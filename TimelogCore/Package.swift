@@ -3,6 +3,7 @@ import PackageDescription
 
 let package = Package(
     name: "TimelogCore",
+    defaultLocalization: "en",
     platforms: [.iOS(.v17), .macOS(.v14)],
     products: [
         .library(name: "TimelogCore", targets: ["TimelogCore"]),
@@ -14,6 +15,7 @@ let package = Package(
             name: "TimelogCore",
             dependencies: [],
             path: "Sources/TimelogCore",
+            resources: [.process("Localizable.xcstrings")],
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .target(

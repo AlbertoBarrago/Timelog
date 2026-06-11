@@ -132,7 +132,9 @@ struct HomeView: View {
                 case .editEntry(let entry):
                     QuickLogSheet(entry: entry)
                 case .stopSession(let session):
-                    StopSessionSheet(session: session)
+                    StopSessionSheet(session: session,
+                                     endHour: settings.trackingEndHour,
+                                     endMinute: settings.trackingEndMinute)
                 }
             }
             .onAppear { updateWidgetSnapshot() }

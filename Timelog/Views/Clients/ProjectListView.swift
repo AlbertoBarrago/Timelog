@@ -115,8 +115,8 @@ struct ProjectListView: View {
 
     private func autoStop(_ sessions: [ActiveSession]) {
         for session in sessions {
-            let seconds = max(0, Date().timeIntervalSince(session.startDate))
-            let elapsed = max(1, Int((seconds / 60).rounded()))
+            let elapsed = session.cappedElapsedMinutes(endHour: settings.trackingEndHour,
+                                                       endMinute: settings.trackingEndMinute)
             let entry = session.asTimeEntry(durationMinutes: elapsed, notes: session.notes, label: session.label)
             context.insert(entry)
             NotificationManager.shared.cancelSession(id: session.notificationID)

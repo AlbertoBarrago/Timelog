@@ -18,10 +18,9 @@ struct StopSessionSheet: View {
     @State private var selectedLabel: String?
     @State private var newLabelText = ""
 
-    init(session: ActiveSession) {
+    init(session: ActiveSession, endHour: Int = 18, endMinute: Int = 0) {
         self.session = session
-        let seconds = max(0, Date().timeIntervalSince(session.startDate))
-        let elapsed = max(1, Int((seconds / 60).rounded()))
+        let elapsed = session.cappedElapsedMinutes(endHour: endHour, endMinute: endMinute)
         _hours = State(initialValue: elapsed / 60)
         _minutes = State(initialValue: elapsed % 60)
         _notes = State(initialValue: session.notes ?? "")

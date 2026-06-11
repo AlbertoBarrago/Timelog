@@ -17,11 +17,10 @@ struct StopSessionMacView: View {
     @State private var newLabelText = ""
     @State private var showDiscardAlert = false
 
-    init(session: ActiveSession, onDismiss: (() -> Void)? = nil) {
+    init(session: ActiveSession, endHour: Int = 18, endMinute: Int = 0, onDismiss: (() -> Void)? = nil) {
         self.onDismiss = onDismiss
         self.session = session
-        let seconds = max(0, Date().timeIntervalSince(session.startDate))
-        let elapsed = max(1, Int((seconds / 60).rounded()))
+        let elapsed = session.cappedElapsedMinutes(endHour: endHour, endMinute: endMinute)
         _hours = State(initialValue: elapsed / 60)
         _minutes = State(initialValue: elapsed % 60)
         _notes = State(initialValue: session.notes ?? "")
