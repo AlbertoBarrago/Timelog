@@ -61,7 +61,10 @@ struct TimerView: View {
                             .symbolRenderingMode(.hierarchical)
                     }
                     .buttonStyle(.plain)
-                    .accessibilityLabel(vm.isRunning ? String(localized: "Pause timer") : String(localized: "Start timer"))
+                    .accessibilityLabel(vm.isRunning
+                                        ? String(localized: "Pause timer")
+                                        : vm.elapsed > 0 ? String(localized: "Resume timer")
+                                                         : String(localized: "Start timer"))
 
                     Toggle(isOn: Binding(
                         get: { vm.pomodoroEnabled },

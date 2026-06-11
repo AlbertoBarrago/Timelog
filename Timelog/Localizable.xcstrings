@@ -931,6 +931,16 @@
         }
       }
     },
+    "No client" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Senza cliente"
+          }
+        }
+      }
+    },
     "No clients" : {
       "localizations" : {
         "it" : {
@@ -1169,6 +1179,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reimposta timer"
+          }
+        }
+      }
+    },
+    "Resume timer" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Riprendi il timer"
           }
         }
       }

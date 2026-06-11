@@ -82,7 +82,8 @@ struct ContributionHeatmapView: View {
                             let d = row < column.count ? column[row] : nil
                             if let d, d.minutes > 0 {
                                 hover.day = d
-                                hover.position = loc
+                                hover.cellOrigin = CGPoint(x: CGFloat(col) * (cs + spacing),
+                                                           y: CGFloat(row) * (cs + spacing))
                             } else {
                                 hover.day = nil
                             }
@@ -95,7 +96,8 @@ struct ContributionHeatmapView: View {
                         HoverCardOverlay(hover: hover,
                                          nameForClient: nameForClient,
                                          colorForClient: colorForClient,
-                                         cellSize: cellSize)
+                                         cellSize: cellSize,
+                                         spacing: spacing)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -135,7 +137,6 @@ struct ContributionHeatmapView: View {
         return RoundedRectangle(cornerRadius: 3)
             .fill(fill(for: day))
             .frame(width: cs, height: cs)
-            .help(tooltip(for: day))
             .accessibilityLabel(accessibilityLabel(for: day))
     }
 
@@ -181,7 +182,8 @@ struct ContributionHeatmapView: View {
 /// @Observable so only HoverCardOverlay re-renders on changes; cells are unaffected.
 @Observable private final class HoverTracker {
     var day: HeatmapDay?
-    var position: CGPoint = .zero
+    /// Top-leading corner of the hovered cell in grid coordinates.
+    var cellOrigin: CGPoint = .zero
 }
 
 // MARK: - Hover card overlay
@@ -191,21 +193,37 @@ private struct HoverCardOverlay: View {
     let nameForClient: (String?) -> String
     let colorForClient: (String?) -> Color
     let cellSize: CGFloat
+    let spacing: CGFloat
 
     var body: some View {
         if let day = hover.day {
-            let pos = hover.position
-            let gridH = 7 * cellSize + 6 * CGFloat(3)
+            let origin = hover.cellOrigin
+            let cardEstW: CGFloat = 190
             let cardEstH: CGFloat = 80
-            // Center the card on the cursor, clamped to stay within the grid bounds.
-            let y = max(0, min(pos.y - cardEstH / 2, gridH - cardEstH))
+            let gridH = 7 * cellSize + 6 * spacing
+            let leftX = origin.x - cardEstW - 8
+            let x = leftX >= 0 ? leftX : origin.x + cellSize + 8
+            let y = max(0, min(origin.y + cellSize / 2 - cardEstH / 2, gridH - cardEstH))
 
-            DayHoverCard(day: day, nameForClient: nameForClient, colorForClient: colorForClient)
-                .fixedSize()
-                .offset(x: max(0, pos.x - 90), y: y)
-                .allowsHitTesting(false)
-                .transition(.opacity)
-                .animation(.easeInOut(duration: 0.1), value: pos)
+            // Explicit top-leading ZStack: with the implicit (center-aligned)
+            // stacking the ring would be positioned relative to the card's
+            // centre and drift away from the hovered cell.
+            ZStack(alignment: .topLeading) {
+                // Highlight ring on the hovered cell, GitHub-style.
+                RoundedRectangle(cornerRadius: 3)
+                    .strokeBorder(Color.primary.opacity(0.6), lineWidth: 1.5)
+                    .frame(width: cellSize, height: cellSize)
+                    .offset(x: origin.x, y: origin.y)
+
+                // Card anchored to the cell, to its left like GitHub's tooltip;
+                // flips to the right when there is no room on the left.
+                DayHoverCard(day: day, nameForClient: nameForClient, colorForClient: colorForClient)
+                    .fixedSize()
+                    .offset(x: x, y: y)
+                    .transition(.opacity)
+                    .animation(.easeInOut(duration: 0.1), value: origin)
+            }
+            .allowsHitTesting(false)
         }
     }
 }
