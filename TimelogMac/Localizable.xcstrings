@@ -1142,6 +1142,16 @@
         }
       }
     },
+    "Other tracking in progress" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Altri tracciamenti in corso"
+          }
+        }
+      }
+    },
     "Optional" : {
       "localizations" : {
         "it" : {
@@ -1656,6 +1666,16 @@
         }
       }
     },
+    "Start in parallel" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avvia in parallelo"
+          }
+        }
+      }
+    },
     "Started" : {
       "localizations" : {
         "it" : {
@@ -1702,6 +1722,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ferma sessione"
+          }
+        }
+      }
+    },
+    "Stop others and start" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ferma gli altri e avvia"
           }
         }
       }
@@ -2163,6 +2193,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Giallo"
+          }
+        }
+      }
+    },
+    "You can keep multiple sessions running, or stop the others and log them now." : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puoi tenere più sessioni attive insieme, oppure fermare le altre e registrarle adesso."
           }
         }
       }

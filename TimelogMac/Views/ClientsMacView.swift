@@ -129,6 +129,7 @@ struct ProjectsMacView: View {
     @State private var showingAddProject = false
     @State private var projectToEdit: Project?
     @State private var projectToDelete: Project?
+    @State private var projectToStart: Project?
     @State private var selectedProjects  = Set<Project.ID>()
 
     @Query(sort: \Project.name) private var allProjects: [Project]
@@ -182,9 +183,10 @@ struct ProjectsMacView: View {
                         ProjectMacRow(project: proj, isActive: isActive) {
                             if isActive {
                                 autoStop(activeSessions.filter { $0.project?.persistentModelID == proj.persistentModelID })
-                            } else {
-                                autoStop(activeSessions)
+                            } else if activeSessions.isEmpty {
                                 quickStart(project: proj)
+                            } else {
+                                projectToStart = proj
                             }
                         }
                         .contentShape(Rectangle())
@@ -226,6 +228,26 @@ struct ProjectsMacView: View {
                 }
             }
             Button("Cancel", role: .cancel) { projectToDelete = nil }
+        }
+        .confirmationDialog(
+            String(localized: "Other tracking in progress"),
+            isPresented: Binding(get: { projectToStart != nil }, set: { if !$0 { projectToStart = nil } }),
+            titleVisibility: .visible
+        ) {
+            if let project = projectToStart {
+                Button(String(localized: "Start in parallel")) {
+                    quickStart(project: project)
+                    projectToStart = nil
+                }
+                Button(String(localized: "Stop others and start")) {
+                    autoStop(activeSessions)
+                    quickStart(project: project)
+                    projectToStart = nil
+                }
+            }
+            Button("Cancel", role: .cancel) { projectToStart = nil }
+        } message: {
+            Text("You can keep multiple sessions running, or stop the others and log them now.")
         }
         .syncGated(while: $showingAddProject)
         .syncGated(whilePresent: $projectToEdit)

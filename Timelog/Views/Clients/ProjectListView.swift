@@ -23,6 +23,7 @@ struct ProjectListView: View {
     @Query(sort: \ActiveSession.startDate) private var allSessions: [ActiveSession]
     @State private var activeSheet: ProjectSheet?
     @State private var projectToDelete: Project?
+    @State private var projectToStart: Project?
 
     private var projects: [Project] {
         allProjects.filter { $0.client?.persistentModelID == client.persistentModelID && $0.deletedAt == nil }
@@ -55,6 +56,26 @@ struct ProjectListView: View {
                 }
             }
             Button("Cancel", role: .cancel) { projectToDelete = nil }
+        }
+        .confirmationDialog(
+            String(localized: "Other tracking in progress"),
+            isPresented: Binding(get: { projectToStart != nil }, set: { if !$0 { projectToStart = nil } }),
+            titleVisibility: .visible
+        ) {
+            if let project = projectToStart {
+                Button(String(localized: "Start in parallel")) {
+                    quickStart(project: project)
+                    projectToStart = nil
+                }
+                Button(String(localized: "Stop others and start")) {
+                    autoStop(activeSessions)
+                    quickStart(project: project)
+                    projectToStart = nil
+                }
+            }
+            Button("Cancel", role: .cancel) { projectToStart = nil }
+        } message: {
+            Text("You can keep multiple sessions running, or stop the others and log them now.")
         }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
@@ -89,9 +110,10 @@ struct ProjectListView: View {
             Button {
                 if isActive {
                     autoStop(activeSessions.filter { $0.project?.persistentModelID == project.persistentModelID })
-                } else {
-                    autoStop(activeSessions)
+                } else if activeSessions.isEmpty {
                     quickStart(project: project)
+                } else {
+                    projectToStart = project
                 }
             } label: {
                 Image(systemName: isActive ? "stop.circle.fill" : "play.circle")
