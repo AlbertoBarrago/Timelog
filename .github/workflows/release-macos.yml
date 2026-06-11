@@ -58,6 +58,10 @@ jobs:
           # `find -name "*.app"` can match instead of the real app
           APP_PATH="build/Build/Products/Release/TimelogMac.app"
           test -d "$APP_PATH"
+          # Ad-hoc sign: generate_appcast rejects apps that fail Apple
+          # code signing checks; an ad-hoc seal is enough (no Developer ID)
+          codesign --force --deep --sign - "$APP_PATH"
+          codesign --verify --deep --strict "$APP_PATH"
           create-dmg \
             --volname "Timelog ${{ steps.version.outputs.version }}" \
             --window-pos 200 120 \
