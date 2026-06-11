@@ -54,7 +54,10 @@ jobs:
 
       - name: Create DMG
         run: |
-          APP_PATH=$(find build/Build/Products/Release -name "*.app" | head -1)
+          # Explicit path: Sparkle ships a nested Updater.app that a bare
+          # `find -name "*.app"` can match instead of the real app
+          APP_PATH="build/Build/Products/Release/TimelogMac.app"
+          test -d "$APP_PATH"
           create-dmg \
             --volname "Timelog ${{ steps.version.outputs.version }}" \
             --window-pos 200 120 \
