@@ -4,6 +4,7 @@ import UserNotifications
 import TimelogCore
 import TimelogSync
 import AppKit
+import Sparkle
 
 private struct RestSyncSetup: ViewModifier {
     @Environment(\.modelContext) private var modelContext
@@ -139,6 +140,11 @@ struct TimelogMacApp: App {
     @State private var settings = SettingsStore()
     @State private var timerVM = TimerViewModel()
     private let notificationDelegate = AppNotificationDelegate()
+    private let updaterController = SPUStandardUpdaterController(
+        startingUpdater: true,
+        updaterDelegate: nil,
+        userDriverDelegate: nil
+    )
 
     static let container: ModelContainer = {
         let schema = Schema([Client.self, Project.self, TimeEntry.self, ActiveSession.self])
@@ -182,6 +188,7 @@ struct TimelogMacApp: App {
                 }
             }
             CommandGroup(after: .appInfo) {
+                CheckForUpdatesView(updater: updaterController.updater)
                 Button(String(localized: "Sync Now")) {
                     RestSyncService.shared.triggerSyncNow()
                 }

@@ -7,11 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A11CE0000000000000000008 /* TimelogMacWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A11CE0000000000000000002 /* TimelogMacWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A11CE000000000000000000E /* TimelogCore in Frameworks */ = {isa = PBXBuildFile; productRef = 3A66805AC13445C8AF724195 /* TimelogCore */; };
+		A11CE0000000000000000012 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A11CE0000000000000000010 /* WidgetKit.framework */; };
+		A11CE0000000000000000013 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A11CE0000000000000000011 /* SwiftUI.framework */; };
 		BB220011BB220011BB220011 /* TimelogSync in Frameworks */ = {isa = PBXBuildFile; productRef = BB220012BB220012BB220012 /* TimelogSync */; };
 		E9210C1F2FB282B900C7B0F4 /* TimelogCore in Frameworks */ = {isa = PBXBuildFile; productRef = 3A66805AC13445C8AF724195 /* TimelogCore */; };
+		ED5A000000000000000000A1 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = ED5A000000000000000000A2 /* Sparkle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		A11CE0000000000000000009 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E901B81C2FB11F0400EA36A5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A11CE0000000000000000001;
+			remoteInfo = TimelogMacWidgetExtension;
+		};
 		E901B8342FB11F0600EA36A5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E901B81C2FB11F0400EA36A5 /* Project object */;
@@ -28,27 +40,83 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		A11CE0000000000000000007 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A11CE0000000000000000008 /* TimelogMacWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		A11CE0000000000000000002 /* TimelogMacWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TimelogMacWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A11CE0000000000000000010 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		A11CE0000000000000000011 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		E901B8242FB11F0400EA36A5 /* TimelogMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimelogMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E901B8332FB11F0600EA36A5 /* TimelogMacTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TimelogMacTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E901B83D2FB11F0600EA36A5 /* TimelogMacUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TimelogMacUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		A11CE000000000000000000F /* Exceptions for "TimelogMacWidget" folder in "TimelogMacWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = A11CE0000000000000000001 /* TimelogMacWidgetExtension */;
+		};
+		ED5A000000000000000000A4 /* Exceptions for "TimelogMac" folder in "TimelogMac" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = E901B8232FB11F0400EA36A5 /* TimelogMac */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		A11CE0000000000000000003 /* TimelogMacWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A11CE000000000000000000F /* Exceptions for "TimelogMacWidget" folder in "TimelogMacWidgetExtension" target */,
+			);
+			path = TimelogMacWidget;
+			sourceTree = "<group>";
+		};
 		E901B8262FB11F0400EA36A5 /* TimelogMac */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				ED5A000000000000000000A4 /* Exceptions for "TimelogMac" folder in "TimelogMac" target */,
+			);
 			path = TimelogMac;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		A11CE0000000000000000005 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A11CE000000000000000000E /* TimelogCore in Frameworks */,
+				A11CE0000000000000000013 /* SwiftUI.framework in Frameworks */,
+				A11CE0000000000000000012 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E901B8212FB11F0400EA36A5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				E9210C1F2FB282B900C7B0F4 /* TimelogCore in Frameworks */,
 				BB220011BB220011BB220011 /* TimelogSync in Frameworks */,
+				ED5A000000000000000000A1 /* Sparkle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,10 +137,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A11CE0000000000000000014 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A11CE0000000000000000010 /* WidgetKit.framework */,
+				A11CE0000000000000000011 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E901B81B2FB11F0400EA36A5 = {
 			isa = PBXGroup;
 			children = (
 				E901B8262FB11F0400EA36A5 /* TimelogMac */,
+				A11CE0000000000000000003 /* TimelogMacWidget */,
+				A11CE0000000000000000014 /* Frameworks */,
 				E901B8252FB11F0400EA36A5 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -83,6 +162,7 @@
 				E901B8242FB11F0400EA36A5 /* TimelogMac.app */,
 				E901B8332FB11F0600EA36A5 /* TimelogMacTests.xctest */,
 				E901B83D2FB11F0600EA36A5 /* TimelogMacUITests.xctest */,
+				A11CE0000000000000000002 /* TimelogMacWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -90,6 +170,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		A11CE0000000000000000001 /* TimelogMacWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A11CE000000000000000000B /* Build configuration list for PBXNativeTarget "TimelogMacWidgetExtension" */;
+			buildPhases = (
+				A11CE0000000000000000004 /* Sources */,
+				A11CE0000000000000000005 /* Frameworks */,
+				A11CE0000000000000000006 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				A11CE0000000000000000003 /* TimelogMacWidget */,
+			);
+			name = TimelogMacWidgetExtension;
+			packageProductDependencies = (
+				3A66805AC13445C8AF724195 /* TimelogCore */,
+			);
+			productName = TimelogMacWidgetExtension;
+			productReference = A11CE0000000000000000002 /* TimelogMacWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		E901B8232FB11F0400EA36A5 /* TimelogMac */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E901B8472FB11F0600EA36A5 /* Build configuration list for PBXNativeTarget "TimelogMac" */;
@@ -97,10 +200,12 @@
 				E901B8202FB11F0400EA36A5 /* Sources */,
 				E901B8212FB11F0400EA36A5 /* Frameworks */,
 				E901B8222FB11F0400EA36A5 /* Resources */,
+				A11CE0000000000000000007 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				A11CE000000000000000000A /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				E901B8262FB11F0400EA36A5 /* TimelogMac */,
@@ -109,6 +214,7 @@
 			packageProductDependencies = (
 				3A66805AC13445C8AF724195 /* TimelogCore */,
 				BB220012BB220012BB220012 /* TimelogSync */,
+				ED5A000000000000000000A2 /* Sparkle */,
 			);
 			productName = TimelogMac;
 			productReference = E901B8242FB11F0400EA36A5 /* TimelogMac.app */;
@@ -164,6 +270,9 @@
 				LastSwiftUpdateCheck = 2640;
 				LastUpgradeCheck = 2650;
 				TargetAttributes = {
+					A11CE0000000000000000001 = {
+						CreatedOnToolsVersion = 26.4.1;
+					};
 					E901B8232FB11F0400EA36A5 = {
 						CreatedOnToolsVersion = 26.4.1;
 					};
@@ -189,6 +298,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				E901B8E42FB1224000EA36A5 /* XCLocalSwiftPackageReference "../TimeLog/TimelogCore" */,
+				ED5A000000000000000000A3 /* XCRemoteSwiftPackageReference "Sparkle" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E901B8252FB11F0400EA36A5 /* Products */;
@@ -198,11 +308,19 @@
 				E901B8232FB11F0400EA36A5 /* TimelogMac */,
 				E901B8322FB11F0600EA36A5 /* TimelogMacTests */,
 				E901B83C2FB11F0600EA36A5 /* TimelogMacUITests */,
+				A11CE0000000000000000001 /* TimelogMacWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		A11CE0000000000000000006 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E901B8222FB11F0400EA36A5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -227,6 +345,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		A11CE0000000000000000004 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E901B8202FB11F0400EA36A5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -251,6 +376,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		A11CE000000000000000000A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A11CE0000000000000000001 /* TimelogMacWidgetExtension */;
+			targetProxy = A11CE0000000000000000009 /* PBXContainerItemProxy */;
+		};
 		E901B8352FB11F0600EA36A5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = E901B8232FB11F0400EA36A5 /* TimelogMac */;
@@ -264,6 +394,72 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		A11CE000000000000000000C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = TimelogMacWidget/TimelogMacWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 34;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = PW7G4XJ7H7;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TimelogMacWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Timelog;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MARKETING_VERSION = 1.3.4;
+				PRODUCT_BUNDLE_IDENTIFIER = com.albz.TimelogMac.TimelogMacWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A11CE000000000000000000D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = TimelogMacWidget/TimelogMacWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 34;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = PW7G4XJ7H7;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TimelogMacWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Timelog;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MARKETING_VERSION = 1.3.4;
+				PRODUCT_BUNDLE_IDENTIFIER = com.albz.TimelogMac.TimelogMacWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		E901B8452FB11F0600EA36A5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -404,6 +600,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TimelogMac/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Timelog;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -440,6 +637,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TimelogMac/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Timelog;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -547,6 +745,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		A11CE000000000000000000B /* Build configuration list for PBXNativeTarget "TimelogMacWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A11CE000000000000000000C /* Debug */,
+				A11CE000000000000000000D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E901B81F2FB11F0400EA36A5 /* Build configuration list for PBXProject "TimelogMac" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -596,6 +803,17 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		ED5A000000000000000000A3 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.9.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		3A66805AC13445C8AF724195 /* TimelogCore */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -606,6 +824,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 507B0891A8D342FFB3760133 /* XCLocalSwiftPackageReference "TimelogCore" */;
 			productName = TimelogSync;
+		};
+		ED5A000000000000000000A2 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ED5A000000000000000000A3 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
