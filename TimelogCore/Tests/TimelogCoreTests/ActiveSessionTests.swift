@@ -72,6 +72,67 @@ struct ActiveSessionTests {
         #expect(colons == 2)
     }
 
+    // MARK: cappedElapsedMinutes
+
+    @Test func capLimitsForgottenSessionToWorkdayEnd() throws {
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try ModelContainer(
+            for: ActiveSession.self, Client.self, Project.self, TimeEntry.self,
+            configurations: config
+        )
+        let session = ActiveSession()
+        container.mainContext.insert(session)
+        let calendar = Calendar.current
+        let threeDaysAgo = calendar.date(byAdding: .day, value: -3, to: .now)!
+        session.startDate = calendar.date(bySettingHour: 9, minute: 0, second: 0, of: threeDaysAgo)!
+
+        let boundary = calendar.date(bySettingHour: 18, minute: 0, second: 0, of: session.startDate)!
+        let expected = calendar.dateComponents([.minute], from: session.startDate, to: boundary).minute!
+        #expect(session.cappedElapsedMinutes(endHour: 18, endMinute: 0) == expected)
+        #expect(session.cappedElapsedMinutes(endHour: 18, endMinute: 0) < session.elapsedMinutes)
+    }
+
+    @Test func capUsesNextDayBoundaryForEveningStart() throws {
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try ModelContainer(
+            for: ActiveSession.self, Client.self, Project.self, TimeEntry.self,
+            configurations: config
+        )
+        let session = ActiveSession()
+        container.mainContext.insert(session)
+        let calendar = Calendar.current
+        let threeDaysAgo = calendar.date(byAdding: .day, value: -3, to: .now)!
+        session.startDate = calendar.date(bySettingHour: 20, minute: 0, second: 0, of: threeDaysAgo)!
+
+        let sameDayBoundary = calendar.date(bySettingHour: 18, minute: 0, second: 0, of: session.startDate)!
+        let boundary = calendar.date(byAdding: .day, value: 1, to: sameDayBoundary)!
+        let expected = calendar.dateComponents([.minute], from: session.startDate, to: boundary).minute!
+        #expect(session.cappedElapsedMinutes(endHour: 18, endMinute: 0) == expected)
+    }
+
+    @Test func capDoesNotAffectSessionStillBeforeBoundary() throws {
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try ModelContainer(
+            for: ActiveSession.self, Client.self, Project.self, TimeEntry.self,
+            configurations: config
+        )
+        let session = ActiveSession()
+        container.mainContext.insert(session)
+        session.startDate = Date(timeIntervalSinceNow: -30 * 60)
+        #expect(session.cappedElapsedMinutes(endHour: 18, endMinute: 0) == 30)
+    }
+
+    @Test func capReturnsAtLeastOneMinute() throws {
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try ModelContainer(
+            for: ActiveSession.self, Client.self, Project.self, TimeEntry.self,
+            configurations: config
+        )
+        let session = ActiveSession()
+        container.mainContext.insert(session)
+        #expect(session.cappedElapsedMinutes(endHour: 18, endMinute: 0) >= 1)
+    }
+
     // MARK: asTimeEntry
 
     @Test func asTimeEntryPreservesFields() throws {
