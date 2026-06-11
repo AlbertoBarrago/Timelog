@@ -7,6 +7,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [1.4.0] — 2026-06-11
+
 ### Added
 - **macOS auto-updates via Sparkle** — the Mac app now checks for updates automatically and offers one-click in-app updates (standard Sparkle UI, localised). New "Check for Updates…" item in the app menu. Updates are EdDSA-signed: the release pipeline signs the DMG with the `SPARKLE_ED_PRIVATE_KEY` repo secret and attaches a generated `appcast.xml` to each GitHub release; the app reads the feed from `releases/latest/download/appcast.xml`. No Apple Developer ID required — Sparkle's EdDSA signature guarantees update integrity. ⚠️ The EdDSA private key (Keychain + password manager backup) must never be lost: without it, existing installs can no longer auto-update.
 - **macOS desktop widget** — new `TimelogMacWidgetExtension` target embedded in the Mac app: the Today widget (small/medium/large, with per-client breakdown) is now available on the macOS desktop and Notification Center. The widget implementation moved to `TimelogCore` and is shared between iOS and macOS; the menu bar scene keeps the shared snapshot up to date. The extension is sandboxed with the `group.me.albz.timelog` App Group (also added to the Mac app entitlements).
