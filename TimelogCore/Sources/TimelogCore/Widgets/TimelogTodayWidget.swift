@@ -95,7 +95,11 @@ struct TimelogTodayEntryView: View {
             default:                    small
             }
         }
+        #if os(macOS)
+        .containerBackground(.background, for: .widget)
+        #else
         .containerBackground(.fill.tertiary, for: .widget)
+        #endif
     }
 
     // MARK: Building blocks
