@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    " " : {
+
+    },
     "%@ complete!" : {
       "localizations" : {
         "it" : {
@@ -31,12 +34,32 @@
         }
       }
     },
+    "+%lld more" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+%lld altri"
+          }
+        }
+      }
+    },
     "20-20-20 rule: look 20 feet away for 20 seconds. Your eyes will thank you." : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Regola 20-20-20: guarda a 6 metri di distanza per 20 secondi. I tuoi occhi ti ringrazieranno."
+          }
+        }
+      }
+    },
+    "active" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in corso"
           }
         }
       }
@@ -211,6 +234,16 @@
         }
       }
     },
+    "Logged" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registrato"
+          }
+        }
+      }
+    },
     "Long break's over!" : {
       "localizations" : {
         "it" : {
@@ -247,6 +280,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Guarda fuori dalla finestra per 20 secondi. I tuoi occhi ti ringrazieranno."
+          }
+        }
+      }
+    },
+    "No entries today" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessuna voce oggi"
           }
         }
       }
@@ -297,6 +340,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sessione %lld in cascina!"
+          }
+        }
+      }
+    },
+    "Shows today's logged time and active tracking." : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra il tempo registrato oggi e il tracciamento attivo."
           }
         }
       }
@@ -357,6 +410,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ora di registrare le ore!"
+          }
+        }
+      }
+    },
+    "Timelog Today" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Timelog Oggi"
+          }
+        }
+      }
+    },
+    "Today" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oggi"
+          }
+        }
+      }
+    },
+    "Tracking now" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tracciamento in corso"
           }
         }
       }

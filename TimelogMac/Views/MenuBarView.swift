@@ -3,6 +3,7 @@ import SwiftData
 import TimelogCore
 import TimelogSync
 import AppKit
+import WidgetKit
 
 struct MenuBarView: View {
     @Environment(TimerViewModel.self) private var timerVM
@@ -113,6 +114,47 @@ struct MenuBarView: View {
             }
         }
         .frame(width: 300)
+        .onAppear { updateWidgetSnapshot() }
+        .onChange(of: allEntries) { _, _ in updateWidgetSnapshot() }
+        .onChange(of: allSessions) { _, _ in updateWidgetSnapshot() }
+    }
+
+    private func updateWidgetSnapshot() {
+        let todayEntries = allEntries.filter {
+            $0.userId == settings.userId && Calendar.current.isDateInToday($0.date)
+        }
+        let latestEntry = todayEntries.first
+        let latestSession = activeSessions.max { $0.startDate < $1.startDate }
+
+        var byClient: [String: TimelogWidgetBreakdownItem] = [:]
+        func accumulate(client: Client?, minutes: Int) {
+            guard minutes > 0 else { return }
+            let name = client?.name ?? String(localized: "No client")
+            byClient[name] = TimelogWidgetBreakdownItem(
+                name: name,
+                colorHex: client?.colorHex ?? "#8E8E93",
+                minutes: (byClient[name]?.minutes ?? 0) + minutes
+            )
+        }
+        for entry in todayEntries { accumulate(client: entry.client, minutes: entry.durationMinutes) }
+        for session in activeSessions { accumulate(client: session.client, minutes: session.elapsedMinutes) }
+
+        let snapshot = TimelogWidgetSnapshot(
+            loggedMinutes: todayEntries.reduce(0) { $0 + $1.durationMinutes },
+            activeSessions: activeSessions.map {
+                TimelogWidgetActiveSessionSnapshot(
+                    startDate: $0.startDate,
+                    clientName: $0.client?.name,
+                    projectName: $0.project?.name,
+                    clientColorHex: $0.client?.colorHex
+                )
+            },
+            lastClientName: latestSession?.client?.name ?? latestEntry?.client?.name,
+            lastProjectName: latestSession?.project?.name ?? latestEntry?.project?.name,
+            breakdown: byClient.values.sorted { $0.minutes > $1.minutes }
+        )
+        WidgetSnapshotStore.save(snapshot)
+        WidgetCenter.shared.reloadTimelines(ofKind: TimelogWidgetConstants.kind)
     }
 }
 
@@ -165,7 +207,10 @@ private struct CompactTimerRow: View {
                 }
                 .buttonStyle(.plain)
                 .keyboardShortcut(.space, modifiers: [])
-                .accessibilityLabel(vm.isRunning ? String(localized: "Pause timer") : String(localized: "Start timer"))
+                .accessibilityLabel(vm.isRunning
+                                    ? String(localized: "Pause timer")
+                                    : vm.elapsed > 0 ? String(localized: "Resume timer")
+                                                     : String(localized: "Start timer"))
             }
 
             if showModeChangeConfirm {

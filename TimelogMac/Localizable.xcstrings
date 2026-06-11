@@ -237,6 +237,16 @@
         }
       }
     },
+    "Check for Updates…" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controlla aggiornamenti…"
+          }
+        }
+      }
+    },
     "Click to edit entry" : {
       "localizations" : {
         "it" : {
@@ -1407,6 +1417,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reimposta e cambia"
+          }
+        }
+      }
+    },
+    "Resume" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Riprendi"
+          }
+        }
+      }
+    },
+    "Resume timer" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Riprendi il timer"
           }
         }
       }

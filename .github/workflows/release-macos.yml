@@ -77,16 +77,53 @@ jobs:
           echo "" >> release_notes.md
           echo "**Full Changelog**: https://github.com/${{ github.repository }}/compare/${PREV_TAG}...${{ steps.version.outputs.tag }}" >> release_notes.md
 
+      - name: Download Sparkle tools
+        run: |
+          SPARKLE_VERSION=2.9.3
+          curl -fsSL -o sparkle.tar.xz \
+            "https://github.com/sparkle-project/Sparkle/releases/download/${SPARKLE_VERSION}/Sparkle-${SPARKLE_VERSION}.tar.xz"
+          mkdir -p sparkle-tools
+          tar -xJf sparkle.tar.xz -C sparkle-tools
+
+      - name: Generate signed appcast
+        env:
+          SPARKLE_ED_PRIVATE_KEY: ${{ secrets.SPARKLE_ED_PRIVATE_KEY }}
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          TAG="${{ steps.version.outputs.tag }}"
+          mkdir -p appcast-work
+          cp "Timelog-${VERSION}.dmg" appcast-work/
+          # HTML fragment with the same basename as the DMG so
+          # generate_appcast embeds it as release notes
+          {
+            echo "<h2>What's Changed</h2><ul>"
+            tail -n +3 release_notes.md | grep '^- ' \
+              | sed -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g' \
+                    -e 's/^- \(.*\)$/<li>\1<\/li>/'
+            echo "</ul>"
+          } > "appcast-work/Timelog-${VERSION}.html"
+          echo "$SPARKLE_ED_PRIVATE_KEY" | ./sparkle-tools/bin/generate_appcast \
+            --ed-key-file - \
+            --download-url-prefix "https://github.com/${{ github.repository }}/releases/download/${TAG}/" \
+            --link "https://github.com/${{ github.repository }}" \
+            --embed-release-notes \
+            --maximum-versions 1 \
+            -o appcast.xml \
+            appcast-work
+          cat appcast.xml
+
       - name: Create GitHub Release
         run: |
           TAG="${{ steps.version.outputs.tag }}"
           if gh release view "$TAG" > /dev/null 2>&1; then
-            echo "Release $TAG already exists, skipping"
+            echo "Release $TAG already exists, uploading appcast only"
+            gh release upload "$TAG" appcast.xml --clobber
           else
             gh release create "$TAG" \
               --title "Release $TAG" \
               --notes-file release_notes.md \
-              "Timelog-${{ steps.version.outputs.version }}.dmg"
+              "Timelog-${{ steps.version.outputs.version }}.dmg" \
+              appcast.xml
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

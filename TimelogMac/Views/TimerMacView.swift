@@ -181,12 +181,19 @@ struct TimerMacView: View {
             Button {
                 vm.toggle()
             } label: {
-                Label(vm.isRunning ? "Pause" : "Start", systemImage: vm.isRunning ? "pause.fill" : "play.fill")
+                Label(playButtonTitle, systemImage: vm.isRunning ? "pause.fill" : "play.fill")
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
             .keyboardShortcut(.space, modifiers: [])
         }
+    }
+
+    private var playButtonTitle: String {
+        if vm.isRunning { return String(localized: "Pause") }
+        return vm.elapsed > 0
+            ? String(localized: "Resume")
+            : String(localized: "Start")
     }
 
     private func metric(_ label: String, _ value: String) -> some View {
