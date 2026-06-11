@@ -7,6 +7,22 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- **Confirmation when starting tracking from the clients view** — pressing ▶ on a project while other sessions are running no longer silently stops them: a dialog now offers "Start in parallel" (other sessions keep running) or "Stop others and start" (others are logged, with the new working-hours cap). With no active sessions the quick start remains immediate. Applies to both iOS and macOS.
+- **Working-hours cap on forgotten sessions** — new `ActiveSession.cappedElapsedMinutes(endHour:endMinute:)` limits a stopped session to the first end-of-workday boundary after its start, so a session left running for days no longer produces 150-hour entries. Applied to quick-stop in the clients view (iOS + macOS) and to the duration prefill of both stop sheets; covered by 4 new unit tests.
+
+### Fixed
+- **macOS: sidebar toggle disappearing** — changing the toolbar display mode via its context menu ("Icon and Text" / "Text Only") broke the `NavigationSplitView` toolbar layout, moving the sidebar toggle to the trailing edge. The window toolbar is now locked to icon-only and the display-mode entries are removed from the context menu on macOS 15+.
+
+### Localisation
+- **Notifications fully localised** — all Pomodoro, reminder and session-overdue notification texts (previously hardcoded mixed Italian/English in `NotificationManager`) now go through a new string catalog in the `TimelogCore` package (`defaultLocalization` + `Bundle.module`), with English source and Italian translations.
+- **Widget extension localised** — new string catalog for the iOS widget ("Today", "Logged", "No entries today", …); removed two dead Xcode template files (`TimelogWidgetExtensionControl.swift`, `AppIntent.swift`) whose example App Intents could leak into the Shortcuts app.
+- **Catalogs completed** — added the missing Italian translations in both app catalogs (22 keys on iOS including a proper plural rule for "%lld projects"; "Alert if no hours logged", "Reset & Pull…", "Sends a notification…", "Total" on macOS).
+
+### Accessibility
+- **Pomodoro progress indicators** (iOS dots, macOS capsules) now expose an `accessibilityLabel` announcing "N of M pomodoros completed" instead of communicating state by colour only.
+- **macOS sync status dot** now announces sync state (in progress / error / synced) to VoiceOver.
+
 ---
 
 ## [1.3.4] — 2026-06-09
