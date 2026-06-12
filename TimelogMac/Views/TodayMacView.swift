@@ -105,7 +105,7 @@ struct TodayMacView: View {
         }
         .sheet(isPresented: $showingQuickLog)      { QuickLogMacView() }
         .sheet(isPresented: $showingStartTracking)  { StartTrackingMacView().environment(settings) }
-        .sheet(isPresented: $showingHistory)        { HistoryMacView().frame(minWidth: 520, minHeight: 420) }
+        .popover(isPresented: $showingHistory)       { HistoryMacView().frame(width: 600, height: 520) }
         .sheet(item: $entryToEdit)                  { QuickLogMacView(entry: $0) }
         .sheet(item: $sessionToStop)                { StopSessionMacView(session: $0,
                                                                          endHour: settings.trackingEndHour,

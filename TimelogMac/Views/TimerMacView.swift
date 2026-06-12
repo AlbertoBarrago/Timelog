@@ -122,6 +122,7 @@ struct TimerMacView: View {
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
+            .offset(y: -14)
         }
     }
 
