@@ -7,6 +7,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+- **Parallel sessions deleted by concurrent sync pull** — starting two sessions in quick succession from the Clients view could cause one session to disappear immediately. A `pullAll` triggered by an SSE event or a scene-phase transition (app returning to foreground) ran before the debounced push had sent the new sessions to the server; because the sessions had a `mongoId` but were absent from the server response, they were incorrectly deleted. `pullAll` now skips session deletion while a push is pending (`hasPendingPush = true`).
+
 ---
 
 ## [1.4.5] — 2026-06-12

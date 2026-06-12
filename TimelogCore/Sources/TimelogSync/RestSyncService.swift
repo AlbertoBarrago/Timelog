@@ -357,7 +357,9 @@ public final class RestSyncService {
                 context.insert(s)
             }
         }
-        let sessionsToDelete = allLocalSessions.filter { s in
+        // Skip deletion when a push is pending: locally-created sessions may not
+        // have reached the server yet and must not be wiped by a concurrent pull.
+        let sessionsToDelete = hasPendingPush ? [] : allLocalSessions.filter { s in
             s.userId == userId && s.mongoId.map { !remoteSessionIds.contains($0) } ?? false
         }
         if !sessionsToDelete.isEmpty {
