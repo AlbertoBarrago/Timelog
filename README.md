@@ -15,6 +15,7 @@
   <img src="https://img.shields.io/badge/Swift-5.10-orange?style=flat-square&logo=swift" />
   <img src="https://img.shields.io/badge/SwiftData-✓-blue?style=flat-square" />
   <img src="https://img.shields.io/badge/Vercel-middleware-black?style=flat-square&logo=vercel" />
+  <img src="https://img.shields.io/badge/Sparkle-auto--update-purple?style=flat-square" />
   <img src="https://img.shields.io/badge/Localization-EN%20%7C%20IT-green?style=flat-square" />
 </p>
 
@@ -57,6 +58,7 @@ Both apps share business logic via **TimelogCore**, a local Swift Package in the
 | **Settings** | Pomodoro intervals, daily reminders, smart tracking config, sync status |
 | **Language** | English and Italian — follows the system locale automatically |
 | **Multi-user** | Each person picks a nickname on first launch — data is fully isolated per user on a shared cluster |
+| **Widget** | Home screen widget (small/medium/large) and Lock Screen accessories with live ticking timer for the active session |
 
 ### Smart Tracking
 Tap ▶ to start a session when you begin working. Stop it when done — duration is logged automatically. Multiple sessions can run simultaneously. Forgot to stop? You get a notification at your configured end-of-day time.
@@ -75,7 +77,9 @@ Active sessions and the running timer appear on the lock screen and in the Dynam
 - **Today view** — active sessions with live ticker, today's entries, context menus
 - **Clients & Projects** — `NavigationSplitView` with macOS `Table`, inline create/edit forms
 - **Timer** — full Pomodoro / stopwatch window, Space to start/pause
-- **MongoDB sync** — push/pull via MongoKitten to your Atlas cluster; connection string stored in Keychain
+- **Desktop widget** — Today widget (small/medium) in Notification Center and on the desktop, with live ticking timer and per-client breakdown; shared implementation with iOS via TimelogCore
+- **Auto-updates via Sparkle** — one-click in-app updates, EdDSA-signed DMG; "Check for Updates…" in the app menu. No Apple Developer ID required
+- **REST sync** — push/pull via `RestSyncService` + real-time SSE; connection string stored in Keychain
 - **Multi-user** — each team member picks a nickname on first launch; data is isolated per user, one shared cluster
 - **Settings window** — Pomodoro config, smart tracking end-of-day threshold (`⌘,`)
 - **Localization** — English and Italian; system locale followed automatically
@@ -114,7 +118,8 @@ TimeLog/
 │       └── TimelogSync/        # MongoSyncService (macOS) + RestSyncService (iOS)
 ├── Timelog/                    # iOS app sources (Views only)
 ├── TimelogMac/                 # macOS app sources (Views only)
-├── TimelogWidgetExtension/     # iOS Live Activity widget
+├── TimelogWidget/              # iOS widget extension (Home screen + Lock Screen)
+├── TimelogMacWidgetExtension/  # macOS widget extension (desktop + Notification Center)
 ├── server/                     # Vercel middleware (Node.js + TypeScript)
 │   └── api/
 │       ├── pull.ts             # GET  /api/pull

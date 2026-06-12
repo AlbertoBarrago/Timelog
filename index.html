@@ -1166,6 +1166,8 @@
           <li>Today view — active sessions with live ticker and context menus</li>
           <li>Clients &amp; Projects — NavigationSplitView with native Table</li>
           <li>Pomodoro / stopwatch window — Space to start/pause</li>
+          <li>Desktop widget — Today widget in Notification Center with live timer</li>
+          <li>Auto-updates via Sparkle — one-click in-app updates, EdDSA-signed</li>
           <li>Real-time sync via SSE — changes from iPhone appear in &lt;1 s</li>
           <li>Settings window accessible via ⌘,</li>
         </ul>
@@ -1237,6 +1239,16 @@
         <span class="feature-emoji">📦</span>
         <h4>Zero dependencies (iOS)</h4>
         <p>The iOS app uses only first-party Apple frameworks — no CocoaPods, no SPM cloud packages, no Electron.</p>
+      </div>
+      <div class="feature-cell">
+        <span class="feature-emoji">🟪</span>
+        <h4>Desktop &amp; lock-screen widgets</h4>
+        <p>Today widget for iOS (Home Screen, Lock Screen, StandBy) and macOS (Notification Center, desktop). Live-ticking timer, per-client breakdown — shared code via TimelogCore.</p>
+      </div>
+      <div class="feature-cell">
+        <span class="feature-emoji">⬆️</span>
+        <h4>Auto-updates (macOS)</h4>
+        <p>Sparkle integration delivers one-click in-app updates. Each release is EdDSA-signed — the app verifies the signature before installing. No App Store, no manual DMG download after the first install.</p>
       </div>
     </div>
   </section>
@@ -1330,6 +1342,7 @@
       <span class="tech-pill"><span class="dot" style="background:#ff9f0a"></span>Server-Sent Events</span>
       <span class="tech-pill"><span class="dot" style="background:#fff"></span>Vercel</span>
       <span class="tech-pill"><span class="dot" style="background:#3178c6"></span>TypeScript</span>
+      <span class="tech-pill"><span class="dot" style="background:#bf5af2"></span>Sparkle</span>
       <span class="tech-pill"><span class="dot" style="background:#f05138"></span>Xcode 16+</span>
     </div>
   </section>
@@ -1393,6 +1406,13 @@
             <div class="step-desc" style="margin-top:10px;">
               <a href="https://github.com/AlbertoBarrago/Timelog/blob/main/docs/SETUP_SYNC_SERVER.md" target="_blank" rel="noopener" style="color:var(--accent);">Full setup guide →</a>
             </div>
+          </div>
+        </div>
+        <div class="install-step">
+          <div class="step-num" style="background:rgba(48,209,88,0.12); border-color:rgba(48,209,88,0.3); color:var(--accent2);">↑</div>
+          <div class="step-body">
+            <div class="step-title">Future updates are automatic</div>
+            <div class="step-desc">Timelog uses <strong>Sparkle</strong> to deliver signed updates. The app notifies you when a new version is available — click "Install and Relaunch" and you're done. No manual DMG download required after the first install. You can also trigger a check anytime via <strong>Timelog → Check for Updates…</strong></div>
           </div>
         </div>
       </div>
