@@ -1,6 +1,7 @@
 import SwiftUI
 import SwiftData
 import TimelogCore
+import TimelogSync
 
 struct QuickLogMacView: View {
     @Environment(\.modelContext) private var context
@@ -138,14 +139,16 @@ struct QuickLogMacView: View {
             e.label = selectedLabel
             e.client = selectedClient
             e.project = selectedProject
+            try? context.save()
+            RestSyncService.shared.triggerSync()
         } else {
             context.insert(TimeEntry(date: date, durationMinutes: total,
                                      notes: notes.isEmpty ? nil : notes,
                                      label: selectedLabel,
                                      client: selectedClient, project: selectedProject,
                                      userId: settings.userId))
+            try? context.save()
         }
-        try? context.save()
         dismiss()
     }
 }
