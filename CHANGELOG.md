@@ -7,6 +7,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [1.4.5] — 2026-06-12
+
 ### Fixed
 - **Sparkle update notifications not appearing** — `SUScheduledCheckInterval` was unset, so Sparkle used the default 24-hour interval. As a menu bar app that runs continuously, users could wait up to a day before seeing a new-version banner. Interval reduced to 3600 s (1 hour).
 
