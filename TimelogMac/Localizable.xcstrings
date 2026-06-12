@@ -7,9 +7,6 @@
     "  |  " : {
       "shouldTranslate" : false
     },
-    "0" : {
-      "shouldTranslate" : false
-    },
     "%lld of %lld pomodoros completed" : {
       "localizations" : {
         "it" : {
@@ -19,6 +16,9 @@
           }
         }
       }
+    },
+    "0" : {
+      "shouldTranslate" : false
     },
     "About" : {
       "localizations" : {
@@ -1152,16 +1152,6 @@
         }
       }
     },
-    "Other tracking in progress" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Altri tracciamenti in corso"
-          }
-        }
-      }
-    },
     "Optional" : {
       "localizations" : {
         "it" : {
@@ -1178,6 +1168,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Arancione"
+          }
+        }
+      }
+    },
+    "Other tracking in progress" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Altri tracciamenti in corso"
           }
         }
       }
@@ -1421,6 +1421,16 @@
         }
       }
     },
+    "Reset timer" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reimposta timer"
+          }
+        }
+      }
+    },
     "Resume" : {
       "localizations" : {
         "it" : {
@@ -1437,16 +1447,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Riprendi il timer"
-          }
-        }
-      }
-    },
-    "Reset timer" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reimposta timer"
           }
         }
       }
@@ -1666,6 +1666,16 @@
         }
       }
     },
+    "Start in parallel" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avvia in parallelo"
+          }
+        }
+      }
+    },
     "Start session" : {
       "localizations" : {
         "it" : {
@@ -1692,16 +1702,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Avvia tracciamento"
-          }
-        }
-      }
-    },
-    "Start in parallel" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Avvia in parallelo"
           }
         }
       }
@@ -1746,22 +1746,22 @@
         }
       }
     },
-    "Stop session" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ferma sessione"
-          }
-        }
-      }
-    },
     "Stop others and start" : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ferma gli altri e avvia"
+          }
+        }
+      }
+    },
+    "Stop session" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ferma sessione"
           }
         }
       }
@@ -1857,22 +1857,22 @@
         }
       }
     },
-    "Synced" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sincronizzato"
-          }
-        }
-      }
-    },
     "Sync Now" : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sincronizza ora"
+          }
+        }
+      }
+    },
+    "Synced" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sincronizzato"
           }
         }
       }
