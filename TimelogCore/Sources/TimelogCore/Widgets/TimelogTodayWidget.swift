@@ -62,7 +62,7 @@ struct TimelogTodayEntryView: View {
 
     private var activeMinutes: Int {
         entry.snapshot.activeSessions.reduce(0) {
-            $0 + max(0, Int(entry.date.timeIntervalSince($1.startDate) / 60))
+            $0 + max(0, Int(Date().timeIntervalSince($1.startDate) / 60))
         }
     }
 
@@ -96,9 +96,9 @@ struct TimelogTodayEntryView: View {
             }
         }
         #if os(macOS)
-        .containerBackground(.background, for: .widget)
+        .containerBackground(Color(nsColor: .windowBackgroundColor), for: .widget)
         #else
-        .containerBackground(.fill.tertiary, for: .widget)
+        .containerBackground(.background, for: .widget)
         #endif
     }
 
@@ -303,7 +303,7 @@ public struct TimelogTodayWidget: Widget {
         [.systemSmall, .systemMedium, .systemLarge,
          .accessoryCircular, .accessoryRectangular, .accessoryInline]
         #else
-        [.systemSmall, .systemMedium, .systemLarge]
+        [.systemSmall, .systemMedium]
         #endif
     }
 

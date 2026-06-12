@@ -11,6 +11,7 @@ struct StopSessionSheet: View {
     @Environment(\.dismiss) private var dismiss
 
     let session: ActiveSession
+    let onStop: (() -> Void)?
 
     @State private var hours: Int
     @State private var minutes: Int
@@ -18,7 +19,8 @@ struct StopSessionSheet: View {
     @State private var selectedLabel: String?
     @State private var newLabelText = ""
 
-    init(session: ActiveSession, endHour: Int = 18, endMinute: Int = 0) {
+    init(session: ActiveSession, endHour: Int = 18, endMinute: Int = 0, onStop: (() -> Void)? = nil) {
+        self.onStop = onStop
         self.session = session
         let elapsed = session.cappedElapsedMinutes(endHour: endHour, endMinute: endMinute)
         _hours = State(initialValue: elapsed / 60)
@@ -103,6 +105,7 @@ struct StopSessionSheet: View {
         NotificationManager.shared.cancelSession(id: session.notificationID)
         context.delete(session)
         try? context.save()
+        onStop?()
         RestSyncService.shared.triggerSyncNow()
         #if os(iOS)
         UINotificationFeedbackGenerator().notificationOccurred(.success)

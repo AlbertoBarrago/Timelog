@@ -109,7 +109,8 @@ struct TodayMacView: View {
         .sheet(item: $entryToEdit)                  { QuickLogMacView(entry: $0) }
         .sheet(item: $sessionToStop)                { StopSessionMacView(session: $0,
                                                                          endHour: settings.trackingEndHour,
-                                                                         endMinute: settings.trackingEndMinute) }
+                                                                         endMinute: settings.trackingEndMinute,
+                                                                         onStop: updateWidgetSnapshot) }
         .syncGated(while: $showingQuickLog)
         .syncGated(while: $showingStartTracking)
         .syncGated(whilePresent: $entryToEdit)

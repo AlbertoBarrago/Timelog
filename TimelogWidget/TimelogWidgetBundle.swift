@@ -3,9 +3,8 @@ import SwiftUI
 import TimelogCore
 
 @main
-struct TimelogWidgetExtensionBundle: WidgetBundle {
+struct TimelogWidgetBundle: WidgetBundle {
     var body: some Widget {
         TimelogTodayWidget()
-        TimelogWidgetExtensionLiveActivity()
     }
 }

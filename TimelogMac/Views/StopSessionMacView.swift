@@ -5,6 +5,7 @@ import TimelogSync
 
 struct StopSessionMacView: View {
     var onDismiss: (() -> Void)? = nil
+    var onStop: (() -> Void)? = nil
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
 
@@ -17,8 +18,9 @@ struct StopSessionMacView: View {
     @State private var newLabelText = ""
     @State private var showDiscardAlert = false
 
-    init(session: ActiveSession, endHour: Int = 18, endMinute: Int = 0, onDismiss: (() -> Void)? = nil) {
+    init(session: ActiveSession, endHour: Int = 18, endMinute: Int = 0, onDismiss: (() -> Void)? = nil, onStop: (() -> Void)? = nil) {
         self.onDismiss = onDismiss
+        self.onStop = onStop
         self.session = session
         let elapsed = session.cappedElapsedMinutes(endHour: endHour, endMinute: endMinute)
         _hours = State(initialValue: elapsed / 60)
@@ -114,6 +116,7 @@ struct StopSessionMacView: View {
         NotificationManager.shared.cancelSession(id: session.notificationID)
         context.delete(session)
         try? context.save()
+        onStop?()
         RestSyncService.shared.triggerSyncNow()
         dismissSelf()
     }
@@ -128,6 +131,7 @@ struct StopSessionMacView: View {
         NotificationManager.shared.cancelSession(id: session.notificationID)
         context.delete(session)
         try? context.save()
+        onStop?()
         RestSyncService.shared.triggerSyncNow()
         dismissSelf()
     }

@@ -40,7 +40,8 @@ struct MenuBarView: View {
                 StopSessionMacView(session: session,
                                    endHour: settings.trackingEndHour,
                                    endMinute: settings.trackingEndMinute,
-                                   onDismiss: { sessionToStop = nil })
+                                   onDismiss: { sessionToStop = nil },
+                                   onStop: updateWidgetSnapshot)
                     .background(Color(nsColor: .windowBackgroundColor))
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color(nsColor: .separatorColor), lineWidth: 1))

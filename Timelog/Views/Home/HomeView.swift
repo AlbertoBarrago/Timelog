@@ -2,9 +2,7 @@ import TimelogCore
 import TimelogSync
 import SwiftUI
 import SwiftData
-#if os(iOS)
 import WidgetKit
-#endif
 
 struct HomeView: View {
     @Environment(\.modelContext) private var context
@@ -134,17 +132,18 @@ struct HomeView: View {
                 case .stopSession(let session):
                     StopSessionSheet(session: session,
                                      endHour: settings.trackingEndHour,
-                                     endMinute: settings.trackingEndMinute)
+                                     endMinute: settings.trackingEndMinute,
+                                     onStop: updateWidgetSnapshot)
                 }
             }
             .onAppear { updateWidgetSnapshot() }
-            .onChange(of: allEntries) { _, _ in updateWidgetSnapshot() }
+            .onChange(of: allEntries)  { _, _ in updateWidgetSnapshot() }
             .onChange(of: allSessions) { _, _ in updateWidgetSnapshot() }
         }
     }
 
     private func updateWidgetSnapshot() {
-        let latestEntry = todayEntries.first
+        let latestEntry   = todayEntries.first
         let latestSession = activeSessions.max { $0.startDate < $1.startDate }
 
         var byClient: [String: TimelogWidgetBreakdownItem] = [:]
@@ -157,7 +156,7 @@ struct HomeView: View {
                 minutes: (byClient[name]?.minutes ?? 0) + minutes
             )
         }
-        for entry in todayEntries { accumulate(client: entry.client, minutes: entry.durationMinutes) }
+        for entry   in todayEntries   { accumulate(client: entry.client,   minutes: entry.durationMinutes) }
         for session in activeSessions { accumulate(client: session.client, minutes: session.elapsedMinutes) }
 
         let snapshot = TimelogWidgetSnapshot(
@@ -175,10 +174,9 @@ struct HomeView: View {
             breakdown: byClient.values.sorted { $0.minutes > $1.minutes }
         )
         WidgetSnapshotStore.save(snapshot)
-        #if os(iOS)
         WidgetCenter.shared.reloadTimelines(ofKind: TimelogWidgetConstants.kind)
-        #endif
     }
+
 }
 
 private enum HomeSheet: Identifiable {

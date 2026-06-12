@@ -86,12 +86,21 @@ public struct TimelogWidgetSnapshot: Codable, Hashable {
 public enum WidgetSnapshotStore {
     public static let appGroupID = "group.me.albz.timelog"
 
-    private static let snapshotKey = "today_widget_snapshot"
+    private static let snapshotFilename = "today_widget_snapshot.json"
+
+    // UserDefaults(suiteName:) su macOS non-sandboxed scrive in ~/Library/Preferences
+    // invece che nel Group Container condiviso col widget (sandboxed).
+    // FileManager.containerURL restituisce lo stesso path per entrambi i processi.
+    private static var snapshotURL: URL? {
+        FileManager.default
+            .containerURL(forSecurityApplicationGroupIdentifier: appGroupID)?
+            .appendingPathComponent(snapshotFilename)
+    }
 
     public static func load() -> TimelogWidgetSnapshot {
         guard
-            let defaults = UserDefaults(suiteName: appGroupID),
-            let data = defaults.data(forKey: snapshotKey),
+            let url = snapshotURL,
+            let data = try? Data(contentsOf: url),
             let snapshot = try? JSONDecoder().decode(TimelogWidgetSnapshot.self, from: data),
             Calendar.current.isDateInToday(snapshot.date)
         else {
@@ -102,9 +111,9 @@ public enum WidgetSnapshotStore {
 
     public static func save(_ snapshot: TimelogWidgetSnapshot) {
         guard
-            let defaults = UserDefaults(suiteName: appGroupID),
+            let url = snapshotURL,
             let data = try? JSONEncoder().encode(snapshot)
         else { return }
-        defaults.set(data, forKey: snapshotKey)
+        try? data.write(to: url, options: .atomic)
     }
 }

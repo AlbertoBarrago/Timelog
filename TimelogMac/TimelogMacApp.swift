@@ -5,6 +5,7 @@ import TimelogCore
 import TimelogSync
 import AppKit
 import Sparkle
+import WidgetKit
 
 private struct RestSyncSetup: ViewModifier {
     @Environment(\.modelContext) private var modelContext
@@ -118,6 +119,54 @@ final class AppNotificationDelegate: NSObject, UNUserNotificationCenterDelegate 
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     static weak var mainWindow: NSWindow?
+
+    func applicationDidFinishLaunching(_ notification: Notification) {
+        Task { @MainActor in refreshWidgetSnapshot() }
+    }
+
+    @MainActor
+    private func refreshWidgetSnapshot() {
+        let ctx = TimelogMacApp.container.mainContext
+        let userId = UserDefaults.standard.string(forKey: "user_id") ?? ""
+        let todayStart = Calendar.current.startOfDay(for: Date())
+
+        let allEntries  = (try? ctx.fetch(FetchDescriptor<TimeEntry>())) ?? []
+        let allSessions = (try? ctx.fetch(FetchDescriptor<ActiveSession>())) ?? []
+
+        let entries  = allEntries.filter  { $0.deletedAt == nil && $0.userId == userId && $0.date >= todayStart }
+        let sessions = allSessions.filter { $0.userId == userId }
+
+        var byClient: [String: TimelogWidgetBreakdownItem] = [:]
+        func accumulate(client: Client?, minutes: Int) {
+            guard minutes > 0 else { return }
+            let name = client?.name ?? "No client"
+            byClient[name] = TimelogWidgetBreakdownItem(
+                name: name,
+                colorHex: client?.colorHex ?? "#8E8E93",
+                minutes: (byClient[name]?.minutes ?? 0) + minutes
+            )
+        }
+        for entry   in entries  { accumulate(client: entry.client,   minutes: entry.durationMinutes) }
+        for session in sessions { accumulate(client: session.client, minutes: session.elapsedMinutes) }
+
+        let latestSession = sessions.max { $0.startDate < $1.startDate }
+        let snapshot = TimelogWidgetSnapshot(
+            loggedMinutes: entries.reduce(0) { $0 + $1.durationMinutes },
+            activeSessions: sessions.map {
+                TimelogWidgetActiveSessionSnapshot(
+                    startDate: $0.startDate,
+                    clientName: $0.client?.name,
+                    projectName: $0.project?.name,
+                    clientColorHex: $0.client?.colorHex
+                )
+            },
+            lastClientName: latestSession?.client?.name ?? entries.first?.client?.name,
+            lastProjectName: latestSession?.project?.name ?? entries.first?.project?.name,
+            breakdown: byClient.values.sorted { $0.minutes > $1.minutes }
+        )
+        WidgetSnapshotStore.save(snapshot)
+        WidgetCenter.shared.reloadTimelines(ofKind: TimelogWidgetConstants.kind)
+    }
 
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
         let ctx = TimelogMacApp.container.mainContext
