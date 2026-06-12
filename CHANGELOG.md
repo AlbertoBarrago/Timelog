@@ -9,6 +9,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.4.1] — 2026-06-12
+
+### Fixed
+- **macOS widget not updating** — `WidgetSnapshotStore` now uses `FileManager.containerURL(forSecurityApplicationGroupIdentifier:)` instead of `UserDefaults(suiteName:)` to read/write the shared snapshot. On macOS, `UserDefaults(suiteName:)` in a non-sandboxed app writes to `~/Library/Preferences/` rather than the App Group container, so the sandboxed widget extension was reading from a different file. Both now use the same `today_widget_snapshot.json` in the Group Container.
+- **macOS widget stale after restart** — `AppDelegate.applicationDidFinishLaunching` now rebuilds and saves the widget snapshot from SwiftData at app launch, so the widget reflects current data even when the window or menu bar has not been interacted with yet.
+- **Widget not refreshing on session stop** — added `onStop` callbacks to `StopSessionSheet` (iOS) and `StopSessionMacView` (macOS) so stopping a session immediately triggers a snapshot update and `WidgetCenter.reloadTimelines`, without waiting for the next `onChange` cycle.
+- **iOS widget extension** — replaced `TimelogWidgetExtension` (which included unused Live Activity scaffolding) with the new `TimelogWidget` target (widget-only, cleaner entitlements).
+- **macOS large widget black background** — `containerBackground` now uses `Color(nsColor: .windowBackgroundColor)` on macOS; the `.systemLarge` family has been removed from the macOS widget (only small/medium are supported).
+
+---
+
 ## [1.4.0] — 2026-06-11
 
 ### Added
