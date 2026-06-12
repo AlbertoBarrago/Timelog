@@ -11,6 +11,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [1.4.2] — 2026-06-12
 
+### Fixed
+- **Editing an existing entry not synced** — modifying a time entry (duration, notes, client, project…) on iOS or macOS was never pushed to the server because the sync observers only watched the record *count*. The local change was therefore overwritten by the next SSE-triggered pull, restoring the old value. Both `QuickLogSheet` (iOS) and `QuickLogMacView` (macOS) now call `triggerSync()` immediately after saving an edit.
+
 ---
 
 ## [1.4.1] — 2026-06-12
