@@ -7,6 +7,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- **Update badge on menu bar icon** — a small orange dot appears on the menu bar icon when a new version is available on GitHub. `VersionChecker` polls `api.github.com/repos/AlbertoBarrago/Timelog/releases/latest` on launch and every hour; uses semantic version comparison so patch/minor/major bumps are all detected correctly.
+
+### Fixed
+- **Ghost sessions after quick-stop from Clients view** — stopping one or more sessions via the ▶/■ button in the Clients/Projects view (both iOS and macOS) did not trigger a sync push. On macOS the `dataFingerprint` observer is blind to compensating changes (−N sessions + N entries = same sum), so the server was never notified; the next SSE event or foreground transition re-pulled the old sessions and re-created them locally. Both `autoStop` implementations now call `triggerSyncNow()` after saving, matching the behaviour of the stop sheets.
+
 ---
 
 ## [1.4.6] — 2026-06-12

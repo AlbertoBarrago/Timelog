@@ -145,6 +145,7 @@ struct ProjectListView: View {
             context.delete(session)
         }
         try? context.save()
+        RestSyncService.shared.triggerSyncNow()
     }
 
     private func quickStart(project: Project) {

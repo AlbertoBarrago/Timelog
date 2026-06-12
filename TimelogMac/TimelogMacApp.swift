@@ -188,6 +188,7 @@ struct TimelogMacApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @State private var settings = SettingsStore()
     @State private var timerVM = TimerViewModel()
+    @State private var versionChecker = VersionChecker()
     private let notificationDelegate = AppNotificationDelegate()
     private let updaterController = SPUStandardUpdaterController(
         startingUpdater: true,
@@ -220,6 +221,7 @@ struct TimelogMacApp: App {
                     NotificationManager.shared.requestPermission()
                     settings.applyReminders()
                     RestSyncService.shared.userId = settings.userId
+                    versionChecker.startChecking()
                 }
                 .modifier(RestSyncSetup())
                 .modifier(IdleAlertModifier())
@@ -250,7 +252,7 @@ struct TimelogMacApp: App {
                 .environment(settings)
                 .environment(timerVM)
         } label: {
-            MenuBarStatusLabel(vm: timerVM)
+            MenuBarStatusLabel(vm: timerVM, updateAvailable: versionChecker.updateAvailable)
         }
         .menuBarExtraStyle(.window)
         .modelContainer(Self.container)
@@ -266,6 +268,7 @@ struct TimelogMacApp: App {
 
 private struct MenuBarStatusLabel: View {
     let vm: TimerViewModel
+    let updateAvailable: Bool
 
     private var iconName: String {
         guard vm.isRunning || vm.elapsed > 0 else { return "clock" }
@@ -288,12 +291,25 @@ private struct MenuBarStatusLabel: View {
     }
 
     var body: some View {
-        if vm.isRunning || vm.elapsed > 0 {
-            Label(vm.displayTime, systemImage: iconName)
-                .monospacedDigit()
-                .foregroundStyle(iconColor)
-        } else {
-            Label("Timelog", systemImage: "clock")
+        HStack(spacing: 4) {
+            ZStack(alignment: .topTrailing) {
+                Image(systemName: iconName)
+                    .foregroundStyle(iconColor)
+                if updateAvailable {
+                    Circle()
+                        .fill(.orange)
+                        .frame(width: 5, height: 5)
+                        .offset(x: 3, y: -3)
+                }
+            }
+            if vm.isRunning || vm.elapsed > 0 {
+                Text(vm.displayTime)
+                    .monospacedDigit()
+                    .foregroundStyle(iconColor)
+            } else {
+                Text("Timelog")
+                    .foregroundStyle(.secondary)
+            }
         }
     }
 }
