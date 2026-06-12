@@ -11,12 +11,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [1.4.3] — 2026-06-12
 
----
-
-## [1.4.3] — 2026-06-12
-
 ### Changed
-- **History popover** — the History panel (Today → calendar toolbar button) now opens as a native macOS popover instead of a sheet, so clicking anywhere outside dismisses it automatically.
 - **Timer face position** — the stopwatch/Pomodoro display is nudged 14 pt upward inside the ring for better visual balance.
 
 ---
