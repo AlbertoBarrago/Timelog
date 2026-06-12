@@ -7,6 +7,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [1.4.7] — 2026-06-12
+
 ### Added
 - **Update badge on menu bar icon** — a small orange dot appears on the menu bar icon when a new version is available on GitHub. `VersionChecker` polls `api.github.com/repos/AlbertoBarrago/Timelog/releases/latest` on launch and every hour; uses semantic version comparison so patch/minor/major bumps are all detected correctly.
 
