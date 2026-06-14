@@ -119,7 +119,12 @@ struct ActiveSessionTests {
         let session = ActiveSession()
         container.mainContext.insert(session)
         session.startDate = Date(timeIntervalSinceNow: -30 * 60)
-        #expect(session.cappedElapsedMinutes(endHour: 18, endMinute: 0) == 30)
+
+        let calendar = Calendar.current
+        let farBoundary = session.startDate.addingTimeInterval(3600) // 1h after start, always after "now"
+        let endHour = calendar.component(.hour, from: farBoundary)
+        let endMinute = calendar.component(.minute, from: farBoundary)
+        #expect(session.cappedElapsedMinutes(endHour: endHour, endMinute: endMinute) == 30)
     }
 
     @Test func capReturnsAtLeastOneMinute() throws {
