@@ -260,9 +260,6 @@ private struct MenuBarStatusLabel: View {
                 Text(vm.displayTime)
                     .monospacedDigit()
                     .foregroundStyle(iconColor)
-            } else {
-                Text("Timelog")
-                    .foregroundStyle(.secondary)
             }
         }
     }
