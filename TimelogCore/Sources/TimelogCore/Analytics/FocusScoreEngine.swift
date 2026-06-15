@@ -11,7 +11,7 @@ public enum FocusScoreEngine {
             return FocusScore(
                 date: date, score: 0, avgDurationMinutes: 0,
                 deepWorkPercent: 0, shortSessionCount: 0, labelVariety: 0,
-                explanation: "No sessions recorded."
+                explanation: String(localized: "No sessions recorded.", bundle: .module)
             )
         }
 
@@ -60,20 +60,20 @@ public enum FocusScoreEngine {
         let avgStr = avgDuration >= 60
             ? String(format: "%.0f h %.0f min", floor(avgDuration / 60), avgDuration.truncatingRemainder(dividingBy: 60))
             : String(format: "%.0f min", avgDuration)
-        parts.append("Avg session: \(avgStr).")
+        parts.append(String(format: String(localized: "Avg session: %@.", bundle: .module), avgStr))
 
         if deepCount > 0 {
-            parts.append("\(deepCount) of \(total) sessions in deep focus (>25 min).")
+            parts.append(String(format: String(localized: "%lld of %lld sessions in deep focus (>25 min).", bundle: .module), deepCount, total))
         } else {
-            parts.append("No deep focus sessions today.")
+            parts.append(String(localized: "No deep focus sessions today.", bundle: .module))
         }
 
         if shortCount > 0 {
-            parts.append("\(shortCount) short interruption\(shortCount == 1 ? "" : "s") detected (<5 min).")
+            parts.append(String(format: String(localized: "%lld short interruptions detected (<5 min).", bundle: .module), shortCount))
         }
 
         if labelVariety > 3 {
-            parts.append("High context switching: \(labelVariety) different labels.")
+            parts.append(String(format: String(localized: "High context switching: %lld different labels.", bundle: .module), labelVariety))
         }
 
         return parts.joined(separator: " ")

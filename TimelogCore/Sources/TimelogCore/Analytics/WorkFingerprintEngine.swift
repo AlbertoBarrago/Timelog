@@ -56,37 +56,57 @@ public enum WorkFingerprintEngine {
         case .builder:
             return WorkFingerprint(
                 type: .builder,
-                title: "The Builder",
-                description: "You thrive in long, uninterrupted sessions. Your work is deep and focused, with few context switches.",
-                traits: ["Long focus sessions (45+ min)", "Minimal context switching", "High deep work ratio"]
+                title: String(localized: "The Builder", bundle: .module),
+                description: String(localized: "You thrive in long, uninterrupted sessions. Your work is deep and focused, with few context switches.", bundle: .module),
+                traits: [
+                    String(localized: "Long focus sessions (45+ min)", bundle: .module),
+                    String(localized: "Minimal context switching", bundle: .module),
+                    String(localized: "High deep work ratio", bundle: .module)
+                ]
             )
         case .maker:
             return WorkFingerprint(
                 type: .maker,
-                title: "The Maker",
-                description: "You balance steady sessions with creative flexibility. Deep work is important to you, though you adapt across a few areas.",
-                traits: ["Consistent session length (30+ min)", "Good deep work ratio", "Moderate label variety"]
+                title: String(localized: "The Maker", bundle: .module),
+                description: String(localized: "You balance steady sessions with creative flexibility. Deep work is important to you, though you adapt across a few areas.", bundle: .module),
+                traits: [
+                    String(localized: "Consistent session length (30+ min)", bundle: .module),
+                    String(localized: "Good deep work ratio", bundle: .module),
+                    String(localized: "Moderate label variety", bundle: .module)
+                ]
             )
         case .coordinator:
             return WorkFingerprint(
                 type: .coordinator,
-                title: "The Coordinator",
-                description: "You manage many moving parts — multiple clients and labels. You're the connective tissue that keeps everything running.",
-                traits: ["Many clients and labels", "High cross-domain activity", "Frequent context switching"]
+                title: String(localized: "The Coordinator", bundle: .module),
+                description: String(localized: "You manage many moving parts — multiple clients and labels. You're the connective tissue that keeps everything running.", bundle: .module),
+                traits: [
+                    String(localized: "Many clients and labels", bundle: .module),
+                    String(localized: "High cross-domain activity", bundle: .module),
+                    String(localized: "Frequent context switching", bundle: .module)
+                ]
             )
         case .explorer:
             return WorkFingerprint(
                 type: .explorer,
-                title: "The Explorer",
-                description: "You sample broadly across topics and tasks. Your strength is versatility, though longer focus blocks might boost your output.",
-                traits: ["High label diversity", "Many short sessions", "Wide range of activity types"]
+                title: String(localized: "The Explorer", bundle: .module),
+                description: String(localized: "You sample broadly across topics and tasks. Your strength is versatility, though longer focus blocks might boost your output.", bundle: .module),
+                traits: [
+                    String(localized: "High label diversity", bundle: .module),
+                    String(localized: "Many short sessions", bundle: .module),
+                    String(localized: "Wide range of activity types", bundle: .module)
+                ]
             )
         case .balanced:
             return WorkFingerprint(
                 type: .balanced,
-                title: "The Balanced",
-                description: "Your work style is well-rounded — a healthy mix of focus and flexibility across your tracked activities.",
-                traits: ["Moderate session length", "Balanced context switching", "Steady across clients and labels"]
+                title: String(localized: "The Balanced", bundle: .module),
+                description: String(localized: "Your work style is well-rounded — a healthy mix of focus and flexibility across your tracked activities.", bundle: .module),
+                traits: [
+                    String(localized: "Moderate session length", bundle: .module),
+                    String(localized: "Balanced context switching", bundle: .module),
+                    String(localized: "Steady across clients and labels", bundle: .module)
+                ]
             )
         }
     }

@@ -1,519 +1,877 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    " " : {
-
-    },
-    "%@ complete!" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ completato!"
+  "sourceLanguage": "en",
+  "strings": {
+    " ": {},
+    "%@ complete!": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ completato!"
           }
         }
       }
     },
-    "%@ started" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fase %@ avviata"
+    "%@ started": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fase %@ avviata"
           }
         }
       }
     },
-    "%@ started at %@ is still running." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ avviata alle %@ è ancora in corso."
+    "%@ started at %@ is still running.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ avviata alle %@ è ancora in corso."
           }
         }
       }
     },
-    "+%lld more" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "+%lld altri"
+    "%lld of %lld sessions in deep focus (>25 min).": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld di %lld sessioni in deep focus (>25 min)."
           }
         }
       }
     },
-    "20-20-20 rule: look 20 feet away for 20 seconds. Your eyes will thank you." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Regola 20-20-20: guarda a 6 metri di distanza per 20 secondi. I tuoi occhi ti ringrazieranno."
+    "%lld short interruptions detected (<5 min).": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld brevi interruzioni rilevate (<5 min)."
           }
         }
       }
     },
-    "active" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "in corso"
+    "+%lld more": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "+%lld altri"
           }
         }
       }
     },
-    "After a good long break, your brain is at its best. Let's use it." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dopo una bella pausa lunga, il cervello è al massimo. Usiamolo."
+    "20-20-20 rule: look 20 feet away for 20 seconds. Your eyes will thank you.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Regola 20-20-20: guarda a 6 metri di distanza per 20 secondi. I tuoi occhi ti ringrazieranno."
           }
         }
       }
     },
-    "Back to the desk!" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Torna alla scrivania!"
+    "After a good long break, your brain is at its best. Let's use it.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dopo una bella pausa lunga, il cervello è al massimo. Usiamolo."
           }
         }
       }
     },
-    "Because a new set of pomodoros starts now." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Perché ora inizia un nuovo set di pomodori."
+    "Avg session: %@.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sessione media: %@."
           }
         }
       }
     },
-    "Break over!" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pausa terminata!"
+    "Back to the desk!": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Torna alla scrivania!"
           }
         }
       }
     },
-    "Break's over — focus mode on. One pomodoro at a time." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pausa finita — focus mode attivata. Un pomodoro alla volta."
+    "Balanced context switching": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cambi di contesto bilanciati"
           }
         }
       }
     },
-    "Break's over, back to it!" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pausa finita, si torna!"
+    "Because a new set of pomodoros starts now.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Perché ora inizia un nuovo set di pomodori."
           }
         }
       }
     },
-    "Deep breath and go — one pomodoro at a time." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Respiro profondo e via — un pomodoro alla volta."
+    "Break over!": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausa terminata!"
           }
         }
       }
     },
-    "Did you forget to stop tracking?" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hai dimenticato di fermare il tracking?"
+    "Break's over — focus mode on. One pomodoro at a time.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausa finita — focus mode attivata. Un pomodoro alla volta."
           }
         }
       }
     },
-    "Did you forget to track today?" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hai dimenticato di tracciare oggi?"
+    "Break's over, back to it!": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausa finita, si torna!"
           }
         }
       }
     },
-    "Don't forget to fill in your timesheet for today." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Non dimenticare di compilare il timesheet di oggi."
+    "Consistent session length (30+ min)": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durata delle sessioni costante (30+ min)"
           }
         }
       }
     },
-    "Focus #%lld done!" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Focus #%lld completato!"
+    "Consistent work is the foundation of productivity. Keep tracking!": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il lavoro costante è la base della produttività. Continua a tracciare!"
           }
         }
       }
     },
-    "Focus finished!" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Focus finito!"
+    "Deep breath and go — one pomodoro at a time.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Respiro profondo e via — un pomodoro alla volta."
           }
         }
       }
     },
-    "Focus mode on. Silence and concentration." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Focus mode attivata. Silenzio e concentrazione."
+    "Did you forget to stop tracking?": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hai dimenticato di fermare il tracking?"
           }
         }
       }
     },
-    "Great work!" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ottimo lavoro!"
+    "Did you forget to track today?": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hai dimenticato di tracciare oggi?"
           }
         }
       }
     },
-    "Great work! %lld pomodoros completed." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ottimo lavoro! %lld pomodori completati."
+    "Don't forget to fill in your timesheet for today.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non dimenticare di compilare il timesheet di oggi."
           }
         }
       }
     },
-    "Here we go again!" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Si riparte!"
+    "Focus #%lld done!": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Focus #%lld completato!"
           }
         }
       }
     },
-    "Hope you took a walk. Time to get back to work." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Speriamo tu abbia fatto una passeggiata. Ora si lavora."
+    "Focus finished!": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Focus finito!"
           }
         }
       }
     },
-    "Logged" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Registrato"
+    "Focus mode on. Silence and concentration.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Focus mode attivata. Silenzio e concentrazione."
           }
         }
       }
     },
-    "Long break's over!" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pausa lunga finita!"
+    "Frequent context switching": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frequenti cambi di contesto"
           }
         }
       }
     },
-    "Look away from the monitor. Even 5 minutes make a difference." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gira la faccia dal monitor. Anche solo 5 minuti fanno la differenza."
+    "Good deep work ratio": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buon rapporto di deep work"
           }
         }
       }
     },
-    "Look out the window for 20 seconds. Seriously." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Guarda fuori dalla finestra per 20 secondi. Sul serio."
+    "Great week — you tracked %d%% more than last week. Keep the momentum.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ottima settimana — hai tracciato il %d%% in più rispetto alla scorsa. Mantieni il ritmo!"
           }
         }
       }
     },
-    "Look out the window for 20 seconds. Your eyes will thank you." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Guarda fuori dalla finestra per 20 secondi. I tuoi occhi ti ringrazieranno."
+    "Great work!": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ottimo lavoro!"
           }
         }
       }
     },
-    "No entries today" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nessuna voce oggi"
+    "Great work! %lld pomodoros completed.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ottimo lavoro! %lld pomodori completati."
           }
         }
       }
     },
-    "Pomodoro %lld complete!" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pomodoro %lld completato!"
+    "Here we go again!": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Si riparte!"
           }
         }
       }
     },
-    "Ready?" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pronti?"
+    "High context switching: %lld different labels.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alto cambio di contesto: %lld etichette diverse."
           }
         }
       }
     },
-    "Rested?" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Riposato?"
+    "High cross-domain activity": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alta attività cross-dominio"
           }
         }
       }
     },
-    "Roll your shoulders. Drink some water. You're a biological machine, not just a digital one." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ruota le spalle. Bevi dell'acqua. Sei una macchina biologica, non solo digitale."
+    "High deep work ratio": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alto rapporto di deep work"
           }
         }
       }
     },
-    "Session %lld in the bag!" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sessione %lld in cascina!"
+    "High label diversity": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alta diversità di etichette"
           }
         }
       }
     },
-    "Shows today's logged time and active tracking." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mostra il tempo registrato oggi e il tracciamento attivo."
+    "Hope you took a walk. Time to get back to work.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speriamo tu abbia fatto una passeggiata. Ora si lavora."
           }
         }
       }
     },
-    "Stand up. Stretch. The code can wait." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alzati. Stiracchiati. Il codice può aspettarti."
+    "Logged": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registrato"
           }
         }
       }
     },
-    "The break did its job. Now it's your turn." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La pausa ha fatto il suo lavoro. Ora tocca a te."
+    "Long break's over!": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausa lunga finita!"
           }
         }
       }
     },
-    "The long break did its job. Let's get back on track." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La pausa lunga è servita. Rimettiamoci in carreggiata."
+    "Long focus sessions (45+ min)": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sessioni di focus lunghe (45+ min)"
           }
         }
       }
     },
-    "The next focus starts now. You've got this." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Il prossimo focus inizia adesso. Ce la puoi fare."
+    "Look away from the monitor. Even 5 minutes make a difference.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gira la faccia dal monitor. Anche solo 5 minuti fanno la differenza."
           }
         }
       }
     },
-    "Time for a break." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tempo di pausa."
+    "Look out the window for 20 seconds. Seriously.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guarda fuori dalla finestra per 20 secondi. Sul serio."
           }
         }
       }
     },
-    "Time to log!" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ora di registrare le ore!"
+    "Look out the window for 20 seconds. Your eyes will thank you.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guarda fuori dalla finestra per 20 secondi. I tuoi occhi ti ringrazieranno."
           }
         }
       }
     },
-    "Timelog Today" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Timelog Oggi"
+    "Many clients and labels": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Molti clienti ed etichette"
           }
         }
       }
     },
-    "Today" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Oggi"
+    "Many short sessions": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Molte sessioni brevi"
           }
         }
       }
     },
-    "Tracking now" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tracciamento in corso"
+    "Minimal context switching": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cambi di contesto minimi"
           }
         }
       }
     },
-    "Welcome back!" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bentornato!"
+    "Moderate label variety": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Varietà moderata di etichette"
           }
         }
       }
     },
-    "What are you working on?" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Su cosa stai lavorando?"
+    "Moderate session length": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durata delle sessioni moderata"
           }
         }
       }
     },
-    "You deserve a long break. Stand up and stretch." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Meriti una pausa lunga. Alzati e stiracchiati."
+    "No deep focus sessions today.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessuna sessione in deep focus oggi."
           }
         }
       }
     },
-    "You there?" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ci sei?"
+    "No entries today": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessuna voce oggi"
           }
         }
       }
     },
-    "You're not tracking anything" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Non stai tracciando nulla"
+    "No sessions recorded.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nessuna sessione registrata."
           }
         }
       }
     },
-    "Your mind is recharged. Let's dive in." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La mente è ricaricata. Diamoci dentro."
+    "Pomodoro %lld complete!": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pomodoro %lld completato!"
           }
         }
       }
     },
-    "Your office hours are ending. Log your time before you go." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "L'orario di lavoro sta per finire. Registra le tue ore prima di andare."
+    "Ready?": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pronti?"
+          }
+        }
+      }
+    },
+    "Rested?": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Riposato?"
+          }
+        }
+      }
+    },
+    "Roll your shoulders. Drink some water. You're a biological machine, not just a digital one.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ruota le spalle. Bevi dell'acqua. Sei una macchina biologica, non solo digitale."
+          }
+        }
+      }
+    },
+    "Session %lld in the bag!": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sessione %lld in cascina!"
+          }
+        }
+      }
+    },
+    "Shows today's logged time and active tracking.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra il tempo registrato oggi e il tracciamento attivo."
+          }
+        }
+      }
+    },
+    "Stand up. Stretch. The code can wait.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alzati. Stiracchiati. Il codice può aspettarti."
+          }
+        }
+      }
+    },
+    "Steady across clients and labels": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Costante tra clienti ed etichette"
+          }
+        }
+      }
+    },
+    "The Balanced": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il Bilanciato"
+          }
+        }
+      }
+    },
+    "The Builder": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il Costruttore"
+          }
+        }
+      }
+    },
+    "The Coordinator": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il Coordinatore"
+          }
+        }
+      }
+    },
+    "The Explorer": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'Esploratore"
+          }
+        }
+      }
+    },
+    "The Maker": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il Creatore"
+          }
+        }
+      }
+    },
+    "The break did its job. Now it's your turn.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La pausa ha fatto il suo lavoro. Ora tocca a te."
+          }
+        }
+      }
+    },
+    "The long break did its job. Let's get back on track.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La pausa lunga è servita. Rimettiamoci in carreggiata."
+          }
+        }
+      }
+    },
+    "The next focus starts now. You've got this.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il prossimo focus inizia adesso. Ce la puoi fare."
+          }
+        }
+      }
+    },
+    "Time for a break.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tempo di pausa."
+          }
+        }
+      }
+    },
+    "Time to log!": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ora di registrare le ore!"
+          }
+        }
+      }
+    },
+    "Timelog Today": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Timelog Oggi"
+          }
+        }
+      }
+    },
+    "Today": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oggi"
+          }
+        }
+      }
+    },
+    "Tracking now": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tracciamento in corso"
+          }
+        }
+      }
+    },
+    "Welcome back!": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bentornato!"
+          }
+        }
+      }
+    },
+    "What are you working on?": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Su cosa stai lavorando?"
+          }
+        }
+      }
+    },
+    "Wide range of activity types": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ampia gamma di tipi di attività"
+          }
+        }
+      }
+    },
+    "You balance steady sessions with creative flexibility. Deep work is important to you, though you adapt across a few areas.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bilanci sessioni regolari con flessibilità creativa. Il deep work è importante per te, ma ti adatti in diverse aree."
+          }
+        }
+      }
+    },
+    "You deserve a long break. Stand up and stretch.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meriti una pausa lunga. Alzati e stiracchiati."
+          }
+        }
+      }
+    },
+    "You had %lld very short sessions this week. Try protecting longer focus blocks.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Questa settimana hai avuto %lld sessioni molto brevi. Prova a proteggere blocchi di focus più lunghi."
+          }
+        }
+      }
+    },
+    "You manage many moving parts — multiple clients and labels. You're the connective tissue that keeps everything running.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gestisci molti elementi in movimento — clienti ed etichette diverse. Sei il collante che tiene tutto in funzione."
+          }
+        }
+      }
+    },
+    "You sample broadly across topics and tasks. Your strength is versatility, though longer focus blocks might boost your output.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esplori un'ampia varietà di argomenti e attività. Il tuo punto di forza è la versatilità, ma blocchi di focus più lunghi potrebbero migliorare la produttività."
+          }
+        }
+      }
+    },
+    "You switched between %lld labels this week. Batching similar work can reduce context switching.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Questa settimana hai alternato %lld etichette. Raggruppare lavori simili può ridurre i cambi di contesto."
+          }
+        }
+      }
+    },
+    "You there?": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ci sei?"
+          }
+        }
+      }
+    },
+    "You thrive in long, uninterrupted sessions. Your work is deep and focused, with few context switches.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eccelli in sessioni lunghe e senza interruzioni. Il tuo lavoro è profondo e concentrato, con pochi cambi di contesto."
+          }
+        }
+      }
+    },
+    "You tracked less time than last week. Check if any sessions were missed.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hai tracciato meno tempo rispetto alla settimana scorsa. Controlla se mancano sessioni."
+          }
+        }
+      }
+    },
+    "You're not tracking anything": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non stai tracciando nulla"
+          }
+        }
+      }
+    },
+    "Your mind is recharged. Let's dive in.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La mente è ricaricata. Diamoci dentro."
+          }
+        }
+      }
+    },
+    "Your office hours are ending. Log your time before you go.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'orario di lavoro sta per finire. Registra le tue ore prima di andare."
+          }
+        }
+      }
+    },
+    "Your work style is well-rounded — a healthy mix of focus and flexibility across your tracked activities.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il tuo stile di lavoro è equilibrato — un sano mix di focus e flessibilità nelle attività tracciate."
+          }
+        }
+      }
+    },
+    "active": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "in corso"
           }
         }
       }
     }
   },
-  "version" : "1.1"
+  "version": "1.1"
 }

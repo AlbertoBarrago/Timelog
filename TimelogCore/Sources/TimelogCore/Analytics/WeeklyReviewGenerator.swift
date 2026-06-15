@@ -81,17 +81,17 @@ public enum WeeklyReviewGenerator {
         let shortCount = entries.filter { $0.durationMinutes < 5 }.count
 
         if let trend = trendPercent, trend < -10 {
-            return "You tracked less time than last week. Check if any sessions were missed."
+            return String(localized: "You tracked less time than last week. Check if any sessions were missed.", bundle: .module)
         }
         if shortCount > 3 {
-            return "You had \(shortCount) very short sessions this week. Try protecting longer focus blocks."
+            return String(format: String(localized: "You had %lld very short sessions this week. Try protecting longer focus blocks.", bundle: .module), shortCount)
         }
         if labelVariety > 4 {
-            return "You switched between \(labelVariety) labels this week. Batching similar work can reduce context switching."
+            return String(format: String(localized: "You switched between %lld labels this week. Batching similar work can reduce context switching.", bundle: .module), labelVariety)
         }
         if let trend = trendPercent, trend > 20 {
-            return "Great week — you tracked \(Int(trend.rounded()))% more than last week. Keep the momentum."
+            return String(format: String(localized: "Great week — you tracked %d%% more than last week. Keep the momentum.", bundle: .module), Int(trend.rounded()))
         }
-        return "Consistent work is the foundation of productivity. Keep tracking!"
+        return String(localized: "Consistent work is the foundation of productivity. Keep tracking!", bundle: .module)
     }
 }

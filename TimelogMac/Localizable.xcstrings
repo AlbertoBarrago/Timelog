@@ -251,7 +251,16 @@
         }
       }
     },
-    "Best day": {},
+    "Best day": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giornata migliore"
+          }
+        }
+      }
+    },
     "Blue": {
       "localizations": {
         "it": {
@@ -697,7 +706,16 @@
         }
       }
     },
-    "Focus Score — Last 7 Days": {},
+    "Focus Score — Last 7 Days": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Focus Score — Ultimi 7 giorni"
+          }
+        }
+      }
+    },
     "Focus: %lld min": {
       "localizations": {
         "it": {
@@ -983,7 +1001,16 @@
         }
       }
     },
-    "Longest session": {},
+    "Longest session": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sessione più lunga"
+          }
+        }
+      }
+    },
     "M": {
       "extractionState": "stale",
       "localizations": {
@@ -2149,8 +2176,26 @@
         }
       }
     },
-    "Top client": {},
-    "Top label": {},
+    "Top client": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cliente principale"
+          }
+        }
+      }
+    },
+    "Top label": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etichetta principale"
+          }
+        }
+      }
+    },
     "Total": {
       "localizations": {
         "it": {
@@ -2161,7 +2206,16 @@
         }
       }
     },
-    "Total hours": {},
+    "Total hours": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ore totali"
+          }
+        }
+      }
+    },
     "Total:": {
       "localizations": {
         "it": {
@@ -2182,7 +2236,16 @@
         }
       }
     },
-    "Track at least 5 sessions to see your behavioral insights.": {},
+    "Track at least 5 sessions to see your behavioral insights.": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registra almeno 5 sessioni per visualizzare i tuoi approfondimenti comportamentali."
+          }
+        }
+      }
+    },
     "Track elapsed time without a fixed interval.": {
       "localizations": {
         "it": {
@@ -2436,7 +2499,16 @@
         }
       }
     },
-    "vs last week": {}
+    "vs last week": {
+      "localizations": {
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "vs settimana scorsa"
+          }
+        }
+      }
+    }
   },
   "version": "1.1"
 }
