@@ -7,9 +7,10 @@ enum SidebarItem: String, CaseIterable, Identifiable {
     case history  = "History"
     case clients  = "Clients"
     case timer    = "Timer"
+    case insights = "Stats"
     case settings = "Settings"
 
-    static let primaryItems: [SidebarItem] = [.today, .history, .clients, .timer]
+    static let primaryItems: [SidebarItem] = [.today, .history, .clients, .timer, .insights]
 
     var id: String { rawValue }
     var icon: String {
@@ -18,6 +19,7 @@ enum SidebarItem: String, CaseIterable, Identifiable {
         case .history:  "calendar"
         case .clients:  "person.2"
         case .timer:    "timer"
+        case .insights: "chart.xyaxis.line"
         case .settings: "gearshape"
         }
     }
@@ -123,6 +125,7 @@ struct MainMacView: View {
         case .history:  HistoryMacView()
         case .clients:  ClientsMacView()
         case .timer:    TimerMacView()
+        case .insights: InsightsMacView()
         case .settings: MacSettingsView()
         }
     }

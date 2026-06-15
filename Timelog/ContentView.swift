@@ -24,6 +24,9 @@ struct ContentView: View {
             SettingsView()
                 .tabItem { Label(AppTab.settings.title, systemImage: AppTab.settings.icon) }
                 .tag(AppTab.settings)
+            InsightsView()
+                .tabItem { Label(AppTab.insights.title, systemImage: AppTab.insights.icon) }
+                .tag(AppTab.insights)
         }
         .fullScreenCover(isPresented: Binding(
             get: { !onboardingCompleted },

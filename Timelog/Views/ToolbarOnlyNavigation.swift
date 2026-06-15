@@ -6,6 +6,7 @@ enum AppTab: Int, CaseIterable, Identifiable {
     case clients  = 2
     case timer    = 3
     case settings = 4
+    case insights = 5
 
     var id: Int { rawValue }
 
@@ -16,6 +17,7 @@ enum AppTab: Int, CaseIterable, Identifiable {
         case .clients:  "Clients"
         case .timer:    "Timer"
         case .settings: "Settings"
+        case .insights: "Stats"
         }
     }
 
@@ -26,6 +28,7 @@ enum AppTab: Int, CaseIterable, Identifiable {
         case .clients:  "person.2"
         case .timer:    "timer"
         case .settings: "gearshape"
+        case .insights: "chart.xyaxis.line"
         }
     }
 }

@@ -9,6 +9,21 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.5.0] — 2026-06-15
+
+### Added
+- **Stats tab (iOS) / Stats sidebar (macOS)** — new analytics module "Behavioral Insights" with six engines that reveal work patterns from existing time entries.
+  - **Focus Score** — daily score (0-100) based on session depth, deep work ratio, short-session penalties, and label-switching frequency. Shown as a 7-day bar chart.
+  - **Weekly Review** — total hours, best day, most active label/client, longest session, trend vs previous week, and a deterministic improvement tip.
+  - **Peak Hours** — average session length by hour of day (bar chart), highlighting when you work most effectively.
+  - **Label Breakdown** — horizontal bar chart ranking labels by total time, with formatted duration annotations.
+  - **Time Leaks** — identifies labels/clients where time spent this week exceeds the 28-day baseline by more than 20%.
+  - **Work Fingerprint** — classifies your working style as Builder, Maker, Coordinator, Explorer, or Balanced based on session depth, client variety, and label diversity.
+- **`BehavioralInsightsService`** — `@Observable` orchestrator that exposes all engine results; computes off the main thread via `async/await`.
+- **Unit tests** — `BehavioralInsightsTests` covers all six engines with Swift Testing (`@Suite`/`@Test`/`#expect`), deterministic UTC calendar, edge cases, and boundary values.
+
+---
+
 ## [1.4.10] — 2026-06-15
 
 ---
