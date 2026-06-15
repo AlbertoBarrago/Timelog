@@ -7,6 +7,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [1.5.1] — 2026-06-15
+
 ### Removed
 - **Widgets (iOS & macOS)** — the WidgetKit extension has been removed from both platforms. The widget suffered from persistent known issues: data not refreshing after app changes, the extension showing stale/dark-cached content across builds, and a macOS-specific path mismatch between the non-sandboxed app and the sandboxed widget container that prevented snapshot delivery even after applying the `FileManager.containerURL` workaround. Rather than carry broken surface area into the App Store release, the feature has been cut entirely. If reintroduced in a future version it will be built from scratch using App Intents and a shared SwiftData container via App Group.
 
