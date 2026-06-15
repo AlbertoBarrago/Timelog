@@ -15,7 +15,6 @@ TimeLog/
 │       └── TimelogSync/         ← RestSyncService + SSEClient (iOS + macOS)
 ├── Timelog/                     ← iOS Views
 ├── TimelogMac/                  ← macOS Views
-├── TimelogWidgetExtension/      ← Widget + Live Activity (iOS)
 └── server/                      ← Vercel middleware (Node.js/TypeScript)
     └── api/
         ├── pull.ts              ← GET  /api/pull
@@ -37,14 +36,10 @@ graph TD
         mMenu["MenuBarExtra"]
     end
 
-    subgraph Widget["Widget Extension"]
-        wWidget["Today Widget\nLive Activity"]
-    end
-
     subgraph Core["TimelogCore (Swift Package)"]
         Models["Models\nClient · Project\nTimeEntry · ActiveSession"]
         VM["TimerViewModel"]
-        Store["SettingsStore\nWidgetSnapshotStore"]
+        Store["SettingsStore"]
         Helpers["KeychainHelper\nNotificationManager"]
         Ext["Extensions\nColor+Hex · Int+Duration"]
     end
@@ -60,7 +55,6 @@ graph TD
         UNS["UNUserNotificationCenter"]
         MDB[("MongoDB Atlas")]
         VCL["Vercel Functions\nGET /api/pull · POST /api/sync · GET /api/events"]
-        AG["App Group\ngroup.me.albz.timelog"]
     end
 
     iViews --> Core
@@ -68,15 +62,12 @@ graph TD
     mViews --> Core
     mViews --> Sync
     mMenu --> Core
-    Widget --> Core
 
     VM --> UNS
     VM -.->|"iOS only"| LiveActivity["ActivityKit\nLive Activity"]
     Store --> UNS
     Helpers --> KCH
     Models --> SD
-    Store --> AG
-    Widget --> AG
 
     RestSvc --> KCH
     RestSvc --> VCL
@@ -90,7 +81,7 @@ graph TD
 | Rule | Rationale |
 |------|-----------|
 | Business logic only in `TimelogCore` | Apps contain exclusively Views |
-| Everything `public` in TimelogCore | Visible from both apps and the widget |
+| Everything `public` in TimelogCore | Visible from both apps |
 | One `ModelContainer` per app | Avoids SwiftData conflicts; on macOS it is `static let` shared between WindowGroup and MenuBarExtra |
 | Both platforms use `RestSyncService` | Single unified sync implementation; no direct MongoDB access from clients; real-time via SSE Change Streams |
 | `#if os(iOS)` for ActivityKit and UIKit haptics | Do not use `#if targetEnvironment(macCatalyst)` — the project does not use Catalyst |

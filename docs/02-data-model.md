@@ -114,22 +114,6 @@ flowchart LR
         VCL -->|"GET /api/events (SSE)\nChange Stream"| mRSS
     end
 
-    subgraph Widget
-        wWidget["Widget Extension"] -->|"read"| AppGroup[("App Group\nUserDefaults\nWidgetSnapshotStore")]
-        iApp -->|"write snapshot"| AppGroup
-    end
-```
-
-### WidgetSnapshotStore
-Widgets do not access SwiftData directly. The app writes a serialised snapshot to a shared `App Group` (`group.me.albz.timelog`).
-
-```
-TimelogWidgetSnapshot
- ├─ date: Date
- ├─ loggedMinutes: Int          ← minutes logged today
- ├─ activeSessions: [...]       ← active sessions
- ├─ lastClientName: String?
- └─ lastProjectName: String?
 ```
 
 ## MongoId and upsert strategy

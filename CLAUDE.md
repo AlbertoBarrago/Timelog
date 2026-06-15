@@ -19,8 +19,7 @@ TimeLog/
 │       ├── Helpers/           ← KeychainHelper, NotificationManager
 │       └── Extensions/        ← Color+Hex, Int+Duration
 ├── Timelog/                   ← iOS sources (Views only)
-├── TimelogMac/                ← macOS sources (Views only)
-└── TimelogWidgetExtension/    ← Live Activity widget (iOS only)
+└── TimelogMac/                ← macOS sources (Views only)
 ```
 
 ## Core rules
@@ -34,8 +33,6 @@ TimeLog/
 
 - Target: iPhone + iPad, iOS 17+
 - No Mac Catalyst
-- Live Activity on lock screen + Dynamic Island (`TimelogWidgetExtensionExtension`)
-- Widget extension `CFBundleVersion` must always match the main app
 - Tab order: Today → Clients → Timer → Settings
 
 ## macOS app (`TimelogMac.xcodeproj`)
@@ -94,7 +91,7 @@ This project targets App Store publication. Always respect:
 - **Crash safety**: `try!` and `fatalError` only for programming errors (e.g. ModelContainer init); never for user data or network
 - **Native macOS UI**: use `LabeledContent`, `Form.grouped`, toolbar items, `NavigationSplitView` — do not port iOS patterns to macOS
 - **Native iOS UI**: use sheets, swipe actions, `TabView` — do not port macOS patterns to iOS
-- **Versioning**: `CFBundleShortVersionString` (marketing) and `CFBundleVersion` (build) must be consistent between app and widget extension
+- **Versioning**: `CFBundleShortVersionString` (marketing) and `CFBundleVersion` (build) must be consistent across all targets
 
 ## Tech stack
 

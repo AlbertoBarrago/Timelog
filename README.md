@@ -32,7 +32,6 @@
 </p>
 <p align="center">
   <img src="docs/screenshots/Clients.png" width="48%" alt="Clients — manage clients and projects" />
-  <img src="docs/screenshots/widget.png" width="28%" alt="Menu bar widget" />
 </p>
 
 ---
@@ -58,8 +57,6 @@ Both apps share business logic via **TimelogCore**, a local Swift Package in the
 | **Settings** | Pomodoro intervals, daily reminders, smart tracking config, sync status |
 | **Language** | English and Italian — follows the system locale automatically |
 | **Multi-user** | Each person picks a nickname on first launch — data is fully isolated per user on a shared cluster |
-| **Widget** | Home screen widget (small/medium/large) and Lock Screen accessories with live ticking timer for the active session |
-
 ### Smart Tracking
 Tap ▶ to start a session when you begin working. Stop it when done — duration is logged automatically. Multiple sessions can run simultaneously. Forgot to stop? You get a notification at your configured end-of-day time.
 
@@ -77,7 +74,6 @@ Active sessions and the running timer appear on the lock screen and in the Dynam
 - **Today view** — active sessions with live ticker, today's entries, context menus
 - **Clients & Projects** — `NavigationSplitView` with macOS `Table`, inline create/edit forms
 - **Timer** — full Pomodoro / stopwatch window, Space to start/pause
-- **Desktop widget** — Today widget (small/medium) in Notification Center and on the desktop, with live ticking timer and per-client breakdown; shared implementation with iOS via TimelogCore
 - **Auto-updates via Sparkle** — one-click in-app updates, EdDSA-signed DMG; "Check for Updates…" in the app menu. No Apple Developer ID required
 - **REST sync** — push/pull via `RestSyncService` + real-time SSE; connection string stored in Keychain
 - **Multi-user** — each team member picks a nickname on first launch; data is isolated per user, one shared cluster
@@ -118,8 +114,6 @@ TimeLog/
 │       └── TimelogSync/        # MongoSyncService (macOS) + RestSyncService (iOS)
 ├── Timelog/                    # iOS app sources (Views only)
 ├── TimelogMac/                 # macOS app sources (Views only)
-├── TimelogWidget/              # iOS widget extension (Home screen + Lock Screen)
-├── TimelogMacWidgetExtension/  # macOS widget extension (desktop + Notification Center)
 ├── server/                     # Vercel middleware (Node.js + TypeScript)
 │   └── api/
 │       ├── pull.ts             # GET  /api/pull
@@ -196,7 +190,7 @@ Per i test che richiedono l'app bundle (Keychain, Notifications), usa **⌘U** i
 
 | Target | Suite | Runner |
 |--------|-------|--------|
-| `TimelogCoreTests` | `Int.formattedDuration`, `Color+Hex`, `Client`, `ActiveSession`, `WidgetSnapshot` | `swift test` |
+| `TimelogCoreTests` | `Int.formattedDuration`, `Color+Hex`, `Client`, `ActiveSession` | `swift test` |
 | `TimelogTests` | `KeychainHelper`, `SettingsStore`, `TimerViewModel` | Xcode ⌘U |
 
 ---
