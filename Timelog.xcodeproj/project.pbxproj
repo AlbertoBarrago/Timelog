@@ -9,19 +9,9 @@
 /* Begin PBXBuildFile section */
 		AA110011AA110011AA110011 /* TimelogSync in Frameworks */ = {isa = PBXBuildFile; productRef = AA110012AA110012AA110012 /* TimelogSync */; };
 		B17066319DDC41458A535522 /* TimelogCore in Frameworks */ = {isa = PBXBuildFile; productRef = CD0C797427FE40D09F52EBAA /* TimelogCore */; };
-		B17066329DDC41458A535522 /* TimelogCore in Frameworks */ = {isa = PBXBuildFile; productRef = CD0C797427FE40D09F52EBAA /* TimelogCore */; };
-		FA00000CFA00000CFA00000C /* TimelogCore in Frameworks */ = {isa = PBXBuildFile; productRef = FA00000BFA00000BFA00000B /* TimelogCore */; };
-		FA00000DFA00000DFA00000D /* TimelogWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FA000002FA000002FA000002 /* TimelogWidget.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		FA000010FA000010FA000010 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E97A4C692FAFE9D100C528C1 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = FA000001FA000001FA000001;
-			remoteInfo = TimelogWidget;
-		};
 		E97A4C832FAFE9D300C528C1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E97A4C692FAFE9D100C528C1 /* Project object */;
@@ -38,36 +28,13 @@
 		};
 /* End PBXContainerItemProxy section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		FA00000EFA00000EFA00000E /* Embed Foundation Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				FA00000DFA00000DFA00000D /* TimelogWidget.appex in Embed Foundation Extensions */,
-			);
-			name = "Embed Foundation Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
-		FA000002FA000002FA000002 /* TimelogWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TimelogWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		E97A4C712FAFE9D100C528C1 /* Timelog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Timelog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E97A4C822FAFE9D300C528C1 /* TimelogTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TimelogTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E97A4C8C2FAFE9D300C528C1 /* TimelogUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TimelogUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		FA000004FA000004FA000004 /* Exceptions for "TimelogWidget" folder in "TimelogWidget" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-				TimelogWidget.entitlements,
-			);
-			target = FA000001FA000001FA000001 /* TimelogWidget */;
-		};
 		E97A4C942FAFE9D300C528C1 /* Exceptions for "Timelog" folder in "Timelog" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -78,14 +45,6 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		FA000003FA000003FA000003 /* TimelogWidget */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				FA000004FA000004FA000004 /* Exceptions for "TimelogWidget" folder in "TimelogWidget" target */,
-			);
-			path = TimelogWidget;
-			sourceTree = "<group>";
-		};
 		E97A4C732FAFE9D100C528C1 /* Timelog */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -116,14 +75,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FA000006FA000006FA000006 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FA00000CFA00000CFA00000C /* TimelogCore in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		E97A4C7F2FAFE9D300C528C1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -145,7 +96,6 @@
 			isa = PBXGroup;
 			children = (
 				E97A4C732FAFE9D100C528C1 /* Timelog */,
-				FA000003FA000003FA000003 /* TimelogWidget */,
 				E97A4C852FAFE9D300C528C1 /* TimelogTests */,
 				E97A4C8F2FAFE9D300C528C1 /* TimelogUITests */,
 				E97A4C722FAFE9D100C528C1 /* Products */,
@@ -156,7 +106,6 @@
 			isa = PBXGroup;
 			children = (
 				E97A4C712FAFE9D100C528C1 /* Timelog.app */,
-				FA000002FA000002FA000002 /* TimelogWidget.appex */,
 				E97A4C822FAFE9D300C528C1 /* TimelogTests.xctest */,
 				E97A4C8C2FAFE9D300C528C1 /* TimelogUITests.xctest */,
 			);
@@ -173,12 +122,10 @@
 				E97A4C6D2FAFE9D100C528C1 /* Sources */,
 				E97A4C6E2FAFE9D100C528C1 /* Frameworks */,
 				E97A4C6F2FAFE9D100C528C1 /* Resources */,
-				FA00000EFA00000EFA00000E /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				FA00000FFA00000FFA00000F /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				E97A4C732FAFE9D100C528C1 /* Timelog */,
@@ -191,29 +138,6 @@
 			productName = Timelog;
 			productReference = E97A4C712FAFE9D100C528C1 /* Timelog.app */;
 			productType = "com.apple.product-type.application";
-		};
-		FA000001FA000001FA000001 /* TimelogWidget */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = FA00000AFA00000AFA00000A /* Build configuration list for PBXNativeTarget "TimelogWidget" */;
-			buildPhases = (
-				FA000005FA000005FA000005 /* Sources */,
-				FA000006FA000006FA000006 /* Frameworks */,
-				FA000007FA000007FA000007 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				FA000003FA000003FA000003 /* TimelogWidget */,
-			);
-			name = TimelogWidget;
-			packageProductDependencies = (
-				FA00000BFA00000BFA00000B /* TimelogCore */,
-			);
-			productName = TimelogWidget;
-			productReference = FA000002FA000002FA000002 /* TimelogWidget.appex */;
-			productType = "com.apple.product-type.app-extension";
 		};
 		E97A4C812FAFE9D300C528C1 /* TimelogTests */ = {
 			isa = PBXNativeTarget;
@@ -282,9 +206,6 @@
 						CreatedOnToolsVersion = 26.4.1;
 						TestTargetID = E97A4C702FAFE9D100C528C1;
 					};
-					FA000001FA000001FA000001 = {
-						CreatedOnToolsVersion = 26.4.1;
-					};
 				};
 			};
 			buildConfigurationList = E97A4C6C2FAFE9D100C528C1 /* Build configuration list for PBXProject "Timelog" */;
@@ -306,7 +227,6 @@
 			projectRoot = "";
 			targets = (
 				E97A4C702FAFE9D100C528C1 /* Timelog */,
-				FA000001FA000001FA000001 /* TimelogWidget */,
 				E97A4C812FAFE9D300C528C1 /* TimelogTests */,
 				E97A4C8B2FAFE9D300C528C1 /* TimelogUITests */,
 			);
@@ -315,13 +235,6 @@
 
 /* Begin PBXResourcesBuildPhase section */
 		E97A4C6F2FAFE9D100C528C1 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FA000007FA000007FA000007 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -352,13 +265,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FA000005FA000005FA000005 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		E97A4C7E2FAFE9D300C528C1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -376,11 +282,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		FA00000FFA00000FFA00000F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = FA000001FA000001FA000001 /* TimelogWidget */;
-			targetProxy = FA000010FA000010FA000010 /* PBXContainerItemProxy */;
-		};
 		E97A4C842FAFE9D300C528C1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = E97A4C702FAFE9D100C528C1 /* Timelog */;
@@ -685,68 +586,6 @@
 			};
 			name = Release;
 		};
-		FA000008FA000008FA000008 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = TimelogWidget/TimelogWidget.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 46;
-				DEVELOPMENT_TEAM = PW7G4XJ7H7;
-				INFOPLIST_FILE = TimelogWidget/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = TimelogWidget;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.5.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.albz.timelog.TimelogWidget;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		FA000009FA000009FA000009 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = TimelogWidget/TimelogWidget.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 46;
-				DEVELOPMENT_TEAM = PW7G4XJ7H7;
-				INFOPLIST_FILE = TimelogWidget/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = TimelogWidget;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.5.0;
-				PRODUCT_BUNDLE_IDENTIFIER = me.albz.timelog.TimelogWidget;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -786,15 +625,6 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FA00000AFA00000AFA00000A /* Build configuration list for PBXNativeTarget "TimelogWidget" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				FA000008FA000008FA000008 /* Debug */,
-				FA000009FA000009FA000009 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
@@ -811,11 +641,6 @@
 			productName = TimelogSync;
 		};
 		CD0C797427FE40D09F52EBAA /* TimelogCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E901B81A2FB11ED500EA36A5 /* XCLocalSwiftPackageReference "TimelogCore" */;
-			productName = TimelogCore;
-		};
-		FA00000BFA00000BFA00000B /* TimelogCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E901B81A2FB11ED500EA36A5 /* XCLocalSwiftPackageReference "TimelogCore" */;
 			productName = TimelogCore;
