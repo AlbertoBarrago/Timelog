@@ -228,6 +228,7 @@ struct TimelogMacApp: App {
                 .modifier(EndOfDayAlertModifier())
                 .environment(settings)
                 .environment(timerVM)
+                .environment(versionChecker)
         }
         .modelContainer(Self.container)
         .commands {
@@ -253,6 +254,7 @@ struct TimelogMacApp: App {
                 .environment(timerVM)
         } label: {
             MenuBarStatusLabel(vm: timerVM, updateAvailable: versionChecker.updateAvailable)
+                .onAppear { versionChecker.startChecking() }
         }
         .menuBarExtraStyle(.window)
         .modelContainer(Self.container)
@@ -261,6 +263,7 @@ struct TimelogMacApp: App {
             MacSettingsView()
                 .environment(settings)
                 .environment(timerVM)
+                .environment(versionChecker)
         }
         .modelContainer(Self.container)
     }

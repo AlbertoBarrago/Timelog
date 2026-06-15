@@ -6,6 +6,7 @@ import TimelogSync
 struct MacSettingsView: View {
     @Environment(SettingsStore.self) private var store
     @Environment(TimerViewModel.self) private var timerVM
+    @Environment(VersionChecker.self) private var versionChecker
     @Environment(\.openURL) private var openURL
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \TimeEntry.date, order: .reverse) private var entries: [TimeEntry]
@@ -126,7 +127,17 @@ struct MacSettingsView: View {
                     Link("Alberto Barrago", destination: URL(string: "https://github.com/AlbertoBarrago")!)
                 }
                 LabeledContent("Version") {
-                    Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "—")
+                    HStack(spacing: 6) {
+                        Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "—")
+                        if versionChecker.updateAvailable {
+                            Text(String(localized: "Update available"))
+                                .font(.caption)
+                                .padding(.horizontal, 7)
+                                .padding(.vertical, 2)
+                                .background(.orange.opacity(0.15), in: Capsule())
+                                .foregroundStyle(.orange)
+                        }
+                    }
                 }
             }
 
