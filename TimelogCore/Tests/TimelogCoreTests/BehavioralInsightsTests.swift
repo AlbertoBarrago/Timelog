@@ -29,6 +29,90 @@ struct BehavioralInsightsTests {
         )
     }
 
+    @Suite("AnalyticsRefreshToken")
+    struct AnalyticsRefreshTokenTests {
+        @Test func tokenChangesWhenTrackedFieldsChange() {
+            let base = [
+                AnalyticsEntry(
+                    date: Date(timeIntervalSince1970: 100),
+                    durationMinutes: 30,
+                    label: "dev",
+                    clientId: "c1",
+                    clientName: "Client A",
+                    projectId: "p1",
+                    projectName: "Project A"
+                )
+            ]
+            let changed = [
+                AnalyticsEntry(
+                    date: Date(timeIntervalSince1970: 100),
+                    durationMinutes: 45,
+                    label: "meetings",
+                    clientId: "c1",
+                    clientName: "Client A",
+                    projectId: "p1",
+                    projectName: "Project A"
+                )
+            ]
+
+            #expect(AnalyticsRefreshToken.make(for: base) != AnalyticsRefreshToken.make(for: changed))
+        }
+    }
+
+    @Suite("BehavioralInsightsService")
+    @MainActor
+    struct BehavioralInsightsServiceTests {
+        private var cal: Calendar {
+            var c = Calendar(identifier: .gregorian)
+            c.timeZone = TimeZone(identifier: "UTC")!
+            return c
+        }
+
+        private func entry(day: Int, duration: Int, label: String? = nil) -> AnalyticsEntry {
+            let date = cal.date(
+                from: DateComponents(year: 2026, month: 1, day: day, hour: 10)
+            )!
+            return AnalyticsEntry(
+                date: date,
+                durationMinutes: duration,
+                label: label,
+                clientId: nil,
+                clientName: nil,
+                projectId: nil,
+                projectName: nil
+            )
+        }
+
+        @Test func coalescesOverlappingRecomputeRequestsAndPublishesLatestState() async {
+            let service = BehavioralInsightsService()
+            service.testingComputeDelayNanoseconds = 200_000_000
+
+            let firstEntries = [
+                entry(day: 1, duration: 20, label: "dev"),
+                entry(day: 2, duration: 20, label: "dev"),
+                entry(day: 3, duration: 20, label: "dev"),
+                entry(day: 4, duration: 20, label: "dev"),
+                entry(day: 5, duration: 20, label: "dev")
+            ]
+            let latestEntries = [
+                entry(day: 1, duration: 40, label: "meetings"),
+                entry(day: 2, duration: 40, label: "meetings"),
+                entry(day: 3, duration: 40, label: "meetings"),
+                entry(day: 4, duration: 40, label: "meetings"),
+                entry(day: 5, duration: 40, label: "meetings")
+            ]
+
+            async let firstRun: Void = service.recompute(entries: firstEntries, calendar: cal)
+            try? await Task.sleep(nanoseconds: 50_000_000)
+            await service.recompute(entries: latestEntries, calendar: cal)
+            await firstRun
+
+            #expect(service.labelInsights.first?.label == "meetings")
+            #expect(service.labelInsights.first?.totalMinutes == 200)
+            #expect(service.isComputing == false)
+        }
+    }
+
     // MARK: - FocusScoreEngine
 
     @Suite("FocusScoreEngine")

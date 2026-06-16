@@ -18,6 +18,10 @@ struct InsightsView: View {
         userEntries.map { $0.toAnalyticsEntry() }
     }
 
+    private var analyticsRefreshToken: Int {
+        AnalyticsRefreshToken.make(for: analyticsEntries)
+    }
+
     var body: some View {
         NavigationStack {
             Group {
@@ -60,7 +64,7 @@ struct InsightsView: View {
                         .padding(.top, 8)
                 }
             }
-            .task(id: userEntries.count) {
+            .task(id: analyticsRefreshToken) {
                 await service.recompute(entries: analyticsEntries)
             }
         }

@@ -157,6 +157,7 @@ struct QuickLogSheet: View {
             )
             context.insert(e)
             try? context.save()
+            RestSyncService.shared.triggerSyncNow()
         }
         dismiss()
     }

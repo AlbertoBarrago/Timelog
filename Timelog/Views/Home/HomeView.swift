@@ -135,6 +135,9 @@ struct HomeView: View {
                                      onStop: {})
                 }
             }
+            .onChange(of: activeSheet?.id) { _, sheetID in
+                RestSyncService.shared.isUserEditing = sheetID != nil
+            }
         }
     }
 

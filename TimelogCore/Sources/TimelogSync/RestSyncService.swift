@@ -278,7 +278,7 @@ public final class RestSyncService {
             }
         }
         // Hard-delete local clients that were removed from the server (mongoId known but absent from response).
-        let clientsToDelete = existingClients.filter { c in
+        let clientsToDelete = hasPendingPush ? [] : existingClients.filter { c in
             c.userId == userId && c.mongoId.map { !remoteClientIds.contains($0) } ?? false
         }
 
@@ -300,7 +300,7 @@ public final class RestSyncService {
                 context.insert(p); projectMap[dto._id] = p
             }
         }
-        let projectsToDelete = existingProjects.filter { p in
+        let projectsToDelete = hasPendingPush ? [] : existingProjects.filter { p in
             p.userId == userId && p.mongoId.map { !remoteProjectIds.contains($0) } ?? false
         }
 
@@ -324,7 +324,7 @@ public final class RestSyncService {
                 e.mongoId = dto._id; context.insert(e)
             }
         }
-        let entriesToDelete = existingEntries.filter { e in
+        let entriesToDelete = hasPendingPush ? [] : existingEntries.filter { e in
             e.userId == userId && e.mongoId.map { !remoteEntryIds.contains($0) } ?? false
         }
 

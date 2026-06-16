@@ -47,7 +47,12 @@ private struct RestSyncSetup: ViewModifier {
     }
 
     private var dataFingerprint: Int {
-        clients.count &+ projects.count &+ entries.count &+ sessions.count
+        SyncDataFingerprint.make(
+            clients: clients,
+            projects: projects,
+            entries: entries,
+            sessions: sessions
+        )
     }
 }
 

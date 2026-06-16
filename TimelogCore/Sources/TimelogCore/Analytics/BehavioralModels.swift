@@ -32,6 +32,86 @@ public struct AnalyticsEntry: Sendable {
     }
 }
 
+public enum AnalyticsRefreshToken {
+    public static func make(for entries: [AnalyticsEntry]) -> Int {
+        var hasher = Hasher()
+        hasher.combine(entries.count)
+
+        for entry in entries {
+            hasher.combine(entry.date.timeIntervalSinceReferenceDate)
+            hasher.combine(entry.durationMinutes)
+            hasher.combine(entry.label)
+            hasher.combine(entry.clientId)
+            hasher.combine(entry.clientName)
+            hasher.combine(entry.projectId)
+            hasher.combine(entry.projectName)
+        }
+
+        return hasher.finalize()
+    }
+}
+
+public enum SyncDataFingerprint {
+    public static func make(
+        clients: [Client],
+        projects: [Project],
+        entries: [TimeEntry],
+        sessions: [ActiveSession]
+    ) -> Int {
+        var hasher = Hasher()
+        hasher.combine(clients.count)
+        hasher.combine(projects.count)
+        hasher.combine(entries.count)
+        hasher.combine(sessions.count)
+
+        for client in clients {
+            hasher.combine(client.mongoId)
+            hasher.combine(client.name)
+            hasher.combine(client.colorHex)
+            hasher.combine(client.isArchived)
+            hasher.combine(client.userId)
+            hasher.combine(client.deletedAt?.timeIntervalSinceReferenceDate)
+        }
+
+        for project in projects {
+            hasher.combine(project.mongoId)
+            hasher.combine(project.name)
+            hasher.combine(project.code)
+            hasher.combine(project.client?.mongoId)
+            hasher.combine(project.userId)
+            hasher.combine(project.deletedAt?.timeIntervalSinceReferenceDate)
+            for label in project.labels {
+                hasher.combine(label)
+            }
+        }
+
+        for entry in entries {
+            hasher.combine(entry.mongoId)
+            hasher.combine(entry.date.timeIntervalSinceReferenceDate)
+            hasher.combine(entry.durationMinutes)
+            hasher.combine(entry.notes)
+            hasher.combine(entry.label)
+            hasher.combine(entry.client?.mongoId)
+            hasher.combine(entry.project?.mongoId)
+            hasher.combine(entry.userId)
+            hasher.combine(entry.deletedAt?.timeIntervalSinceReferenceDate)
+        }
+
+        for session in sessions {
+            hasher.combine(session.mongoId)
+            hasher.combine(session.startDate.timeIntervalSinceReferenceDate)
+            hasher.combine(session.notes)
+            hasher.combine(session.label)
+            hasher.combine(session.notificationID)
+            hasher.combine(session.client?.mongoId)
+            hasher.combine(session.project?.mongoId)
+            hasher.combine(session.userId)
+        }
+
+        return hasher.finalize()
+    }
+}
+
 // MARK: - FocusScoreEngine output
 
 public struct FocusScore: Sendable, Identifiable {

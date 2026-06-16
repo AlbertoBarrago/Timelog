@@ -18,6 +18,10 @@ struct InsightsMacView: View {
         userEntries.map { $0.toAnalyticsEntry() }
     }
 
+    private var analyticsRefreshToken: Int {
+        AnalyticsRefreshToken.make(for: analyticsEntries)
+    }
+
     var body: some View {
         Group {
             if userEntries.count < 5 {
@@ -68,7 +72,7 @@ struct InsightsMacView: View {
         }
         .navigationTitle("Stats")
         .navigationSubtitle(service.isComputing ? String(localized: "Computing…") : "")
-        .task(id: userEntries.count) {
+        .task(id: analyticsRefreshToken) {
             await service.recompute(entries: analyticsEntries)
         }
     }

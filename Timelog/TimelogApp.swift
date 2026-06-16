@@ -33,10 +33,9 @@ private struct RestSyncSetup: ViewModifier {
                     break
                 }
             }
-            .onChange(of: clients.count)  { _, _ in if !isPulling { RestSyncService.shared.triggerSync() } }
-            .onChange(of: projects.count) { _, _ in if !isPulling { RestSyncService.shared.triggerSync() } }
-            .onChange(of: entries.count)  { _, _ in if !isPulling { RestSyncService.shared.triggerSync() } }
-            .onChange(of: sessions.count) { _, _ in if !isPulling { RestSyncService.shared.triggerSync() } }
+            .onChange(of: dataFingerprint) { _, _ in
+                if !isPulling { RestSyncService.shared.triggerSync() }
+            }
     }
 
     private func pullLatest() {
@@ -70,6 +69,15 @@ private struct RestSyncSetup: ViewModifier {
             isPulling = false
             RestSyncService.shared.startListening()
         }
+    }
+
+    private var dataFingerprint: Int {
+        SyncDataFingerprint.make(
+            clients: clients,
+            projects: projects,
+            entries: entries,
+            sessions: sessions
+        )
     }
 }
 
