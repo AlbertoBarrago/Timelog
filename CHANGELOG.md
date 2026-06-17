@@ -7,6 +7,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [1.5.5] — 2026-06-17
+
 ### Fixed
 - **macOS app name** — `CFBundleName` and `CFBundleDisplayName` are now set explicitly to "Timelog" in `Info.plist`. Previously the Dock hover label and app menu showed "TimelogMac" because both keys fell back to `$(TARGET_NAME)`.
 
