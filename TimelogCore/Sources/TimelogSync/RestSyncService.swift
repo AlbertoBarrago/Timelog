@@ -232,8 +232,11 @@ public final class RestSyncService {
     private func runPush() async {
         defer {
             hasPendingPush = false
-            if needsPullAfterPush, let ctx = storedContext {
-                needsPullAfterPush = false
+            needsPullAfterPush = false
+            // Always pull after every push so the server-assigned mongoIds are written
+            // back into the local SwiftData records, preventing duplicate creation on
+            // subsequent pulls.
+            if let ctx = storedContext {
                 Task { try? await self.pullAll(into: ctx) }
             }
         }
@@ -345,6 +348,17 @@ public final class RestSyncService {
             let startDate = dto.startDate.flatMap { Self.iso8601.date(from: $0) ?? Self.iso8601NoFrac.date(from: $0) } ?? Date()
             if let s = localSessionById[dto._id] {
                 s.startDate = startDate; s.notes = dto.notes; s.label = dto.label
+            } else if let orphan = allLocalSessions.first(where: {
+                // Session was pushed but local copy still has mongoId=nil because the
+                // server assigns the ObjectId and the client never reads it back from
+                // the POST response. Adopt the server ID instead of creating a duplicate.
+                $0.mongoId == nil && $0.userId == userId &&
+                abs($0.startDate.timeIntervalSince(startDate)) < 10
+            }) {
+                orphan.mongoId = dto._id
+                orphan.startDate = startDate
+                orphan.notes = dto.notes
+                orphan.label = dto.label
             } else {
                 let s = ActiveSession(
                     client: dto.clientMongoId.flatMap { clientMap[$0] },

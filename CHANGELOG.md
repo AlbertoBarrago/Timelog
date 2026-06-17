@@ -7,6 +7,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+- **Sync: session duplication after push** — when the server assigned a new ObjectId to a pushed session (sent with empty `_id`), subsequent pulls created a duplicate local session instead of updating the existing one. The pull now matches server sessions to local orphans by `startDate` proximity and adopts the server ID in place.
+- **Sync: pull now always follows push** — previously a pull-after-push only happened if an SSE event arrived during the push window. Now every push unconditionally triggers a pull, ensuring server-assigned IDs are written back into local SwiftData records.
+- **Sync: `isUserEditing` flag now set on stop-session forms** — `RestSyncService.isUserEditing` existed but was never set, so SSE-triggered pulls could overwrite form data while the user was editing duration or notes. Both `StopSessionSheet` (iOS) and `StopSessionMacView` (macOS) now set the flag on appear/disappear.
+
 ---
 
 ## [1.5.4] — 2026-06-16

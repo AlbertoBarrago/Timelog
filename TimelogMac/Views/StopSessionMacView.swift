@@ -97,6 +97,8 @@ struct StopSessionMacView: View {
             }
         }
         .padding()
+        .onAppear    { RestSyncService.shared.isUserEditing = true  }
+        .onDisappear { RestSyncService.shared.isUserEditing = false }
     }
 
     private func addLabel(to project: Project) {
