@@ -7,6 +7,18 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+- **Stats refresh consistency** — the Stats / Insights views on iOS and macOS now recompute analytics when entry content changes, not only when the number of entries changes. Updates to duration, label, project, or client are reflected immediately.
+- **Dropped analytics recomputes** — overlapping recompute requests are now coalesced so the latest state is always published, avoiding stale charts after rapid edits.
+- **Stats responsiveness** — heavy analytics computation now runs off the main actor before publishing results back to the UI.
+- **Sync race causing disappearing data** — `pullAll` no longer hard-deletes local clients, projects, or entries while a push is pending. This closes the most dangerous race where a just-saved item could disappear before the server snapshot caught up.
+- **iOS editing sync safety** — iOS now defers incoming sync pulls while a modal sheet is open, matching the existing macOS protection against editing under live remote changes.
+- **Content-only sync detection** — automatic sync triggers now use a content fingerprint instead of raw collection counts, so edits that do not change record counts still produce a push on both iOS and macOS.
+- **Immediate push for new manual entries** — creating a new entry from Quick Log on iOS now triggers an immediate sync instead of waiting for count-based observation and debounce timing.
+
+### Tests
+- **Behavioral insights coverage** — added tests for analytics refresh token invalidation and coalesced recompute behaviour to lock in the Stats fixes.
+
 ---
 
 ## [1.5.6] — 2026-06-17
