@@ -7,6 +7,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [1.5.7] — 2026-06-17
+
 ### Fixed
 - **Stats refresh consistency** — the Stats / Insights views on iOS and macOS now recompute analytics when entry content changes, not only when the number of entries changes. Updates to duration, label, project, or client are reflected immediately.
 - **Dropped analytics recomputes** — overlapping recompute requests are now coalesced so the latest state is always published, avoiding stale charts after rapid edits.
