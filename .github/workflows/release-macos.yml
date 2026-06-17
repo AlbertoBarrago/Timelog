@@ -56,7 +56,7 @@ jobs:
         run: |
           # Explicit path: Sparkle ships a nested Updater.app that a bare
           # `find -name "*.app"` can match instead of the real app
-          APP_PATH="build/Build/Products/Release/TimelogMac.app"
+          APP_PATH="build/Build/Products/Release/Timelog.app"
           test -d "$APP_PATH"
           # Ad-hoc sign: generate_appcast rejects apps that fail Apple
           # code signing checks; an ad-hoc seal is enough (no Developer ID)
