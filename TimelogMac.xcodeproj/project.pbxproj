@@ -414,7 +414,7 @@
 				CODE_SIGN_ENTITLEMENTS = TimelogMac/TimelogMac.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 53;
+				CURRENT_PROJECT_VERSION = 54;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = PW7G4XJ7H7;
 				ENABLE_APP_SANDBOX = NO;
@@ -423,6 +423,7 @@
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TimelogMac/Info.plist;
+				INFOPLIST_KEY_CFBundleName = Timelog;
 				INFOPLIST_KEY_CFBundleDisplayName = Timelog;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -430,7 +431,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.5.7;
+				MARKETING_VERSION = 1.5.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.albz.TimelogMac;
 				PRODUCT_NAME = Timelog;
 				REGISTER_APP_GROUPS = YES;
@@ -451,7 +452,7 @@
 				CODE_SIGN_ENTITLEMENTS = TimelogMac/TimelogMac.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 53;
+				CURRENT_PROJECT_VERSION = 54;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = PW7G4XJ7H7;
 				ENABLE_APP_SANDBOX = NO;
@@ -460,6 +461,7 @@
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TimelogMac/Info.plist;
+				INFOPLIST_KEY_CFBundleName = Timelog;
 				INFOPLIST_KEY_CFBundleDisplayName = Timelog;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -467,7 +469,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.5.7;
+				MARKETING_VERSION = 1.5.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.albz.TimelogMac;
 				PRODUCT_NAME = Timelog;
 				REGISTER_APP_GROUPS = YES;
@@ -485,12 +487,12 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 53;
+				CURRENT_PROJECT_VERSION = 54;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = PW7G4XJ7H7;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 26.4;
-				MARKETING_VERSION = 1.5.7;
+				MARKETING_VERSION = 1.5.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.albz.TimelogMacTests;
 				PRODUCT_NAME = TimelogMacTests;
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
@@ -507,12 +509,12 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 53;
+				CURRENT_PROJECT_VERSION = 54;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = PW7G4XJ7H7;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 26.4;
-				MARKETING_VERSION = 1.5.7;
+				MARKETING_VERSION = 1.5.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.albz.TimelogMacTests;
 				PRODUCT_NAME = TimelogMacTests;
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
@@ -528,11 +530,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 53;
+				CURRENT_PROJECT_VERSION = 54;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = PW7G4XJ7H7;
 				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.5.7;
+				MARKETING_VERSION = 1.5.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.albz.TimelogMacUITests;
 				PRODUCT_NAME = TimelogMacUITests;
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
@@ -548,11 +550,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 53;
+				CURRENT_PROJECT_VERSION = 54;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = PW7G4XJ7H7;
 				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.5.7;
+				MARKETING_VERSION = 1.5.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.albz.TimelogMacUITests;
 				PRODUCT_NAME = TimelogMacUITests;
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
