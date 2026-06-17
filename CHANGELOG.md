@@ -7,6 +7,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+- **Sync: revert unconditional pull-after-push** — the "always pull after push" introduced in 1.5.4 caused the active session to reappear immediately after stopping (server-side race: pull fired before the server processed the delete). Pull-after-push is now conditional again, triggered only by a pending SSE event. The orphan-dedup logic (which prevents duplicate sessions) is retained and still activates via SSE-triggered pulls.
+- **Sync: remove `isUserEditing` guard from macOS stop form** — `StopSessionMacView` is presented inline (if/else branch) in the menu bar, not as a sheet, so `onDisappear` was not reliably fired. This left `isUserEditing` stuck at `true`, deferring all SSE pulls indefinitely and breaking sync state after stopping a session.
+
 ---
 
 ## [1.5.5] — 2026-06-17

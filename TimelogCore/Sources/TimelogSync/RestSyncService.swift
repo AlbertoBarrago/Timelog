@@ -232,11 +232,8 @@ public final class RestSyncService {
     private func runPush() async {
         defer {
             hasPendingPush = false
-            needsPullAfterPush = false
-            // Always pull after every push so the server-assigned mongoIds are written
-            // back into the local SwiftData records, preventing duplicate creation on
-            // subsequent pulls.
-            if let ctx = storedContext {
+            if needsPullAfterPush, let ctx = storedContext {
+                needsPullAfterPush = false
                 Task { try? await self.pullAll(into: ctx) }
             }
         }
