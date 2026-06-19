@@ -141,6 +141,13 @@ struct MacSettingsView: View {
                 }
             }
 
+            // MARK: Support
+            Section {
+                BuyMeCoffeeCard()
+            } header: {
+                Text("Support")
+            }
+
             // MARK: Danger Zone
             Section {
                 Button(role: .destructive) {
@@ -235,6 +242,49 @@ struct MacSettingsView: View {
 private extension String {
     var urlEncoded: String {
         addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? self
+    }
+}
+
+private struct BuyMeCoffeeCard: View {
+    @Environment(\.openURL) private var openURL
+    @State private var isHovered = false
+
+    var body: some View {
+        Button {
+            openURL(URL(string: "https://buymeacoffee.com/albz")!)
+        } label: {
+            VStack(alignment: .leading, spacing: 5) {
+                HStack(spacing: 6) {
+                    Text("$").foregroundStyle(.green.opacity(0.8))
+                    Text("brew install --formula gratitude")
+                        .foregroundStyle(.primary.opacity(0.85))
+                }
+                HStack(spacing: 6) {
+                    Text("✔").foregroundStyle(.green)
+                    Text("Timelog is free. Coffee is optional.")
+                        .foregroundStyle(.secondary)
+                }
+                HStack(spacing: 6) {
+                    Text("→").foregroundStyle(.secondary)
+                    Text("buymeacoffee.com/albz")
+                        .foregroundStyle(isHovered ? Color.accentColor : .secondary)
+                        .underline(isHovered)
+                }
+            }
+            .font(.system(.footnote, design: .monospaced))
+            .padding(.horizontal, 12)
+            .padding(.vertical, 10)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(
+                RoundedRectangle(cornerRadius: 7)
+                    .fill(.background.secondary)
+                    .overlay(RoundedRectangle(cornerRadius: 7)
+                        .strokeBorder(.separator, lineWidth: 0.5))
+            )
+        }
+        .buttonStyle(.plain)
+        .onHover { isHovered = $0 }
+        .accessibilityLabel("Buy me a coffee at buymeacoffee.com/albz")
     }
 }
 

@@ -95,6 +95,17 @@ struct SettingsView: View {
                     }
                 }
 
+                Section {
+                    Link(destination: URL(string: "https://buymeacoffee.com/albz")!) {
+                        Label("Buy me a coffee", systemImage: "cup.and.saucer.fill")
+                    }
+                    .accessibilityLabel(String(localized: "Buy me a coffee at buymeacoffee.com/albz"))
+                } header: {
+                    Text("Support")
+                } footer: {
+                    Text("Timelog is free. If it saves you time, a coffee keeps it alive.")
+                }
+
                 Section("Danger Zone") {
                     Button(role: .destructive) {
                         showDeleteConfirm = true
