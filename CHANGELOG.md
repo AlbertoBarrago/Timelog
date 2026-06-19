@@ -9,6 +9,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.5.9] — 2026-06-19
+
+### Fixed
+- **Sync: concurrent push race causing ghost sessions** — stopping two active sessions in rapid succession could leave one session "alive" on the server. The root cause: `triggerSyncNow()` cancelled the Swift Task for the first push, but the HTTP request was already in-flight; on Vercel serverless the two payloads could be processed out of order, re-creating the deleted session. Pushes are now serialised — if a push is already in-flight a retry is queued and fired with the latest data snapshot once the first request completes, guaranteeing the server always receives a single coherent final state.
+
+---
+
 ## [1.5.8] — 2026-06-17
 
 ---

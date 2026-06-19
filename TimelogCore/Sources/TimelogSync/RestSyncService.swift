@@ -84,9 +84,15 @@ public final class RestSyncService {
     private var debounceTask: Task<Void, Never>?
     private let sseClient = SSEClient()
 
-    // Race-condition guard: when a push is queued or in-flight, SSE-triggered pulls
-    // are deferred until after the push completes so local deletes are not overwritten.
+    // Race-condition guards for push serialisation.
+    // hasPendingPush: true while any push is queued or in-flight → blocks SSE pulls.
+    // isRunningPush:  true only while an HTTP request is actually in-flight.
+    // pushRequestedWhileRunning: a second triggerSyncNow arrived during an in-flight push;
+    //   the running push will start a retry with fresh data instead of a concurrent request.
+    // needsPullAfterPush: an SSE event arrived during a push → pull once the last push ends.
     private var hasPendingPush = false
+    private var isRunningPush = false
+    private var pushRequestedWhileRunning = false
     private var needsPullAfterPush = false
 
     // Stored by the view modifier so SSE-triggered pulls have a context to write into.
@@ -179,8 +185,14 @@ public final class RestSyncService {
     }
 
     public func triggerSyncNow() {
-        debounceTask?.cancel()
         hasPendingPush = true
+        if isRunningPush {
+            // Don't fire a concurrent HTTP request — queue a retry with fresh data instead.
+            pushRequestedWhileRunning = true
+            debounceTask?.cancel()
+            return
+        }
+        debounceTask?.cancel()
         debounceTask = Task { [weak self] in await self?.runPush() }
     }
 
@@ -227,14 +239,28 @@ public final class RestSyncService {
         }
     }
 
-    /// Pulls the latest snapshot from the data provider and pushes it. A cancellation
-    /// means a newer sync superseded this one, so it is not surfaced as an error.
+    /// Pulls the latest snapshot from the data provider and pushes it.
+    /// Serialised: if a push is already in-flight, sets pushRequestedWhileRunning and
+    /// returns immediately; the in-flight push will start a fresh retry in its defer block.
     private func runPush() async {
+        guard !isRunningPush else {
+            pushRequestedWhileRunning = true
+            return
+        }
+        isRunningPush = true
         defer {
-            hasPendingPush = false
-            if needsPullAfterPush, let ctx = storedContext {
-                needsPullAfterPush = false
-                Task { try? await self.pullAll(into: ctx) }
+            isRunningPush = false
+            let needsRetry = pushRequestedWhileRunning
+            pushRequestedWhileRunning = false
+            if needsRetry {
+                // hasPendingPush stays true; retry immediately with the latest data.
+                Task { [weak self] in await self?.runPush() }
+            } else {
+                hasPendingPush = false
+                if needsPullAfterPush, let ctx = storedContext {
+                    needsPullAfterPush = false
+                    Task { try? await self.pullAll(into: ctx) }
+                }
             }
         }
         guard let data = dataProvider?() else { return }
