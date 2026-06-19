@@ -113,7 +113,7 @@ struct MenuBarView: View {
                 .padding(.vertical, 8)
             }
         }
-        .frame(width: 300)
+        .frame(width: sessionToStop != nil ? 380 : 300)
     }
 }
 
