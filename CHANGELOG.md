@@ -11,6 +11,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [1.5.10] — 2026-06-19
 
+### Fixed
+- **macOS menu bar: stop form clipped on the left** — `StopSessionMacView` requires ~330pt of content space (the six duration quick-pick buttons alone need ~277pt). The fixed 300pt popover caused the content to overflow and clip on the left side. The popover now expands to 380pt when the stop-session form is active and returns to 300pt at rest.
+
+### Added
+- **Support section in Settings** — iOS shows a native link row (coffee-cup icon, footer copy) that opens `buymeacoffee.com/albz`. macOS shows a terminal-style card (`brew install --formula gratitude`) with hover highlight, placed above Danger Zone in both platforms' Settings.
+
 ---
 
 ## [1.5.9] — 2026-06-19
