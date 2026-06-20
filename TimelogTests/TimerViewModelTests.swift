@@ -25,6 +25,7 @@ struct TimerViewModelTests {
     @Test func displayTimePomodoroShowsRemainingAtStart() {
         let vm = TimerViewModel()
         vm.pomodoroEnabled = true
+        vm.phase = .work
         vm.workMinutes = 25
         vm.elapsed = 0
         #expect(vm.displayTime == "25:00")
@@ -33,6 +34,7 @@ struct TimerViewModelTests {
     @Test func displayTimePomodoroCountsDown() {
         let vm = TimerViewModel()
         vm.pomodoroEnabled = true
+        vm.phase = .work
         vm.workMinutes = 25
         vm.elapsed = 60
         #expect(vm.displayTime == "24:00")
@@ -49,6 +51,7 @@ struct TimerViewModelTests {
     @Test func progressAtHalfway() {
         let vm = TimerViewModel()
         vm.pomodoroEnabled = true
+        vm.phase = .work
         vm.workMinutes = 25
         vm.elapsed = TimeInterval(25 * 60 / 2)
         #expect(abs(vm.progress - 0.5) < 0.001)
@@ -57,6 +60,7 @@ struct TimerViewModelTests {
     @Test func progressClampedToOne() {
         let vm = TimerViewModel()
         vm.pomodoroEnabled = true
+        vm.phase = .work
         vm.workMinutes = 25
         vm.elapsed = TimeInterval(25 * 60 + 100)
         #expect(vm.progress == 1.0)

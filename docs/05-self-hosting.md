@@ -44,9 +44,9 @@ The script creates the four collections and the required indexes (including `use
 
 ---
 
-## Step 3 — Deploy the Vercel sync server (iOS)
+## Step 3 — Deploy the Vercel sync server
 
-The iOS app cannot connect to MongoDB directly — it uses a lightweight REST API deployed on Vercel.
+The iOS and macOS apps do not connect to MongoDB directly. Both use a lightweight REST + SSE API deployed on Vercel.
 
 ```bash
 cd server
@@ -77,16 +77,18 @@ vercel deploy --prod
 
 ## Step 4 — Configure the Mac app
 
-Create the config file with your Atlas connection string:
+Create the config file with your Vercel URL and API key:
 
 ```bash
 mkdir -p ~/.config/timelog
-echo "mongodb+srv://username:password@cluster0.abc123.mongodb.net" \
-  > ~/.config/timelog/mongo.local
-chmod 600 ~/.config/timelog/mongo.local
+cat > ~/.config/timelog/sync.local << 'EOF'
+URL=https://timelog-server-yourname.vercel.app
+API_KEY=your-secret-key
+EOF
+chmod 600 ~/.config/timelog/sync.local
 ```
 
-Launch the Mac app. It reads the file once, saves the connection string to Keychain, and pulls your data.
+Launch the Mac app. It reads the file, saves the credentials to Keychain, and pulls your data.
 
 ---
 
@@ -111,7 +113,7 @@ API_KEY=your-secret-key
 ## Adding a teammate
 
 Each teammate:
-1. Gets the same Atlas connection string (Mac) or the Vercel URL + API key (iOS)
+1. Gets the same Vercel URL + API key
 2. Chooses their own nickname on first launch
 3. Their data is isolated — they will not see your clients or time entries
 

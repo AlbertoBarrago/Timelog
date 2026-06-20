@@ -137,7 +137,7 @@ public final class TimerViewModel {
         if pomodoroEnabled, elapsed >= phaseTotal { phaseComplete() }
     }
 
-    func phaseComplete() {
+    public func phaseComplete() {
         stopTimer()
         elapsed = 0
         if phase == .work {

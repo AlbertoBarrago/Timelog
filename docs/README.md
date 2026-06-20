@@ -11,6 +11,8 @@ Time tracking app for iOS and macOS with MongoDB Atlas synchronisation.
 | [03-flows.md](03-flows.md) | Tracking, Pomodoro, Notifications, Live Activity |
 | [04-sync.md](04-sync.md) | Sync architecture, RestSyncService, SSEClient, upsert strategy |
 | [05-self-hosting.md](05-self-hosting.md) | Self-hosting guide: Atlas setup, Vercel deploy, user migration |
+| [audit/performance-stability-baseline.md](audit/performance-stability-baseline.md) | Frozen-scope performance and stability audit baseline |
+| [audit/release-readiness-checklist.md](audit/release-readiness-checklist.md) | Release readiness checklist for profiling, stability, security, accessibility and docs |
 
 ## Stack
 
@@ -30,4 +32,4 @@ Time tracking app for iOS and macOS with MongoDB Atlas synchronisation.
 - iOS 17+ / macOS 14+
 - Xcode 16+
 - Swift 6.0
-- MongoDB Atlas account (optional, macOS sync only)
+- MongoDB Atlas account (optional, required only when self-hosting sync)

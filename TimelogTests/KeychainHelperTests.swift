@@ -1,4 +1,5 @@
 import Testing
+import Foundation
 import TimelogCore
 
 @Suite("KeychainHelper")

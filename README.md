@@ -85,18 +85,18 @@ Active sessions and the running timer appear on the lock screen and in the Dynam
 ## Sync Architecture
 
 ```
-iPhone ──► GET /api/pull  ──► Vercel (Node.js) ──► MongoDB Atlas
-        ◄── JSON ──────────────────────────────────────────────
+iPhone ──► GET /api/pull   ──► Vercel (Node.js) ──► MongoDB Atlas
+Mac    ──► GET /api/pull   ──► Vercel (Node.js) ──► MongoDB Atlas
+        ◄── JSON ───────────────────────────────────────────────
 
-iPhone ──► POST /api/sync ──► Vercel ──► MongoDB upsert
+Both   ──► POST /api/sync  ──► Vercel ──► MongoDB upsert
 
-Mac    ──► MongoKitten ──────────────────────────────────────►
-        ◄───────────────────────────────────── MongoDB Atlas ◄──
+Both   ──► GET /api/events ──► Vercel SSE ──► MongoDB Change Streams
 ```
 
-- **iOS**: `RestSyncService` — pure `URLSession`, zero external dependencies, credentials auto-loaded from a gitignored bundle file
-- **macOS**: `MongoSyncService` — direct MongoDB wire protocol via MongoKitten
-- **Server**: two Vercel serverless functions (`GET /api/pull`, `POST /api/sync`), auth via `X-API-Key`
+- **iOS + macOS**: `RestSyncService` — pure `URLSession`, zero direct database connections from the clients
+- **Real time**: `SSEClient` listens to `GET /api/events` and triggers `pullAll(into:)` after MongoDB Change Stream events
+- **Server**: Vercel functions (`GET /api/pull`, `POST /api/sync`, `GET /api/events`), auth via `X-API-Key`
 - **User isolation**: every document carries a `userId` field (the user's nickname); each device only pulls and pushes its own records
 - **API docs**: live Swagger UI at your Vercel deployment URL
 
@@ -111,16 +111,17 @@ TimeLog/
 ├── TimelogCore/                # Shared Swift Package
 │   └── Sources/
 │       ├── TimelogCore/        # Models, VM, Stores, Helpers, Extensions
-│       └── TimelogSync/        # MongoSyncService (macOS) + RestSyncService (iOS)
+│       └── TimelogSync/        # RestSyncService + SSEClient for iOS and macOS
 ├── Timelog/                    # iOS app sources (Views only)
 ├── TimelogMac/                 # macOS app sources (Views only)
 ├── server/                     # Vercel middleware (Node.js + TypeScript)
 │   └── api/
 │       ├── pull.ts             # GET  /api/pull
-│       └── sync.ts             # POST /api/sync
+│       ├── sync.ts             # POST /api/sync
+│       └── events.ts           # GET  /api/events
 └── docs/
     ├── SETUP_SYNC_SERVER.md    # How to configure sync on a new machine
-    └── PLAN_CLOUDKIT_IOS.md    # CloudKit migration notes (future)
+    └── audit/                  # Performance, stability, release readiness
 ```
 
 ---
@@ -163,7 +164,10 @@ echo "URL=https://your-app.vercel.app"  > Timelog/SyncConfig.local
 echo "API_KEY=your-secret-key"         >> Timelog/SyncConfig.local
 
 # 4. Configure macOS credentials
-echo "mongodb+srv://..." > ~/.config/timelog/mongo.local
+mkdir -p ~/.config/timelog
+echo "URL=https://your-app.vercel.app"  > ~/.config/timelog/sync.local
+echo "API_KEY=your-secret-key"         >> ~/.config/timelog/sync.local
+chmod 600 ~/.config/timelog/sync.local
 ```
 
 ---
@@ -173,7 +177,7 @@ echo "mongodb+srv://..." > ~/.config/timelog/mongo.local
 - **TimelogCore** — shared `@Observable` models and business logic, public API, iOS 17+ / macOS 14+
 - **MVVM** — `TimerViewModel` lives at app level, injected via SwiftUI environment
 - **SwiftData** — single `ModelContainer` shared across all scenes
-- **Keychain** — all credentials stored via `KeychainHelper`, never in code or UserDefaults
+- **Keychain** — all sync credentials stored via `KeychainHelper`, never in code or UserDefaults
 - **ActivityKit** — Live Activities managed by `TimerViewModel` (iOS only, compile-guarded)
 - **UserNotifications** — daily reminders, session overdue alerts, Pomodoro phase-end
 
