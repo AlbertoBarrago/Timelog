@@ -7,6 +7,7 @@ public final class BehavioralInsightsService {
     private struct PendingRequest {
         let entries: [AnalyticsEntry]
         let calendar: Calendar
+        let workingDays: Set<Int>
     }
 
     private struct ComputationResult {
@@ -37,8 +38,9 @@ public final class BehavioralInsightsService {
 
     /// Ricalcola tutti gli analytics. Chiamato dalla view quando le entries cambiano.
     /// - Parameter entries: tutte le entries non-deleted dell'utente corrente
-    public func recompute(entries: [AnalyticsEntry], calendar: Calendar = .current) async {
-        pendingRequest = PendingRequest(entries: entries, calendar: calendar)
+    /// - Parameter workingDays: giorni lavorativi (valori Calendar.weekday, 1=Dom). Set vuoto = tutti i giorni.
+    public func recompute(entries: [AnalyticsEntry], calendar: Calendar = .current, workingDays: Set<Int> = []) async {
+        pendingRequest = PendingRequest(entries: entries, calendar: calendar, workingDays: workingDays)
         guard !isComputing else { return }
         isComputing = true
         defer { isComputing = false }
@@ -48,6 +50,7 @@ public final class BehavioralInsightsService {
             let result = await Self.compute(
                 entries: request.entries,
                 calendar: request.calendar,
+                workingDays: request.workingDays,
                 delayNanoseconds: testingComputeDelayNanoseconds
             )
 
@@ -65,6 +68,7 @@ public final class BehavioralInsightsService {
     nonisolated private static func compute(
         entries: [AnalyticsEntry],
         calendar: Calendar,
+        workingDays: Set<Int>,
         delayNanoseconds: UInt64
     ) async -> ComputationResult {
         await Task.detached(priority: .utility) {
@@ -103,9 +107,14 @@ public final class BehavioralInsightsService {
             let baselineEntries = entries.filter { $0.date >= twentyEightDaysAgo && $0.date < sevenDaysAgo }
             let fingerprintEntries = entries.filter { $0.date >= thirtyDaysAgo }
 
+            // Filter time-leak entries to working days so the baseline normalisation
+            // (÷4) is comparing like-for-like weeks without weekend dilution.
+            let leakRecent   = workingDays.isEmpty ? recentEntries   : recentEntries.filter   { workingDays.contains(calendar.component(.weekday, from: $0.date)) }
+            let leakBaseline = workingDays.isEmpty ? baselineEntries : baselineEntries.filter { workingDays.contains(calendar.component(.weekday, from: $0.date)) }
+
             return ComputationResult(
                 focusScores: buildFocusScores(entries: entries, today: startOfToday, calendar: calendar),
-                timeLeaks: TimeLeakDetector.detect(recentEntries: recentEntries, baselineEntries: baselineEntries),
+                timeLeaks: TimeLeakDetector.detect(recentEntries: leakRecent, baselineEntries: leakBaseline),
                 heatmapCells: ProductivityHeatmap.cells(entries: entries, calendar: calendar),
                 labelInsights: LabelPerformanceAnalyzer.analyze(entries: entries, calendar: calendar),
                 weeklyReview: WeeklyReviewGenerator.generate(

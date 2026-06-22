@@ -29,6 +29,8 @@ public final class SettingsStore {
     public var idleAlertEnabled: Bool = false { didSet { save() } }
     public var idleAlertMinutes: Int = 10 { didSet { save() } }
 
+    public var workingDays: Set<Int> = [2, 3, 4, 5, 6] { didSet { save() } }
+
     public var historyChartStyle: HistoryChartStyle = .donut { didSet { save() } }
     public var missingHoursAlertEnabled: Bool = false { didSet { save() } }
 
@@ -65,6 +67,9 @@ public final class SettingsStore {
         trackingEndMinute = defaults.object(forKey: "tracking_end_minute") != nil ? defaults.integer(forKey: "tracking_end_minute") : 0
         idleAlertEnabled  = defaults.bool(forKey: "idle_alert_enabled")
         idleAlertMinutes  = defaults.object(forKey: "idle_alert_minutes")  != nil ? defaults.integer(forKey: "idle_alert_minutes")  : 10
+        if let days = defaults.array(forKey: "working_days") as? [Int], !days.isEmpty {
+            workingDays = Set(days)
+        }
         historyChartStyle = HistoryChartStyle(rawValue: defaults.string(forKey: "history_chart_style") ?? "") ?? .donut
         missingHoursAlertEnabled = defaults.bool(forKey: "missing_hours_alert_enabled")
     }
@@ -83,8 +88,9 @@ public final class SettingsStore {
         defaults.set(Array(reminderDays),forKey: "reminder_days")
         defaults.set(trackingEndHour,    forKey: "tracking_end_hour")
         defaults.set(trackingEndMinute,  forKey: "tracking_end_minute")
-        defaults.set(idleAlertEnabled,   forKey: "idle_alert_enabled")
-        defaults.set(idleAlertMinutes,   forKey: "idle_alert_minutes")
+        defaults.set(idleAlertEnabled,        forKey: "idle_alert_enabled")
+        defaults.set(idleAlertMinutes,        forKey: "idle_alert_minutes")
+        defaults.set(Array(workingDays),      forKey: "working_days")
         defaults.set(historyChartStyle.rawValue, forKey: "history_chart_style")
         defaults.set(missingHoursAlertEnabled, forKey: "missing_hours_alert_enabled")
     }

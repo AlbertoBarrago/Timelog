@@ -62,6 +62,19 @@ struct SettingsView: View {
                 }
 
                 Section {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Working days")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                        DayPicker(selectedDays: $store.workingDays)
+                    }
+                } header: {
+                    Text("Work Schedule")
+                } footer: {
+                    Text("Days you normally work. Used by analytics to exclude weekends from productivity baselines.")
+                }
+
+                Section {
                     Button("Sync Now") {
                         Task { try? await RestSyncService.shared.pullAll(into: context) }
                     }

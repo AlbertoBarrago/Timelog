@@ -19,7 +19,10 @@ struct InsightsMacView: View {
     }
 
     private var analyticsRefreshToken: Int {
-        AnalyticsRefreshToken.make(for: analyticsEntries)
+        var h = Hasher()
+        h.combine(AnalyticsRefreshToken.make(for: analyticsEntries))
+        h.combine(settings.workingDays)
+        return h.finalize()
     }
 
     var body: some View {
@@ -73,7 +76,7 @@ struct InsightsMacView: View {
         .navigationTitle("Stats")
         .navigationSubtitle(service.isComputing ? String(localized: "Computing…") : "")
         .task(id: analyticsRefreshToken) {
-            await service.recompute(entries: analyticsEntries)
+            await service.recompute(entries: analyticsEntries, workingDays: settings.workingDays)
         }
     }
 }

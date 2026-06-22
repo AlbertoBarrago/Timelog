@@ -19,7 +19,10 @@ struct InsightsView: View {
     }
 
     private var analyticsRefreshToken: Int {
-        AnalyticsRefreshToken.make(for: analyticsEntries)
+        var h = Hasher()
+        h.combine(AnalyticsRefreshToken.make(for: analyticsEntries))
+        h.combine(settings.workingDays)
+        return h.finalize()
     }
 
     var body: some View {
@@ -65,7 +68,7 @@ struct InsightsView: View {
                 }
             }
             .task(id: analyticsRefreshToken) {
-                await service.recompute(entries: analyticsEntries)
+                await service.recompute(entries: analyticsEntries, workingDays: settings.workingDays)
             }
         }
     }

@@ -69,6 +69,18 @@ struct MacSettingsView: View {
                 Text("Sends a notification if a session is still running at this time, if you have no active session after the idle threshold, or if no hours have been logged for the day by closing time.")
             }
 
+            // MARK: Work Schedule
+            Section {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("Working days").font(.caption).foregroundStyle(.secondary)
+                    DayPickerMac(selectedDays: $store.workingDays)
+                }
+            } header: {
+                Text("Work Schedule")
+            } footer: {
+                Text("Days you normally work. Used by analytics to exclude weekends from productivity baselines.")
+            }
+
             // MARK: Sync — native macOS layout
             Section {
                 HStack(spacing: 10) {
