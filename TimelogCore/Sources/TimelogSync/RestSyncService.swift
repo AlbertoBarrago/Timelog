@@ -394,18 +394,10 @@ public final class RestSyncService {
                 context.insert(s)
             }
         }
-        // Skip deletion when a push is pending: locally-created sessions may not
-        // have reached the server yet and must not be wiped by a concurrent pull.
-        let sessionsToDelete = hasPendingPush ? [] : allLocalSessions.filter { s in
-            s.userId == userId && s.mongoId.map { !remoteSessionIds.contains($0) } ?? false
-        }
-        if !sessionsToDelete.isEmpty {
-            NotificationCenter.default.post(name: Self.willWipeDataNotification, object: nil)
-        }
-        for local in sessionsToDelete {
-            NotificationManager.shared.cancelSession(id: local.notificationID)
-            context.delete(local)
-        }
+        // Active sessions are never deleted via pull: they have an explicit lifecycle
+        // (start → stop → TimeEntry + delete). Removing them here would silently wipe
+        // a running session if the push hasn't reached the server yet, or if the server
+        // assigned its own ObjectId that doesn't match the client-side nil-assigned id.
         do {
             try context.save()
         } catch {

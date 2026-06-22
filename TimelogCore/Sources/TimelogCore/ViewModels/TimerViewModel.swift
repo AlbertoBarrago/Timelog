@@ -39,6 +39,16 @@ public final class TimerViewModel {
 
     public init() {
         restoreState()
+        sessionWipeObserver = NotificationCenter.default.addObserver(
+            forName: Notification.Name("RestSyncServiceWillWipeData"),
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            MainActor.assumeIsolated {
+                guard let self, self.isRunning else { return }
+                self.reset()
+            }
+        }
     }
 
     public func applySettings(_ store: SettingsStore) {
@@ -50,6 +60,7 @@ public final class TimerViewModel {
     }
 
     private var timer: Timer?
+    private var sessionWipeObserver: Any?
 
     public var phaseTotal: TimeInterval {
         switch phase {
@@ -259,7 +270,12 @@ public final class TimerViewModel {
     }
     #endif
 
-    deinit { MainActor.assumeIsolated { timer?.invalidate() } }
+    deinit {
+        MainActor.assumeIsolated {
+            if let obs = sessionWipeObserver { NotificationCenter.default.removeObserver(obs) }
+            timer?.invalidate()
+        }
+    }
 }
 
 #if os(iOS) && !targetEnvironment(macCatalyst)

@@ -19,7 +19,7 @@ public final class ActiveSession {
         self.notes = notes
         self.label = label
         self.notificationID = UUID().uuidString
-        self.mongoId = Client.newMongoId()
+        self.mongoId = nil
         self.userId = userId
     }
 

@@ -30,8 +30,8 @@ private struct RestSyncSetup: ViewModifier {
                 }
                 Task {
                     try? await Task.sleep(for: .milliseconds(300))
-                    try? await RestSyncService.shared.pullAll(into: modelContext)
                     RestSyncService.shared.triggerSync()
+                    try? await RestSyncService.shared.pullAll(into: modelContext)
                 }
                 RestSyncService.shared.startListening()
             }
