@@ -12,6 +12,9 @@ public enum ProductivityHeatmap {
         var buckets: [BucketKey: (minutes: Int, count: Int)] = [:]
 
         for entry in entries {
+            // Entries longer than 8 h are almost certainly forgotten timers;
+            // exclude them so they don't collapse the chart scale.
+            guard entry.durationMinutes <= 480 else { continue }
             let hour = calendar.component(.hour, from: entry.date)
             let weekday = calendar.component(.weekday, from: entry.date)
             let key = BucketKey(hour: hour, weekday: weekday)
