@@ -1,4 +1,4 @@
-# Timelog — Project Context for Codex
+# Timelog — Project Context for Claude
 
 ## What this project is
 
