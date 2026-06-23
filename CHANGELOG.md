@@ -9,6 +9,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.5.14] — 2026-06-23
+
+### Fixed
+- **Analytics: peak hours heatmap distorted by forgotten timers** — sessions longer than 8 h (480 min) are now filtered out in `ProductivityHeatmap.cells()` before aggregation. A single overnight forgotten timer was collapsing the y-axis scale, making all real session bars invisible. Affects both iOS and macOS (fix is in the shared `TimelogCore` package).
+
+---
+
 ## [1.5.13] — 2026-06-22
 
 ---
