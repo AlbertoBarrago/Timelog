@@ -262,6 +262,18 @@ struct BehavioralInsightsTests {
             #expect(cells[0].totalMinutes == 50)
             #expect(cells[0].sessionCount == 2)
         }
+
+        @Test func forgottenTimerIsExcluded() {
+            let date = cal.date(from: DateComponents(year: 2026, month: 1, day: 6, hour: 20))!
+            let normal = AnalyticsEntry(date: date, durationMinutes: 45, label: nil,
+                                        clientId: nil, clientName: nil, projectId: nil, projectName: nil)
+            let outlier = AnalyticsEntry(date: date, durationMinutes: 481, label: nil,
+                                         clientId: nil, clientName: nil, projectId: nil, projectName: nil)
+            let cells = ProductivityHeatmap.cells(entries: [normal, outlier], calendar: cal)
+            #expect(cells.count == 1)
+            #expect(cells[0].totalMinutes == 45)
+            #expect(cells[0].sessionCount == 1)
+        }
     }
 
     // MARK: - LabelPerformanceAnalyzer
