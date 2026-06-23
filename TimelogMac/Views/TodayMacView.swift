@@ -12,6 +12,7 @@ struct TodayMacView: View {
     @State private var showingQuickLog      = false
     @State private var showingStartTracking = false
     @State private var showingHistory       = false
+    @State private var showingEndDay        = false
     @State private var entryToEdit: TimeEntry?
     @State private var sessionToStop: ActiveSession?
 
@@ -22,6 +23,9 @@ struct TodayMacView: View {
     private var todayTotal: Int {
         todayEntries.reduce(0) { $0 + $1.durationMinutes }
         + activeSessions.reduce(0) { $0 + $1.elapsedMinutes }
+    }
+    private var todayClosure: EndDayClosure? {
+        EndDayClosure.today(from: todayEntries)
     }
 
     var body: some View {
@@ -38,6 +42,12 @@ struct TodayMacView: View {
                 .offset(y: -40)
             } else {
                 List {
+                    if let todayClosure {
+                        Section {
+                            EndDayClosureMacRow(closure: todayClosure)
+                        }
+                    }
+
                     Section("Active") {
                         if activeSessions.isEmpty {
                             Text("No active sessions on this Mac")
@@ -91,6 +101,15 @@ struct TodayMacView: View {
                 }
                 .help(String(localized: "Open history"))
 
+                Button { showingEndDay = true } label: {
+                    Label(todayClosure == nil ? "Per oggi basta" : "Giornata chiusa",
+                          systemImage: todayClosure == nil ? "power" : "checkmark.circle.fill")
+                }
+                .help(todayClosure == nil
+                      ? String(localized: "Close today's active sessions")
+                      : String(localized: "Today has already been closed"))
+                .disabled(todayTotal == 0 || (todayClosure != nil && activeSessions.isEmpty))
+
                 Button { showingStartTracking = true } label: {
                     Label("Track", systemImage: "play.circle")
                 }
@@ -105,6 +124,8 @@ struct TodayMacView: View {
         .sheet(isPresented: $showingQuickLog)      { QuickLogMacView() }
         .sheet(isPresented: $showingStartTracking)  { StartTrackingMacView().environment(settings) }
         .sheet(isPresented: $showingHistory)         { HistoryMacView().frame(minWidth: 520, minHeight: 420) }
+        .sheet(isPresented: $showingEndDay)          { EndDayMacView(endHour: settings.trackingEndHour,
+                                                                     endMinute: settings.trackingEndMinute) }
         .sheet(item: $entryToEdit)                  { QuickLogMacView(entry: $0) }
         .sheet(item: $sessionToStop)                { StopSessionMacView(session: $0,
                                                                          endHour: settings.trackingEndHour,
@@ -112,8 +133,67 @@ struct TodayMacView: View {
                                                                          onStop: {}) }
         .syncGated(while: $showingQuickLog)
         .syncGated(while: $showingStartTracking)
+        .syncGated(while: $showingEndDay)
         .syncGated(whilePresent: $entryToEdit)
         .syncGated(whilePresent: $sessionToStop)
+    }
+}
+
+struct EndDayClosureMacRow: View {
+    let closure: EndDayClosure
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Image(systemName: iconName)
+                .font(.system(size: 18, weight: .semibold))
+                .foregroundStyle(tint)
+                .frame(width: 28, height: 28)
+                .background(tint.opacity(0.12), in: Circle())
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Giornata chiusa")
+                    .fontWeight(.medium)
+                if let note = closure.note {
+                    Text(note)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                }
+            }
+
+            Spacer()
+
+            Text(closure.mood)
+                .font(.caption)
+                .fontWeight(.medium)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(tint.opacity(0.12), in: Capsule())
+                .foregroundStyle(tint)
+        }
+        .padding(.vertical, 3)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Giornata chiusa: \(closure.mood)")
+    }
+
+    private var iconName: String {
+        switch closure.mood {
+        case "Ok": "checkmark"
+        case "Tirata": "bolt"
+        case "Giornata di merda": "exclamationmark"
+        case "Ho fatto miracoli": "sparkles"
+        default: "checkmark"
+        }
+    }
+
+    private var tint: Color {
+        switch closure.mood {
+        case "Ok": .green
+        case "Tirata": .orange
+        case "Giornata di merda": .red
+        case "Ho fatto miracoli": .purple
+        default: .accentColor
+        }
     }
 }
 

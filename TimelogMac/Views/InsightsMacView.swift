@@ -25,6 +25,10 @@ struct InsightsMacView: View {
         return h.finalize()
     }
 
+    private var endDayStats: EndDayStats {
+        EndDayStats.make(from: userEntries)
+    }
+
     var body: some View {
         Group {
             if userEntries.count < 5 {
@@ -44,6 +48,11 @@ struct InsightsMacView: View {
                         if !service.focusScores.isEmpty {
                             InsightCard(title: "Focus Score — Last 7 Days", icon: "brain.head.profile") {
                                 FocusScoreChartRow(scores: service.focusScores)
+                            }
+                        }
+                        if !endDayStats.days.isEmpty {
+                            InsightCard(title: "Chiusure giornata", icon: "power") {
+                                EndDayStatsRows(stats: endDayStats)
                             }
                         }
                         if let review = service.weeklyReview {
@@ -78,6 +87,113 @@ struct InsightsMacView: View {
         .task(id: analyticsRefreshToken) {
             await service.recompute(entries: analyticsEntries, workingDays: settings.workingDays)
         }
+    }
+}
+
+// MARK: - End Day Stats
+
+private struct EndDayStats {
+    struct Day: Identifiable {
+        let date: Date
+        let mood: String
+        var id: Date { date }
+    }
+
+    let days: [Day]
+    let counts: [(mood: String, count: Int)]
+
+    var totalDays: Int { days.count }
+    var topMood: String? { counts.first?.mood }
+    var roughDays: Int { counts.first(where: { $0.mood == "Giornata di merda" })?.count ?? 0 }
+    var lastMood: String? { days.first?.mood }
+    var recentDays: [Day] { Array(days.prefix(5)) }
+
+    static func make(from entries: [TimeEntry]) -> EndDayStats {
+        let days = EndDayClosure.closures(from: entries)
+            .map { Day(date: $0.date, mood: $0.mood) }
+
+        var countMap: [String: Int] = [:]
+        for day in days {
+            countMap[day.mood, default: 0] += 1
+        }
+
+        let counts = countMap.map { (mood: $0.key, count: $0.value) }
+            .sorted {
+                if $0.count == $1.count { return $0.mood < $1.mood }
+                return $0.count > $1.count
+            }
+
+        return EndDayStats(days: days, counts: counts)
+    }
+}
+
+private struct EndDayStatsRows: View {
+    let stats: EndDayStats
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
+                MacStatCell(label: "Giorni chiusi", value: "\(stats.totalDays)")
+                if let topMood = stats.topMood {
+                    MacStatCell(label: "Mood frequente", value: topMood)
+                }
+                if let lastMood = stats.lastMood {
+                    MacStatCell(label: "Ultima chiusura", value: lastMood)
+                }
+                MacStatCell(
+                    label: "Giornate pesanti",
+                    value: "\(stats.roughDays)",
+                    valueColor: stats.roughDays > 0 ? .orange : .primary
+                )
+            }
+
+            Chart(stats.counts, id: \.mood) { item in
+                BarMark(
+                    x: .value("Days", item.count),
+                    y: .value("Mood", item.mood)
+                )
+                .cornerRadius(4)
+                .foregroundStyle(moodColor(item.mood).gradient)
+                .annotation(position: .trailing, alignment: .leading, spacing: 6) {
+                    Text("\(item.count)")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .chartXAxis(.hidden)
+            .frame(height: CGFloat(max(stats.counts.count, 1)) * 28)
+
+            if !stats.recentDays.isEmpty {
+                VStack(alignment: .leading, spacing: 6) {
+                    ForEach(stats.recentDays) { day in
+                        HStack {
+                            Text(formatDay(day.date))
+                                .foregroundStyle(.secondary)
+                            Spacer()
+                            Text(day.mood)
+                                .fontWeight(.medium)
+                        }
+                        .font(.caption)
+                    }
+                }
+            }
+        }
+    }
+
+    private func moodColor(_ mood: String) -> Color {
+        switch mood {
+        case "Ok": .green
+        case "Tirata": .orange
+        case "Giornata di merda": .red.opacity(0.75)
+        case "Ho fatto miracoli": .purple
+        default: .accentColor
+        }
+    }
+
+    private func formatDay(_ date: Date) -> String {
+        let f = DateFormatter()
+        f.dateFormat = "EEE d MMM"
+        return f.string(from: date)
     }
 }
 

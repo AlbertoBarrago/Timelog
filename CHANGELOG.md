@@ -9,6 +9,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.5.15] — 2026-06-23
+
+### Added
+- **macOS: end-of-day closure flow** — Today now includes `Per oggi basta`, a lightweight closure action that stops active sessions, logs them with the existing tracking data, and captures a small mood/note marker without introducing a new data model yet.
+- **macOS: visible closed-day state** — Today shows a subtle `Giornata chiusa` row with mood and optional note after closing the day, and the toolbar reflects that the day has already been closed.
+- **macOS Stats: closure mood overview** — Stats now includes a `Chiusure giornata` card with closed-day count, most frequent mood, latest closure, heavy-day count, and mood distribution.
+- **Release planning TODO** — added a short `TODO.md` with tomorrow's manual checks and the next steps toward a structured `DayReview` model.
+
+---
+
 ## [1.5.14] — 2026-06-23
 
 ### Fixed
