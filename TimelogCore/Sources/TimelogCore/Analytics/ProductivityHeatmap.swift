@@ -2,8 +2,8 @@ import Foundation
 
 public enum ProductivityHeatmap {
 
-    /// Aggrega le entries per (ora del giorno × giorno della settimana).
-    /// - Returns: celle sparse (solo quelle con almeno una sessione), ordinate per (weekday, hour).
+    /// Aggregates entries by (hour of day × weekday).
+    /// - Returns: sparse cells (only buckets with at least one session), sorted by (weekday, hour).
     public static func cells(
         entries: [AnalyticsEntry],
         calendar: Calendar = .current

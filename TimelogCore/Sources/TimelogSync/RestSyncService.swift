@@ -148,9 +148,9 @@ public final class RestSyncService {
 
     public var isConfigured: Bool { readServerURL() != nil && readApiKey() != nil }
 
-    /// macOS: legge ~/.config/timelog/sync.local
-    /// iOS:   legge SyncConfig.local dal bundle (gitignored, mai pushato)
-    /// Sovrascrive sempre il Keychain — aggiornare il file per cambiare URL o API key.
+    /// macOS: reads ~/.config/timelog/sync.local
+    /// iOS:   reads SyncConfig.local from the bundle (gitignored, never pushed)
+    /// Always overwrites Keychain values; update the file to change URL or API key.
     public func loadConfigFromFile() {
         #if os(macOS)
         let fileURL = FileManager.default.homeDirectoryForCurrentUser

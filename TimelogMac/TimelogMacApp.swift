@@ -158,7 +158,7 @@ struct TimelogMacApp: App {
         do {
             return try ModelContainer(for: schema, configurations: config)
         } catch {
-            // Store corrotto o incompatibile — reset automatico
+            // Corrupt or incompatible store: reset automatically.
             let url = config.url
             try? FileManager.default.removeItem(at: url)
             let base = url.deletingPathExtension()

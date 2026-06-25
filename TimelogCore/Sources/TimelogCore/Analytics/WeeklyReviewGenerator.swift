@@ -2,11 +2,11 @@ import Foundation
 
 public enum WeeklyReviewGenerator {
 
-    /// Genera il report settimanale.
+    /// Generates the weekly review.
     /// - Parameters:
-    ///   - currentWeek: entries della settimana target
-    ///   - previousWeek: entries della settimana precedente (per calcolare il trend)
-    ///   - weekStart: inizio della settimana corrente
+    ///   - currentWeek: entries for the target week
+    ///   - previousWeek: entries for the previous week, used to calculate the trend
+    ///   - weekStart: start of the current week
     public static func generate(
         currentWeek: [AnalyticsEntry],
         previousWeek: [AnalyticsEntry],

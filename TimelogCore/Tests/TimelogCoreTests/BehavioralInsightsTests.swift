@@ -239,7 +239,7 @@ struct BehavioralInsightsTests {
         }
 
         @Test func aggregatesByHourAndWeekday() {
-            // 2026-01-06 è martedì -> weekday = 3 (Gregorian, 1=Sunday)
+            // 2026-01-06 is Tuesday -> weekday = 3 (Gregorian, 1=Sunday)
             let date = cal.date(from: DateComponents(year: 2026, month: 1, day: 6, hour: 9))!
             let entry = AnalyticsEntry(date: date, durationMinutes: 45, label: nil,
                                        clientId: nil, clientName: nil, projectId: nil, projectName: nil)
@@ -423,7 +423,7 @@ struct BehavioralInsightsTests {
         }
 
         @Test func classifiesBuilderCorrectly() {
-            // Lunghe sessioni, poche label, alto deepWork
+            // Long sessions, few labels, high deepWork.
             let entries = Array(repeating: entry(duration: 60, label: "code", clientId: "c1"), count: 20)
             let fp = WorkFingerprintEngine.fingerprint(entries: entries, calendar: cal)
             #expect(fp?.type == .builder)
@@ -441,7 +441,7 @@ struct BehavioralInsightsTests {
         }
 
         @Test func defaultsToBalanced() {
-            // Sessioni moderate, pochi client e label
+            // Moderate sessions, few clients and labels.
             let entries = Array(repeating: entry(duration: 20, label: "work", clientId: "c1"), count: 10)
             let fp = WorkFingerprintEngine.fingerprint(entries: entries, calendar: cal)
             #expect(fp?.type == .balanced)

@@ -31,14 +31,14 @@ public final class BehavioralInsightsService {
 
     public init() {}
 
-    /// FocusScore di oggi, se disponibile.
+    /// Today's FocusScore, if available.
     public var todayFocusScore: FocusScore? {
         focusScores.first { Calendar.current.isDateInToday($0.date) }
     }
 
-    /// Ricalcola tutti gli analytics. Chiamato dalla view quando le entries cambiano.
-    /// - Parameter entries: tutte le entries non-deleted dell'utente corrente
-    /// - Parameter workingDays: giorni lavorativi (valori Calendar.weekday, 1=Dom). Set vuoto = tutti i giorni.
+    /// Recomputes all analytics. Called by the view when entries change.
+    /// - Parameter entries: all non-deleted entries for the current user
+    /// - Parameter workingDays: working days (`Calendar.weekday` values, 1=Sun). Empty set = all days.
     public func recompute(entries: [AnalyticsEntry], calendar: Calendar = .current, workingDays: Set<Int> = []) async {
         pendingRequest = PendingRequest(entries: entries, calendar: calendar, workingDays: workingDays)
         guard !isComputing else { return }

@@ -32,8 +32,8 @@ private struct WindowAccessor: NSViewRepresentable {
             AppDelegate.mainWindow = view.window
             Self.lockToolbarDisplayMode(of: view.window)
         }
-        // La toolbar di NavigationSplitView viene creata in modo lazy:
-        // al primo tick async potrebbe non esistere ancora.
+        // NavigationSplitView creates its toolbar lazily; it may not exist
+        // on the first async tick yet.
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             Self.lockToolbarDisplayMode(of: view.window)
         }
@@ -46,10 +46,10 @@ private struct WindowAccessor: NSViewRepresentable {
         Self.lockToolbarDisplayMode(of: nsView.window)
     }
 
-    /// Cambiare la modalità di visualizzazione della toolbar ("Icona e testo",
-    /// "Solo testo") dal menu contestuale rompe il layout di NavigationSplitView:
-    /// il toggle della sidebar sparisce dal bordo sinistro e riappare in fondo a
-    /// destra. Forziamo .iconOnly e, dove l'API esiste, togliamo le voci dal menu.
+    /// Changing the toolbar display mode ("Icon and Text", "Text Only") from
+    /// the context menu breaks the NavigationSplitView layout: the sidebar
+    /// toggle disappears from the leading edge and reappears at the trailing
+    /// side. Force `.iconOnly` and, where the API exists, remove those menu items.
     static func lockToolbarDisplayMode(of window: NSWindow?) {
         guard let toolbar = window?.toolbar else { return }
         if toolbar.displayMode != .iconOnly {
@@ -188,4 +188,3 @@ private struct SyncStatusDot: View {
         return String(localized: "Sync not yet run")
     }
 }
-

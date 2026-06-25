@@ -2,10 +2,10 @@ import Foundation
 
 public enum FocusScoreEngine {
 
-    /// Calcola il FocusScore per un singolo giorno.
+    /// Calculates the FocusScore for a single day.
     /// - Parameters:
-    ///   - entries: entries del giorno (già filtrate per data dal chiamante)
-    ///   - date: data di riferimento per il risultato
+    ///   - entries: entries for the day, already date-filtered by the caller
+    ///   - date: reference date for the result
     public static func score(for entries: [AnalyticsEntry], date: Date) -> FocusScore {
         guard !entries.isEmpty else {
             return FocusScore(

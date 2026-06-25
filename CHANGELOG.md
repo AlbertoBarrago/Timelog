@@ -9,6 +9,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.5.16] — 2026-06-25
+
+### Fixed
+- **Notification permission prompts** — `NotificationManager.requestPermission()` now checks the current authorization status first and requests notification permission only when it is still `.notDetermined`.
+
+### Changed
+- **Developer-facing comments and TODOs** — translated remaining technical comments, release script messages, and internal TODO notes to English while leaving user-facing Italian app copy unchanged.
+
+---
+
 ## [1.5.15] — 2026-06-23
 
 ### Added

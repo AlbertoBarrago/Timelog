@@ -2,11 +2,11 @@ import Foundation
 
 public enum TimeLeakDetector {
 
-    /// Identifica label/client che consumano significativamente più tempo rispetto alla baseline.
+    /// Identifies labels/clients that consume significantly more time than the baseline.
     /// - Parameters:
-    ///   - recentEntries: entries degli ultimi 7 giorni
-    ///   - baselineEntries: entries dei 28 giorni precedenti (normalizzate a 7 gg internamente)
-    ///   - minimumBaselineMinutes: minuti minimi nella baseline per considerare un candidato
+    ///   - recentEntries: entries from the last 7 days
+    ///   - baselineEntries: entries from the previous 28 days, normalized to 7 days internally
+    ///   - minimumBaselineMinutes: minimum baseline minutes required to consider a candidate
     public static func detect(
         recentEntries: [AnalyticsEntry],
         baselineEntries: [AnalyticsEntry],
@@ -14,7 +14,7 @@ public enum TimeLeakDetector {
     ) -> [TimeLeakInsight] {
         var insights: [TimeLeakInsight] = []
 
-        // Aggrega per client
+        // Group by client.
         let recentByClient = groupMinutes(entries: recentEntries, key: { $0.clientId.map { "\($0)" } })
         let baselineByClient = groupMinutes(entries: baselineEntries, key: { $0.clientId.map { "\($0)" } })
         var clientNames: [String: String] = [:]
@@ -37,7 +37,7 @@ public enum TimeLeakDetector {
             ))
         }
 
-        // Aggrega per label
+        // Group by label.
         let recentByLabel = groupMinutes(entries: recentEntries, key: { $0.label })
         let baselineByLabel = groupMinutes(entries: baselineEntries, key: { $0.label })
 

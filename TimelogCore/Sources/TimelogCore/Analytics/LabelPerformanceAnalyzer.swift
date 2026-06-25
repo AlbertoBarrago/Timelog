@@ -4,14 +4,14 @@ public enum LabelPerformanceAnalyzer {
 
     static let unlabeledKey = "Unlabeled"
 
-    /// Analizza le performance per ciascun label (categoria) nelle entries fornite.
-    /// Le entries senza label vengono raggruppate sotto "Unlabeled".
-    /// - Returns: insights ordinati per totalMinutes decrescente.
+    /// Analyzes performance for each label/category in the provided entries.
+    /// Entries without a label are grouped under "Unlabeled".
+    /// - Returns: insights sorted by descending totalMinutes.
     public static func analyze(
         entries: [AnalyticsEntry],
         calendar: Calendar = .current
     ) -> [LabelInsight] {
-        // Raggruppa per label
+        // Group by label.
         var totalByLabel: [String: Int] = [:]
         var countByLabel: [String: Int] = [:]
         var hourDistByLabel: [String: [Int: Int]] = [:]

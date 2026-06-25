@@ -2,9 +2,9 @@ import Foundation
 
 public enum WorkFingerprintEngine {
 
-    /// Classifica il work style dell'utente su un periodo significativo.
-    /// - Parameter entries: entries del periodo (consigliati almeno 30 gg)
-    /// - Returns: `nil` se le entries sono vuote
+    /// Classifies the user's work style over a meaningful period.
+    /// - Parameter entries: entries for the period; at least 30 days are recommended
+    /// - Returns: `nil` when entries are empty
     public static func fingerprint(
         entries: [AnalyticsEntry],
         calendar: Calendar = .current

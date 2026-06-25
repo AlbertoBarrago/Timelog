@@ -7,7 +7,7 @@ import SwiftData
 @MainActor
 struct ActiveSessionTests {
 
-    // MARK: elapsedMinutes (non richiede ModelContainer — accede solo a startDate)
+    // MARK: elapsedMinutes (does not require ModelContainer; only reads startDate)
 
     @Test func elapsedMinutesRoundsDown() throws {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
