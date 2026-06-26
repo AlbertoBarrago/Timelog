@@ -131,6 +131,7 @@ public final class TimerViewModel {
         stopTimer()
         elapsed = 0
         phase = .work
+        completedPomodoros = 0
         saveState()
         #if os(iOS) && !targetEnvironment(macCatalyst)
         endLiveActivity()
