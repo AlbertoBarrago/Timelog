@@ -27,21 +27,43 @@ struct TodayMacView: View {
     private var todayClosure: EndDayClosure? {
         EndDayClosure.today(from: todayEntries)
     }
+    private var firstActivityDate: Date? {
+        let entryDates = todayEntries.map(\.date)
+        let sessionDates = activeSessions
+            .map(\.startDate)
+            .filter { Calendar.current.isDateInToday($0) }
+        return (entryDates + sessionDates).min()
+    }
 
     var body: some View {
         Group {
             if activeSessions.isEmpty && todayEntries.isEmpty {
-                ContentUnavailableView {
-                    Label("No entries today", systemImage: "clock")
-                } description: {
-                    Text("Log time manually or start a tracking session.")
-                } actions: {
-                    Button("Log Time")       { showingQuickLog = true }
-                    Button("Start Tracking") { showingStartTracking = true }
+                VStack(spacing: 18) {
+                    DayGreetingMacRow(firstActivityDate: firstActivityDate,
+                                      todayClosure: todayClosure,
+                                      hasActiveSessions: false,
+                                      hasEntries: false)
+                        .padding(.horizontal, 24)
+
+                    ContentUnavailableView {
+                        Label("No entries today", systemImage: "clock")
+                    } description: {
+                        Text("Log time manually or start a tracking session.")
+                    } actions: {
+                        Button("Log Time")       { showingQuickLog = true }
+                        Button("Start Tracking") { showingStartTracking = true }
+                    }
                 }
                 .offset(y: -40)
             } else {
                 List {
+                    Section {
+                        DayGreetingMacRow(firstActivityDate: firstActivityDate,
+                                          todayClosure: todayClosure,
+                                          hasActiveSessions: !activeSessions.isEmpty,
+                                          hasEntries: !todayEntries.isEmpty)
+                    }
+
                     if let todayClosure {
                         Section {
                             EndDayClosureMacRow(closure: todayClosure)
@@ -136,6 +158,80 @@ struct TodayMacView: View {
         .syncGated(while: $showingEndDay)
         .syncGated(whilePresent: $entryToEdit)
         .syncGated(whilePresent: $sessionToStop)
+    }
+}
+
+struct DayGreetingMacRow: View {
+    let firstActivityDate: Date?
+    let todayClosure: EndDayClosure?
+    let hasActiveSessions: Bool
+    let hasEntries: Bool
+
+    private var greeting: String {
+        let hour = Calendar.current.component(.hour, from: .now)
+        switch hour {
+        case 5..<12:
+            return String(localized: "Buongiorno")
+        case 12..<18:
+            return String(localized: "Buon pomeriggio")
+        default:
+            return String(localized: "Buonasera")
+        }
+    }
+
+    private var status: String {
+        if todayClosure != nil {
+            return String(localized: "Giornata chiusa")
+        }
+        if let firstActivityDate {
+            let time = firstActivityDate.formatted(date: .omitted, time: .shortened)
+            return String(localized: "Iniziata alle \(time)")
+        }
+        if hasActiveSessions {
+            return String(localized: "Sessione attiva")
+        }
+        if hasEntries {
+            return String(localized: "Giornata in corso")
+        }
+        return String(localized: "Giornata non ancora iniziata")
+    }
+
+    private var iconName: String {
+        if todayClosure != nil { return "checkmark.circle.fill" }
+        if hasActiveSessions { return "record.circle.fill" }
+        if firstActivityDate != nil || hasEntries { return "sun.max.fill" }
+        return "sunrise.fill"
+    }
+
+    private var tint: Color {
+        if todayClosure != nil { return .green }
+        if hasActiveSessions { return .red }
+        if firstActivityDate != nil || hasEntries { return .orange }
+        return .accentColor
+    }
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Image(systemName: iconName)
+                .font(.system(size: 17, weight: .semibold))
+                .foregroundStyle(tint)
+                .frame(width: 30, height: 30)
+                .background(tint.opacity(0.12), in: Circle())
+                .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(greeting)
+                    .font(.headline)
+                Text(status)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer()
+        }
+        .padding(.vertical, 4)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(greeting), \(status)")
     }
 }
 

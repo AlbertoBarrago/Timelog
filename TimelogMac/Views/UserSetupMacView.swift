@@ -18,9 +18,9 @@ struct UserSetupMacView: View {
                 .symbolRenderingMode(.hierarchical)
 
             VStack(spacing: 6) {
-                Text("What's your name?")
+                Text("How should Timelog call you?")
                     .font(.title2.bold())
-                Text("Your nickname identifies your data.\nEach teammate uses their own.")
+                Text("Use the same nickname on each device so your time stays together.")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)

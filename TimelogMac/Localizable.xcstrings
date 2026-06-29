@@ -2548,12 +2548,12 @@
         }
       }
     },
-    "What's your name?" : {
+    "How should Timelog call you?" : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Come ti chiami?"
+            "value" : "Come deve chiamarti Timelog?"
           }
         }
       }
@@ -2614,12 +2614,12 @@
         }
       }
     },
-    "Your nickname identifies your data.\nEach teammate uses their own." : {
+    "Use the same nickname on each device so your time stays together." : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Il tuo nickname identifica i tuoi dati.\nOgni membro del team usa il proprio."
+            "value" : "Usa lo stesso nickname su ogni dispositivo, così le tue ore restano insieme."
           }
         }
       }

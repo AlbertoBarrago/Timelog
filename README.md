@@ -187,7 +187,10 @@ chmod 600 ~/.config/timelog/sync.local
 
 ```bash
 # Unit tests del package (no Xcode required)
-cd TimelogCore && swift test
+(cd TimelogCore && swift test)
+
+# Local macOS app run with tests, build, launch, and log streaming
+scripts/run-local-mac.sh
 ```
 
 Per i test che richiedono l'app bundle (Keychain, Notifications), usa **⌘U** in Xcode sul scheme `Timelog`.

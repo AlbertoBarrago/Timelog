@@ -21,10 +21,10 @@ struct UserSetupView: View {
                 .padding(.bottom, 32)
 
             VStack(spacing: 12) {
-                Text("What's your name?")
+                Text("How should Timelog call you?")
                     .font(.title.bold())
 
-                Text("Your nickname identifies your data.\nEach teammate uses their own.")
+                Text("Use the same nickname on each device so your time stays together.")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)

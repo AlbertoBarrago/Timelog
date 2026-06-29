@@ -208,6 +208,13 @@ struct BehavioralInsightsTests {
             #expect(results.isEmpty)
         }
 
+        @Test func noLeakWhenWeeklyAverageIsUnchangedAcrossFourBaselineWeeks() {
+            let recent = [entry(duration: 400, label: "support")]
+            let baseline = Array(repeating: entry(duration: 100, label: "support"), count: 16)
+            let results = TimeLeakDetector.detect(recentEntries: recent, baselineEntries: baseline)
+            #expect(results.isEmpty)
+        }
+
         @Test func topFiveResultsMax() {
             var recent: [AnalyticsEntry] = []
             var baseline: [AnalyticsEntry] = []

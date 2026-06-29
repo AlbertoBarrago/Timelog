@@ -45,12 +45,23 @@ interface SessionDTO {
   userId?: string
 }
 
+interface DayReviewDTO {
+  _id: string
+  date?: string
+  mood?: string
+  pressure?: number
+  notes?: string
+  userId?: string
+  deletedAt?: string
+}
+
 interface SyncPayload {
   userId?:  string
   clients:  ClientDTO[]
   projects: ProjectDTO[]
   entries:  EntryDTO[]
   sessions: SessionDTO[]
+  dayReviews?: DayReviewDTO[]
 }
 
 // POST /api/sync — bulk upsert all collections
@@ -58,7 +69,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!checkApiKey(req)) return res.status(401).json({ error: 'Unauthorized' })
   if (req.method !== 'POST') return res.status(405).end()
 
-  const { userId, clients = [], projects = [], entries = [], sessions = [] } = req.body as SyncPayload
+  const { userId, clients = [], projects = [], entries = [], sessions = [], dayReviews = [] } = req.body as SyncPayload
   const db = await getDb()
 
   const toOid = (id: string) => ObjectId.isValid(id) ? new ObjectId(id) : new ObjectId()
@@ -89,6 +100,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       db.collection('active_sessions').updateOne(
         { _id: toOid(s._id) },
         { $set: { startDate: s.startDate ? new Date(s.startDate) : new Date(), notes: s.notes ?? null, label: s.label ?? null, clientMongoId: s.clientMongoId ?? null, projectMongoId: s.projectMongoId ?? null, notificationID: s.notificationID ?? '', userId: s.userId } },
+        { upsert: true }
+      )
+    ),
+    ...dayReviews.map(r =>
+      db.collection('day_reviews').updateOne(
+        { _id: toOid(r._id) },
+        { $set: { date: r.date ? new Date(r.date) : new Date(), mood: r.mood ?? null, pressure: r.pressure ?? null, notes: r.notes ?? null, userId: r.userId, deletedAt: r.deletedAt ?? null } },
         { upsert: true }
       )
     ),

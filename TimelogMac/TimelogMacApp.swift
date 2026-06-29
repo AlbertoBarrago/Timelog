@@ -13,6 +13,7 @@ private struct RestSyncSetup: ViewModifier {
     @Query private var projects: [Project]
     @Query private var entries: [TimeEntry]
     @Query private var sessions: [ActiveSession]
+    @Query private var dayReviews: [DayReview]
 
     func body(content: Content) -> some View {
         content
@@ -26,7 +27,8 @@ private struct RestSyncSetup: ViewModifier {
                     let projects = (try? ctx.fetch(FetchDescriptor<Project>()))       ?? []
                     let entries  = (try? ctx.fetch(FetchDescriptor<TimeEntry>()))     ?? []
                     let sessions = (try? ctx.fetch(FetchDescriptor<ActiveSession>())) ?? []
-                    return (clients, projects, entries, sessions)
+                    let dayReviews = (try? ctx.fetch(FetchDescriptor<DayReview>()))   ?? []
+                    return (clients, projects, entries, sessions, dayReviews)
                 }
                 Task {
                     try? await Task.sleep(for: .milliseconds(300))
@@ -51,7 +53,8 @@ private struct RestSyncSetup: ViewModifier {
             clients: clients,
             projects: projects,
             entries: entries,
-            sessions: sessions
+            sessions: sessions,
+            dayReviews: dayReviews
         )
     }
 }
@@ -153,7 +156,7 @@ struct TimelogMacApp: App {
     )
 
     static let container: ModelContainer = {
-        let schema = Schema([Client.self, Project.self, TimeEntry.self, ActiveSession.self])
+        let schema = Schema([Client.self, Project.self, TimeEntry.self, ActiveSession.self, DayReview.self])
         let config = ModelConfiguration("TimelogMac", schema: schema)
         do {
             return try ModelContainer(for: schema, configurations: config)

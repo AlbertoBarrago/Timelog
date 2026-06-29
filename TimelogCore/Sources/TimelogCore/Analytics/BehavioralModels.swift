@@ -56,13 +56,15 @@ public enum SyncDataFingerprint {
         clients: [Client],
         projects: [Project],
         entries: [TimeEntry],
-        sessions: [ActiveSession]
+        sessions: [ActiveSession],
+        dayReviews: [DayReview] = []
     ) -> Int {
         var hasher = Hasher()
         hasher.combine(clients.count)
         hasher.combine(projects.count)
         hasher.combine(entries.count)
         hasher.combine(sessions.count)
+        hasher.combine(dayReviews.count)
 
         for client in clients {
             hasher.combine(client.mongoId)
@@ -106,6 +108,16 @@ public enum SyncDataFingerprint {
             hasher.combine(session.client?.mongoId)
             hasher.combine(session.project?.mongoId)
             hasher.combine(session.userId)
+        }
+
+        for review in dayReviews {
+            hasher.combine(review.mongoId)
+            hasher.combine(review.date.timeIntervalSinceReferenceDate)
+            hasher.combine(review.mood)
+            hasher.combine(review.pressure)
+            hasher.combine(review.notes)
+            hasher.combine(review.userId)
+            hasher.combine(review.deletedAt?.timeIntervalSinceReferenceDate)
         }
 
         return hasher.finalize()

@@ -782,12 +782,12 @@
         }
       }
     },
-    "You manage many moving parts — multiple clients and labels. You're the connective tissue that keeps everything running." : {
+    "You keep a lot moving across clients and labels. Timelog sees the switching, the follow-up, and the coordination work." : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gestisci molti elementi in movimento — clienti ed etichette diverse. Sei il collante che tiene tutto in funzione."
+            "value" : "Tieni in movimento molte cose tra clienti ed etichette. Timelog vede i cambi di contesto, i follow-up e il lavoro di coordinamento."
           }
         }
       }
@@ -872,12 +872,12 @@
         }
       }
     },
-    "Your work style is well-rounded — a healthy mix of focus and flexibility across your tracked activities." : {
+    "Your work has a steady rhythm. You mix focused time with enough flexibility to handle what comes up." : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Il tuo stile di lavoro è equilibrato — un sano mix di focus e flessibilità nelle attività tracciate."
+            "value" : "Il tuo lavoro ha un ritmo stabile. Alterni momenti di focus e flessibilità quanto basta per gestire quello che arriva."
           }
         }
       }

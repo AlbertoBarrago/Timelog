@@ -88,7 +88,7 @@ public final class BehavioralInsightsService {
             guard
                 let prevWeekStart = calendar.date(byAdding: .weekOfYear, value: -1, to: weekStart),
                 let sevenDaysAgo = calendar.date(byAdding: .day, value: -7, to: startOfToday),
-                let twentyEightDaysAgo = calendar.date(byAdding: .day, value: -28, to: startOfToday),
+                let thirtyFiveDaysAgo = calendar.date(byAdding: .day, value: -35, to: startOfToday),
                 let thirtyDaysAgo = calendar.date(byAdding: .day, value: -30, to: startOfToday)
             else {
                 return ComputationResult(
@@ -104,7 +104,7 @@ public final class BehavioralInsightsService {
             let currentWeekEntries = entries.filter { $0.date >= weekStart }
             let prevWeekEntries = entries.filter { $0.date >= prevWeekStart && $0.date < weekStart }
             let recentEntries = entries.filter { $0.date >= sevenDaysAgo }
-            let baselineEntries = entries.filter { $0.date >= twentyEightDaysAgo && $0.date < sevenDaysAgo }
+            let baselineEntries = entries.filter { $0.date >= thirtyFiveDaysAgo && $0.date < sevenDaysAgo }
             let fingerprintEntries = entries.filter { $0.date >= thirtyDaysAgo }
 
             // Filter time-leak entries to working days so the baseline normalisation

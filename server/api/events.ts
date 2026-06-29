@@ -42,7 +42,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const heartbeat = setInterval(() => send({ type: 'heartbeat' }), 25_000)
 
   stream.on('change', (change) => {
-    send({ type: 'change', collection: change.ns?.coll ?? 'unknown' })
+    const collection = 'ns' in change && 'coll' in change.ns ? change.ns.coll : 'unknown'
+    send({ type: 'change', collection })
   })
 
   stream.on('error', () => {

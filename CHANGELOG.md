@@ -9,6 +9,27 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.6.0] — 2026-06-29
+
+### Added
+- **Shared `DayReview` foundation** — added a SwiftData `DayReview` model in `TimelogCore` for end-of-day mood, pressure, and notes, wired into both iOS and macOS containers so mobile stays schema-compatible until its UI is added.
+- **DayReview sync support** — extended `RestSyncService`, `/api/pull`, and `/api/sync` to carry the `day_reviews` collection while keeping pulls compatible with servers that do not return `dayReviews` yet.
+- **macOS Today greeting** — Today now shows a lightweight day greeting/status row so it is clear whether the day has started, when it started, or whether it has been closed.
+- **Local terminal runner** — added `scripts/run-local-mac.sh` to run package tests, build the macOS app, launch it, and stream `Timelog` logs without opening Xcode.
+
+### Changed
+- **Setup and work-style copy** — softened onboarding/setup and work-style insight text, and removed long dash punctuation from those user-facing strings.
+- **Documentation** — updated data-model and sync docs for `DayReview` and documented the local macOS runner.
+
+### Fixed
+- **Stats: inflated Time Leak percentages** — Time Leak baseline now uses a full 28-day baseline window before normalizing to a weekly average. Previously it used 21 days but still divided by four weeks, making some increases look larger than they were.
+- **Server typecheck** — fixed MongoDB change-stream namespace narrowing in the SSE endpoint so `tsc --noEmit` passes.
+
+### Tests
+- **DayReview and Time Leak coverage** — added tests for `DayReview` normalization/fingerprint behavior and for unchanged weekly Time Leak baselines.
+
+---
+
 ## [1.5.17] — 2026-06-26
 
 ---

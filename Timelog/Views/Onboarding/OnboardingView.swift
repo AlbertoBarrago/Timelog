@@ -10,19 +10,19 @@ struct OnboardingView: View {
             symbol: "clock.fill",
             color: .blue,
             title: "Welcome to Timelog",
-            body: "The simple way to track your team's time. No complexity, just results."
+            body: "Track your team's time without making it a chore."
         ),
         OnboardingPage(
             symbol: "plus.circle.fill",
             color: .green,
             title: "Log Time Manually",
-            body: "Tap + in Today to add a time entry. Pick client, project, duration — done."
+            body: "Tap + in Today, choose the client and project, add the time, and move on."
         ),
         OnboardingPage(
             symbol: "play.circle.fill",
             color: .orange,
             title: "Track in Real Time",
-            body: "Tap ▶ to start a session when you begin working. Stop it when you're done — duration is logged automatically. You can run multiple sessions at once."
+            body: "Tap ▶ when you start working and stop it when you're done. Timelog handles the duration for you."
         ),
         OnboardingPage(
             symbol: "bell.fill",
@@ -34,7 +34,7 @@ struct OnboardingView: View {
             symbol: "checkmark.circle.fill",
             color: .teal,
             title: "You're All Set!",
-            body: "Share this app with your team and start tracking. You can reopen this guide anytime from Settings."
+            body: "You're ready. You can reopen this guide anytime from Settings."
         )
     ]
 

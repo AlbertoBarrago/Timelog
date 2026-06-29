@@ -13,6 +13,7 @@ private struct RestSyncSetup: ViewModifier {
     @Query private var projects: [Project]
     @Query private var entries:  [TimeEntry]
     @Query private var sessions: [ActiveSession]
+    @Query private var dayReviews: [DayReview]
     @State private var isPulling = false
 
     func body(content: Content) -> some View {
@@ -59,7 +60,8 @@ private struct RestSyncSetup: ViewModifier {
                 (try? ctx.fetch(FetchDescriptor<Client>())) ?? [],
                 (try? ctx.fetch(FetchDescriptor<Project>())) ?? [],
                 (try? ctx.fetch(FetchDescriptor<TimeEntry>())) ?? [],
-                (try? ctx.fetch(FetchDescriptor<ActiveSession>())) ?? []
+                (try? ctx.fetch(FetchDescriptor<ActiveSession>())) ?? [],
+                (try? ctx.fetch(FetchDescriptor<DayReview>())) ?? []
             )
         }
         guard RestSyncService.shared.isConfigured else { return }
@@ -76,7 +78,8 @@ private struct RestSyncSetup: ViewModifier {
             clients: clients,
             projects: projects,
             entries: entries,
-            sessions: sessions
+            sessions: sessions,
+            dayReviews: dayReviews
         )
     }
 }
@@ -199,6 +202,6 @@ struct TimelogApp: App {
             .environment(settings)
             .environment(timerVM)
         }
-        .modelContainer(for: [Client.self, Project.self, TimeEntry.self, ActiveSession.self])
+        .modelContainer(for: [Client.self, Project.self, TimeEntry.self, ActiveSession.self, DayReview.self])
     }
 }

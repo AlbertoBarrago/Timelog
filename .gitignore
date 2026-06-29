@@ -3,6 +3,7 @@
 *.xcworkspace/xcuserdata/
 *.xcworkspace/xcshareddata/swiftpm/
 DerivedData/
+.derivedData/
 *.pbxuser
 *.mode1v3
 *.mode2v3
@@ -27,6 +28,7 @@ Podfile.lock
 
 # Instruments
 *.trace
+*.profraw
 
 # macOS
 .DS_Store

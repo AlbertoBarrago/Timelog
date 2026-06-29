@@ -37,6 +37,15 @@ erDiagram
         String  mongoId
         String  userId      "owner identifier — multi-user isolation"
     }
+    DAY_REVIEW {
+        Date    date        "start of day"
+        String  mood        "optional"
+        Int     pressure    "optional"
+        String  notes       "optional"
+        String  mongoId
+        String  userId      "owner identifier — multi-user isolation"
+        Date    deletedAt   "optional — soft delete"
+    }
 
     CLIENT ||--o{ PROJECT       : "has"
     CLIENT ||--o{ TIME_ENTRY    : "billed to"
@@ -87,6 +96,17 @@ An in-progress tracking session. At most one per active client/project combinati
 - `elapsedMinutes` — computed integer, used to estimate duration before stopping
 - `notificationID` — ID of the UNUserNotification for the open-session reminder; cancelled on stop
 
+### `DayReview`
+A per-day review record shared by iOS and macOS. It is the long-term home for end-of-day mood, pressure, and notes. Current macOS closure notes can still be read from `TimeEntry.notes`; migration into `DayReview` is a separate follow-up.
+
+- `date` — normalized to the start of the reviewed day
+- `mood` — optional mood label
+- `pressure` — optional numeric pressure value, left flexible until the UI scale is finalized
+- `notes` — optional end-of-day notes
+- `mongoId` — same as above; synced through the `day_reviews` collection
+- `userId` — same as above; identifies the owner and is used for multi-user isolation on a shared database
+- `deletedAt` — same as above (soft delete)
+
 ### `SettingsStore.userId`
 `userId` is not a SwiftData entity but a persisted setting. It is stored in `UserDefaults` under the key `"user_id"` and exposed via `SettingsStore`. On first launch, the app shows a nickname prompt that populates this value. All four models default to `userId = ""` to support pre-migration data; on first launch, existing records with an empty `userId` are migrated to the current `settings.userId`.
 
@@ -128,9 +148,10 @@ The pull is an **incremental upsert keyed by `mongoId`** (not a delete-all + re-
 | 1. Clients | Build `mongoId → Client` map; update matches, insert new (skip if `deletedAt`) |
 | 2. Projects | Same, linking `Client` via `clientMongoId` |
 | 3. Entries  | Same, linking Client + Project via mongoId |
-| 4. Sessions | Replace strategy scoped to `userId`: upsert this user's remote sessions, delete local sessions of this user no longer present remotely |
+| 4. Day reviews | Same, using `day_reviews` and soft delete |
+| 5. Sessions | Upsert strategy scoped to `userId`; stopped sessions are reconciled server-side |
 
-> Sessions are the only entity hard-deleted on pull; Client/Project/TimeEntry use soft delete (`deletedAt`) and are never removed by the pull.
+> Client, Project, TimeEntry, and DayReview use soft delete (`deletedAt`). ActiveSession has no `deletedAt`; stopped sessions are removed from the sync payload and reconciled by the server.
 
 ### Pull (both platforms)
 Uses incremental upsert keyed by `mongoId`: existing records updated in place, new records inserted. Soft-deleted records are applied but never inserted fresh. Sessions use a replace strategy scoped to `userId`. Triggered on launch, on SSE change event, and on app activation.

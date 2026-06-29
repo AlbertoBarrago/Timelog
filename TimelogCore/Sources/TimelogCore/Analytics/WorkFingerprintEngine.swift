@@ -79,7 +79,7 @@ public enum WorkFingerprintEngine {
             return WorkFingerprint(
                 type: .coordinator,
                 title: String(localized: "The Coordinator", bundle: .module),
-                description: String(localized: "You manage many moving parts — multiple clients and labels. You're the connective tissue that keeps everything running.", bundle: .module),
+                description: String(localized: "You keep a lot moving across clients and labels. Timelog sees the switching, the follow-up, and the coordination work.", bundle: .module),
                 traits: [
                     String(localized: "Many clients and labels", bundle: .module),
                     String(localized: "High cross-domain activity", bundle: .module),
@@ -101,7 +101,7 @@ public enum WorkFingerprintEngine {
             return WorkFingerprint(
                 type: .balanced,
                 title: String(localized: "The Balanced", bundle: .module),
-                description: String(localized: "Your work style is well-rounded — a healthy mix of focus and flexibility across your tracked activities.", bundle: .module),
+                description: String(localized: "Your work has a steady rhythm. You mix focused time with enough flexibility to handle what comes up.", bundle: .module),
                 traits: [
                     String(localized: "Moderate session length", bundle: .module),
                     String(localized: "Balanced context switching", bundle: .module),

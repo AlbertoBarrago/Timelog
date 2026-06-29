@@ -1648,12 +1648,12 @@
         }
       }
     },
-    "Tap + in Today to add a time entry. Pick client, project, duration — done.": {
+    "Tap + in Today, choose the client and project, add the time, and move on.": {
       "localizations": {
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Premi + in Oggi per aggiungere una voce. Scegli cliente, progetto, durata — fatto."
+            "value": "Premi + in Oggi, scegli cliente e progetto, aggiungi il tempo e vai avanti."
           }
         }
       }
@@ -1708,12 +1708,12 @@
         }
       }
     },
-    "Tap ▶ to start a session when you begin working. Stop it when you're done — duration is logged automatically. You can run multiple sessions at once.": {
+    "Tap ▶ when you start working and stop it when you're done. Timelog handles the duration for you.": {
       "localizations": {
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Premi ▶ per avviare una sessione quando inizi a lavorare. Fermala quando hai finito — la durata viene registrata automaticamente. Puoi avere più sessioni contemporaneamente."
+            "value": "Premi ▶ quando inizi a lavorare e fermalo quando hai finito. Timelog si occupa della durata."
           }
         }
       }
@@ -1750,12 +1750,12 @@
         }
       }
     },
-    "The simple way to track your team's time. No complexity, just results.": {
+    "Track your team's time without making it a chore.": {
       "localizations": {
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Il modo più semplice per tracciare il tempo del tuo team. Senza complessità, solo risultati."
+            "value": "Tieni traccia del tempo del team senza farlo diventare un peso."
           }
         }
       }
@@ -2035,12 +2035,12 @@
         }
       }
     },
-    "What's your name?": {
+    "How should Timelog call you?": {
       "localizations": {
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Come ti chiami?"
+            "value": "Come deve chiamarti Timelog?"
           }
         }
       }
@@ -2127,12 +2127,12 @@
         }
       }
     },
-    "Your nickname identifies your data.\nEach teammate uses their own.": {
+    "Use the same nickname on each device so your time stays together.": {
       "localizations": {
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Il tuo nickname identifica i tuoi dati.\nOgni membro del team usa il proprio."
+            "value": "Usa lo stesso nickname su ogni dispositivo, così le tue ore restano insieme."
           }
         }
       }

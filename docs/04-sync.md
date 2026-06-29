@@ -44,7 +44,7 @@ flowchart TD
     iRSS -->|"POST payload"| Sync
     Sync -->|"upsert"| MDB
     MDB -->|"pullAll(into:)"| Pull
-    Pull -->|"{ clients, projects,\nentries, sessions }"| iRSS
+    Pull -->|"{ clients, projects,\nentries, sessions,\ndayReviews }"| iRSS
     iRSS -->|"upsert by mongoId"| iSD
     Events -->|"SSE stream\n{ type: change }"| iSSE
     iSSE -->|"onChangeEvent → pullAll"| iRSS
@@ -54,7 +54,7 @@ flowchart TD
     mKCH --> mRSS
     mRSS -->|"POST payload"| Sync
     MDB -->|"pullAll(into:)"| Pull
-    Pull -->|"{ clients, projects,\nentries, sessions }"| mRSS
+    Pull -->|"{ clients, projects,\nentries, sessions,\ndayReviews }"| mRSS
     mRSS -->|"upsert by mongoId"| mSD
     Events -->|"SSE stream\n{ type: change }"| mSSE
     mSSE -->|"onChangeEvent → pullAll"| mRSS
@@ -104,7 +104,7 @@ also deferred until the form closes.
 
 ## Auto-push
 
-`onChange` on clients / projects / entries / sessions → `triggerSync()` →
+`onChange` on clients / projects / entries / sessions / dayReviews → `triggerSync()` →
 debounce 2 s → `POST /api/sync`
 
 The push payload carries a top-level `userId`. The server upserts every
@@ -159,8 +159,8 @@ credentials to Keychain. No manual input in Settings is required.
 
 | Method | Path | Purpose |
 |--------|------|---------|
-| `GET` | `/api/pull?userId=…` | Returns all 4 collections scoped to `userId` |
-| `POST` | `/api/sync` | Bulk-upserts all collections, reconciles sessions |
+| `GET` | `/api/pull?userId=…` | Returns all synced collections scoped to `userId` |
+| `POST` | `/api/sync` | Bulk-upserts all synced collections, reconciles sessions |
 | `GET` | `/api/events?userId=…` | SSE stream — notifies clients of any DB change |
 
 ---
@@ -189,8 +189,13 @@ Documents written by both platforms are identical.
 { "_id": ObjectId, "startDate": "2025-05-15T09:00:00.000Z", "notes": "...", "label": "...", "clientMongoId": "...", "projectMongoId": "...", "notificationID": "...", "userId": "alice" }
 ```
 
-> **`deletedAt`**: applies to `clients`, `projects`, and `time_entries` only.
-> `active_sessions` have no `deletedAt` — a stopped session is hard-deleted and
+### `day_reviews`
+```json
+{ "_id": ObjectId, "date": "2025-05-15T00:00:00.000Z", "mood": "Ok", "pressure": 2, "notes": "...", "userId": "alice", "deletedAt": null }
+```
+
+> **`deletedAt`**: applies to `clients`, `projects`, `time_entries`, and
+> `day_reviews`. `active_sessions` have no `deletedAt` — a stopped session is hard-deleted and
 > reconciled server-side per `userId`.
 
 > **`userId`**: every document includes a `userId` field so multiple users can

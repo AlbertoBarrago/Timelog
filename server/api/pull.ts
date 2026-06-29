@@ -15,11 +15,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     ? { $or: [{ userId }, { userId: { $in: [null, ''] } }, { userId: { $exists: false } }] }
     : {}
 
-  const [clients, projects, entries, sessions] = await Promise.all([
+  const [clients, projects, entries, sessions, dayReviews] = await Promise.all([
     db.collection('clients').find(scope).toArray(),
     db.collection('projects').find(scope).toArray(),
     db.collection('time_entries').find(scope).toArray(),
     db.collection('active_sessions').find(scope).toArray(),
+    db.collection('day_reviews').find(scope).toArray(),
   ])
 
   res.json({
@@ -27,5 +28,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     projects: projects.map(d => ({ ...d,  _id: d._id.toString() })),
     entries:  entries.map(d  => ({ ...d,  _id: d._id.toString() })),
     sessions: sessions.map(d => ({ ...d,  _id: d._id.toString() })),
+    dayReviews: dayReviews.map(d => ({ ...d, _id: d._id.toString() })),
   })
 }

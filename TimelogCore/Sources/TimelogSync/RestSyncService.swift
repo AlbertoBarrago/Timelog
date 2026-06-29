@@ -19,6 +19,24 @@ private struct PullResponse: Decodable {
     var projects: [ProjectDTO]
     var entries:  [EntryDTO]
     var sessions: [SessionDTO]
+    var dayReviews: [DayReviewDTO]
+
+    enum CodingKeys: String, CodingKey {
+        case clients
+        case projects
+        case entries
+        case sessions
+        case dayReviews
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        clients = try container.decodeIfPresent([ClientDTO].self, forKey: .clients) ?? []
+        projects = try container.decodeIfPresent([ProjectDTO].self, forKey: .projects) ?? []
+        entries = try container.decodeIfPresent([EntryDTO].self, forKey: .entries) ?? []
+        sessions = try container.decodeIfPresent([SessionDTO].self, forKey: .sessions) ?? []
+        dayReviews = try container.decodeIfPresent([DayReviewDTO].self, forKey: .dayReviews) ?? []
+    }
 }
 
 private struct SessionDTO: Codable {
@@ -63,12 +81,23 @@ private struct EntryDTO: Codable {
     var deletedAt: String?
 }
 
+private struct DayReviewDTO: Codable {
+    var _id: String
+    var date: String?
+    var mood: String?
+    var pressure: Int?
+    var notes: String?
+    var userId: String?
+    var deletedAt: String?
+}
+
 private struct SyncPayload: Encodable {
     var userId:   String
     var clients:  [ClientDTO]
     var projects: [ProjectDTO]
     var entries:  [EntryDTO]
     var sessions: [SessionDTO]
+    var dayReviews: [DayReviewDTO]
 }
 
 // MARK: - Service
@@ -78,7 +107,13 @@ private struct SyncPayload: Encodable {
 public final class RestSyncService {
     public static let shared = RestSyncService()
 
-    public typealias DataProvider = () -> (clients: [Client], projects: [TimelogCore.Project], entries: [TimeEntry], sessions: [ActiveSession])
+    public typealias DataProvider = () -> (
+        clients: [Client],
+        projects: [TimelogCore.Project],
+        entries: [TimeEntry],
+        sessions: [ActiveSession],
+        dayReviews: [DayReview]
+    )
 
     private var dataProvider: DataProvider?
     private var debounceTask: Task<Void, Never>?
@@ -265,7 +300,13 @@ public final class RestSyncService {
         }
         guard let data = dataProvider?() else { return }
         do {
-            try await push(clients: data.clients, projects: data.projects, entries: data.entries, sessions: data.sessions)
+            try await push(
+                clients: data.clients,
+                projects: data.projects,
+                entries: data.entries,
+                sessions: data.sessions,
+                dayReviews: data.dayReviews
+            )
         } catch is CancellationError {
             // superseded by a newer sync request — not an error
         } catch {
@@ -354,19 +395,51 @@ public final class RestSyncService {
             e.userId == userId && e.mongoId.map { !remoteEntryIds.contains($0) } ?? false
         }
 
+        let existingDayReviews = (try? context.fetch(FetchDescriptor<DayReview>())) ?? []
+        let dayReviewMap: [String: DayReview] = Dictionary(uniqueKeysWithValues: existingDayReviews.compactMap { review in
+            review.mongoId.map { ($0, review) }
+        })
+        let remoteDayReviewIds = Set(response.dayReviews.map { $0._id })
+        for dto in response.dayReviews {
+            guard dto.userId == nil || dto.userId == userId else { continue }
+            let dateStr = dto.date ?? ""
+            let date = Self.iso8601.date(from: dateStr) ?? Self.iso8601NoFrac.date(from: dateStr) ?? Date()
+            let deletedAt = dto.deletedAt.flatMap { Self.iso8601.date(from: $0) ?? Self.iso8601NoFrac.date(from: $0) }
+            if let review = dayReviewMap[dto._id] {
+                review.date = Calendar.current.startOfDay(for: date)
+                review.mood = dto.mood
+                review.pressure = dto.pressure
+                review.notes = dto.notes
+                review.deletedAt = deletedAt
+            } else if deletedAt == nil {
+                let review = DayReview(
+                    date: date,
+                    mood: dto.mood,
+                    pressure: dto.pressure,
+                    notes: dto.notes,
+                    userId: userId
+                )
+                review.mongoId = dto._id
+                context.insert(review)
+            }
+        }
+        let dayReviewsToDelete = hasPendingPush ? [] : existingDayReviews.filter { review in
+            review.userId == userId && review.mongoId.map { !remoteDayReviewIds.contains($0) } ?? false
+        }
+
         // Fire one notification before any wipe so views can clear their selection state.
-        if !clientsToDelete.isEmpty || !projectsToDelete.isEmpty || !entriesToDelete.isEmpty {
+        if !clientsToDelete.isEmpty || !projectsToDelete.isEmpty || !entriesToDelete.isEmpty || !dayReviewsToDelete.isEmpty {
             NotificationCenter.default.post(name: Self.willWipeDataNotification, object: nil)
         }
         clientsToDelete.forEach  { context.delete($0) }
         projectsToDelete.forEach { context.delete($0) }
         entriesToDelete.forEach  { context.delete($0) }
+        dayReviewsToDelete.forEach { context.delete($0) }
 
         // Sessions: replace strategy (remote is authoritative), scoped to this user.
         let mySessions = response.sessions.filter { $0.userId == nil || $0.userId == userId }
         let allLocalSessions = (try? context.fetch(FetchDescriptor<ActiveSession>())) ?? []
         let localSessionById = Dictionary(uniqueKeysWithValues: allLocalSessions.compactMap { s in s.mongoId.map { ($0, s) } })
-        let remoteSessionIds = Set(mySessions.map { $0._id })
         for dto in mySessions {
             let startDate = dto.startDate.flatMap { Self.iso8601.date(from: $0) ?? Self.iso8601NoFrac.date(from: $0) } ?? Date()
             if let s = localSessionById[dto._id] {
@@ -409,7 +482,13 @@ public final class RestSyncService {
 
     // MARK: - Push (SwiftData → server)
 
-    private func push(clients: [Client], projects: [TimelogCore.Project], entries: [TimeEntry], sessions: [ActiveSession]) async throws {
+    private func push(
+        clients: [Client],
+        projects: [TimelogCore.Project],
+        entries: [TimeEntry],
+        sessions: [ActiveSession],
+        dayReviews: [DayReview]
+    ) async throws {
         guard let url = serverURL(path: "/api/sync") else { return }
         isSyncing = true; lastError = nil; defer { isSyncing = false }
 
@@ -418,7 +497,8 @@ public final class RestSyncService {
             clients: clients.map { ClientDTO(_id: $0.mongoId ?? "", name: $0.name, colorHex: $0.colorHex, isArchived: $0.isArchived, userId: $0.userId, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }) },
             projects: projects.map { ProjectDTO(_id: $0.mongoId ?? "", name: $0.name, code: $0.code, userId: $0.userId, clientMongoId: $0.client?.mongoId, labels: $0.labels, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }) },
             entries: entries.map { EntryDTO(_id: $0.mongoId ?? "", date: Self.iso8601.string(from: $0.date), durationMinutes: $0.durationMinutes, notes: $0.notes, label: $0.label, userId: $0.userId, clientMongoId: $0.client?.mongoId, projectMongoId: $0.project?.mongoId, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }) },
-            sessions: sessions.map { SessionDTO(_id: $0.mongoId ?? "", startDate: Self.iso8601.string(from: $0.startDate), notes: $0.notes, label: $0.label, userId: $0.userId, clientMongoId: $0.client?.mongoId, projectMongoId: $0.project?.mongoId, notificationID: $0.notificationID) }
+            sessions: sessions.map { SessionDTO(_id: $0.mongoId ?? "", startDate: Self.iso8601.string(from: $0.startDate), notes: $0.notes, label: $0.label, userId: $0.userId, clientMongoId: $0.client?.mongoId, projectMongoId: $0.project?.mongoId, notificationID: $0.notificationID) },
+            dayReviews: dayReviews.map { DayReviewDTO(_id: $0.mongoId ?? "", date: Self.iso8601.string(from: $0.date), mood: $0.mood, pressure: $0.pressure, notes: $0.notes, userId: $0.userId, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }) }
         )
         try await post(url: url, body: payload)
         lastSyncDate = .now
