@@ -214,7 +214,3 @@ See [CHANGELOG.md](CHANGELOG.md).
 2. Keep one feature per PR
 
 ---
-
-## Credits
-
-Built by [Alberto Barrago](https://github.com/AlbertoBarrago) (alBz) with [Claude](https://claude.ai) as co-pilot.
