@@ -24,6 +24,9 @@ struct TodayMacView: View {
         todayEntries.reduce(0) { $0 + $1.durationMinutes }
         + activeSessions.reduce(0) { $0 + $1.elapsedMinutes }
     }
+    private var hasTodayActivity: Bool {
+        !activeSessions.isEmpty || !todayEntries.isEmpty
+    }
     private var todayClosure: EndDayClosure? {
         EndDayClosure.today(from: todayEntries)
     }
@@ -37,13 +40,16 @@ struct TodayMacView: View {
 
     var body: some View {
         Group {
-            if activeSessions.isEmpty && todayEntries.isEmpty {
-                VStack(spacing: 18) {
+            if !hasTodayActivity {
+                VStack(spacing: 0) {
                     DayGreetingMacRow(firstActivityDate: firstActivityDate,
                                       todayClosure: todayClosure,
                                       hasActiveSessions: false,
                                       hasEntries: false)
                         .padding(.horizontal, 24)
+                        .padding(.top, 18)
+
+                    Spacer(minLength: 24)
 
                     ContentUnavailableView {
                         Label("No entries today", systemImage: "clock")
@@ -53,8 +59,10 @@ struct TodayMacView: View {
                         Button("Log Time")       { showingQuickLog = true }
                         Button("Start Tracking") { showingStartTracking = true }
                     }
+
+                    Spacer(minLength: 80)
                 }
-                .offset(y: -40)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             } else {
                 List {
                     Section {
