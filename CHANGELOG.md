@@ -7,6 +7,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+- **macOS menu bar stop sheet clipping** — constrained the stop-session form width and made duration quick-picks wrap adaptively so the form no longer renders clipped inside the menu bar popover.
+
 ---
 
 ## [1.6.1] — 2026-07-01

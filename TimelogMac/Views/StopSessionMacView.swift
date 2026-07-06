@@ -97,6 +97,7 @@ struct StopSessionMacView: View {
             }
         }
         .padding()
+        .frame(width: 360)
     }
 
     private func addLabel(to project: Project) {
