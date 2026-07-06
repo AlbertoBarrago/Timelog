@@ -5,14 +5,19 @@ struct DurationPickerMac: View {
     @Binding var minutes: Int
 
     private let quickPicks = [15, 30, 45, 60, 90, 120]
+    private let quickPickColumns = [
+        GridItem(.adaptive(minimum: 58), spacing: 8, alignment: .leading)
+    ]
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 5) {
+            LazyVGrid(columns: quickPickColumns, alignment: .leading, spacing: 8) {
                 ForEach(quickPicks, id: \.self) { (mins: Int) in
                     quickPickButton(mins: mins)
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
             HStack(spacing: 16) {
                 HStack(spacing: 4) {
                     TextField("0", value: $hours, format: .number)
