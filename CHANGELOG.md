@@ -11,6 +11,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **macOS update checks** — temporarily disabled automatic Sparkle checks and the GitHub release polling badge while the GitHub-hosted update feed is unreliable. Manual "Check for Updates..." remains available.
 
 ### Fixed
+- **macOS stop-session form polish** — redesigned the stop-session form with lighter sections, a clearer session summary, stable duration controls, and chip-style type selection while keeping the workflow unchanged.
 - **macOS menu bar stop sheet clipping** — keep the full app stop sheet unchanged, but use a compact label picker only inside the menu bar popover so long project labels cannot push the form off-screen.
 
 ---
