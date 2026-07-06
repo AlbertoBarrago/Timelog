@@ -4,6 +4,12 @@ import TimelogCore
 import TimelogSync
 
 struct StopSessionMacView: View {
+    enum Presentation {
+        case sheet
+        case menuBar
+    }
+
+    var presentation: Presentation = .sheet
     var onDismiss: (() -> Void)? = nil
     var onStop: (() -> Void)? = nil
     @Environment(\.modelContext) private var context
@@ -18,9 +24,17 @@ struct StopSessionMacView: View {
     @State private var newLabelText = ""
     @State private var showDiscardAlert = false
 
-    init(session: ActiveSession, endHour: Int = 18, endMinute: Int = 0, onDismiss: (() -> Void)? = nil, onStop: (() -> Void)? = nil) {
+    init(
+        session: ActiveSession,
+        endHour: Int = 18,
+        endMinute: Int = 0,
+        presentation: Presentation = .sheet,
+        onDismiss: (() -> Void)? = nil,
+        onStop: (() -> Void)? = nil
+    ) {
         self.onDismiss = onDismiss
         self.onStop = onStop
+        self.presentation = presentation
         self.session = session
         let elapsed = session.cappedElapsedMinutes(endHour: endHour, endMinute: endMinute)
         _hours = State(initialValue: elapsed / 60)
@@ -57,12 +71,7 @@ struct StopSessionMacView: View {
                 GroupBox(String(localized: "Type")) {
                     VStack(alignment: .leading, spacing: 8) {
                         if !project.labels.isEmpty {
-                            Picker(String(localized: "Type"), selection: $selectedLabel) {
-                                Text("None").tag(Optional<String>.none)
-                                ForEach(project.labels, id: \.self) { Text($0).tag(Optional($0)) }
-                            }
-                            .pickerStyle(.segmented)
-                            .frame(maxWidth: .infinity)
+                            labelPicker(for: project)
                             Divider()
                         }
                         HStack {
@@ -97,7 +106,26 @@ struct StopSessionMacView: View {
             }
         }
         .padding()
-        .frame(width: 360)
+        .frame(width: presentation == .menuBar ? 360 : nil)
+    }
+
+    @ViewBuilder
+    private func labelPicker(for project: Project) -> some View {
+        if presentation == .menuBar {
+            Picker(String(localized: "Type"), selection: $selectedLabel) {
+                Text("None").tag(Optional<String>.none)
+                ForEach(project.labels, id: \.self) { Text($0).tag(Optional($0)) }
+            }
+            .pickerStyle(.menu)
+            .frame(maxWidth: .infinity)
+        } else {
+            Picker(String(localized: "Type"), selection: $selectedLabel) {
+                Text("None").tag(Optional<String>.none)
+                ForEach(project.labels, id: \.self) { Text($0).tag(Optional($0)) }
+            }
+            .pickerStyle(.segmented)
+            .frame(maxWidth: .infinity)
+        }
     }
 
     private func addLabel(to project: Project) {
