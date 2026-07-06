@@ -11,8 +11,6 @@
 	<key>SUPublicEDKey</key>
 	<string>cFHtJGEhaF/cZyO7c8hWpUoyCT2UsuntFhh6qlMx2tk=</string>
 	<key>SUEnableAutomaticChecks</key>
-	<true/>
-	<key>SUScheduledCheckInterval</key>
-	<integer>3600</integer>
+	<false/>
 </dict>
 </plist>

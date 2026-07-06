@@ -39,6 +39,7 @@ struct MenuBarView: View {
                 StopSessionMacView(session: session,
                                    endHour: settings.trackingEndHour,
                                    endMinute: settings.trackingEndMinute,
+                                   presentation: .menuBar,
                                    onDismiss: { sessionToStop = nil },
                                    onStop: {})
                     .background(Color(nsColor: .windowBackgroundColor))

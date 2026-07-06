@@ -7,6 +7,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Changed
+- **macOS update checks** — temporarily disabled automatic Sparkle checks and the GitHub release polling badge while the GitHub-hosted update feed is unreliable. Manual "Check for Updates..." remains available.
+
+### Fixed
+- **macOS menu bar stop sheet clipping** — keep the full app stop sheet unchanged, but use a compact label picker only inside the menu bar popover so long project labels cannot push the form off-screen.
+
 ---
 
 ## [1.6.2] — 2026-07-06

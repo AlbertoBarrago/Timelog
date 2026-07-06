@@ -180,7 +180,6 @@ struct TimelogMacApp: App {
                     NotificationManager.shared.requestPermission()
                     settings.applyReminders()
                     RestSyncService.shared.userId = settings.userId
-                    versionChecker.startChecking()
                 }
                 .modifier(RestSyncSetup())
                 .modifier(IdleAlertModifier())
@@ -213,7 +212,6 @@ struct TimelogMacApp: App {
                 .environment(timerVM)
         } label: {
             MenuBarStatusLabel(vm: timerVM, updateAvailable: versionChecker.updateAvailable)
-                .onAppear { versionChecker.startChecking() }
         }
         .menuBarExtraStyle(.window)
         .modelContainer(Self.container)
