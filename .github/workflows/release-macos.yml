@@ -40,6 +40,39 @@ jobs:
             -workspace TimeLog.xcworkspace \
             -scheme TimelogMac
 
+      # Import the stable self-signed certificate into a throwaway keychain so
+      # every release is signed with the SAME identity. This keeps macOS TCC
+      # (notifications & co.) grants alive across Sparkle updates — otherwise
+      # ad-hoc signing changes the cdhash each build and users get re-prompted
+      # for permissions on every version.
+      - name: Import signing certificate
+        env:
+          CERT_P12_BASE64: ${{ secrets.SIGNING_CERTIFICATE_P12_BASE64 }}
+          CERT_PASSWORD: ${{ secrets.SIGNING_CERTIFICATE_PASSWORD }}
+        run: |
+          set -euo pipefail
+          KEYCHAIN="$RUNNER_TEMP/build.keychain-db"
+          KEYCHAIN_PASS=$(openssl rand -base64 24)
+          echo "$CERT_P12_BASE64" | base64 --decode > "$RUNNER_TEMP/cert.p12"
+
+          security create-keychain -p "$KEYCHAIN_PASS" "$KEYCHAIN"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN"
+          security unlock-keychain -p "$KEYCHAIN_PASS" "$KEYCHAIN"
+
+          security import "$RUNNER_TEMP/cert.p12" -k "$KEYCHAIN" \
+            -P "$CERT_PASSWORD" -T /usr/bin/codesign
+
+          # Allow codesign to use the private key without an interactive prompt.
+          security set-key-partition-list -S apple-tool:,apple:,codesign: \
+            -s -k "$KEYCHAIN_PASS" "$KEYCHAIN" >/dev/null
+
+          # Make the keychain visible to codesign's identity search.
+          security list-keychains -d user -s "$KEYCHAIN" $(security list-keychains -d user | tr -d '"')
+          security default-keychain -s "$KEYCHAIN"
+          security find-identity -v -p codesigning "$KEYCHAIN"
+
+          rm -f "$RUNNER_TEMP/cert.p12"
+
       - name: Build
         run: |
           xcodebuild clean build \
@@ -53,14 +86,17 @@ jobs:
             CODE_SIGNING_ALLOWED=NO
 
       - name: Create DMG
+        env:
+          CODESIGN_IDENTITY: ${{ secrets.SIGNING_IDENTITY }}
         run: |
           # Explicit path: Sparkle ships a nested Updater.app that a bare
           # `find -name "*.app"` can match instead of the real app
           APP_PATH="build/Build/Products/Release/Timelog.app"
           test -d "$APP_PATH"
-          # Ad-hoc sign: generate_appcast rejects apps that fail Apple
-          # code signing checks; an ad-hoc seal is enough (no Developer ID)
-          codesign --force --deep --sign - "$APP_PATH"
+          # Sign with the stable self-signed identity so the cdhash authority
+          # stays constant across releases and Sparkle updates don't reset TCC
+          # permission grants (generate_appcast also requires a valid seal).
+          codesign --force --deep --sign "$CODESIGN_IDENTITY" "$APP_PATH"
           codesign --verify --deep --strict "$APP_PATH"
           create-dmg \
             --volname "Timelog ${{ steps.version.outputs.version }}" \
