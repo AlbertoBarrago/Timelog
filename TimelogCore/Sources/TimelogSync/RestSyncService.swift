@@ -317,6 +317,10 @@ public final class RestSyncService {
     // MARK: - Pull (server → SwiftData)
 
     public func pullAll(into context: ModelContext) async throws {
+        guard !hasPendingPush, !isRunningPush else {
+            needsPullAfterPush = true
+            return
+        }
         guard let url = pullURL() else { return }
         isSyncing = true; lastError = nil; defer { isSyncing = false }
 
