@@ -146,7 +146,7 @@ struct QuickLogSheet: View {
             e.client = selectedClient
             e.project = selectedProject
             try? context.save()
-            RestSyncService.shared.triggerSync()
+            RestSyncService.shared.triggerSyncNow()
         } else {
             let e = TimeEntry(
                 date: date, durationMinutes: total,

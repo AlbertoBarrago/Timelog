@@ -140,7 +140,7 @@ struct QuickLogMacView: View {
             e.client = selectedClient
             e.project = selectedProject
             try? context.save()
-            RestSyncService.shared.triggerSync()
+            RestSyncService.shared.triggerSyncNow()
         } else {
             context.insert(TimeEntry(date: date, durationMinutes: total,
                                      notes: notes.isEmpty ? nil : notes,
@@ -148,6 +148,7 @@ struct QuickLogMacView: View {
                                      client: selectedClient, project: selectedProject,
                                      userId: settings.userId))
             try? context.save()
+            RestSyncService.shared.triggerSyncNow()
         }
         dismiss()
     }
