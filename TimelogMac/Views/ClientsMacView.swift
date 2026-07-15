@@ -288,6 +288,7 @@ struct ProjectsMacView: View {
             endMinute: settings.trackingEndMinute
         )
         try? context.save()
+        RestSyncService.shared.triggerSyncNow()
     }
 }
 
