@@ -29,7 +29,7 @@ struct ProjectListView: View {
         allProjects.filter { $0.client?.persistentModelID == client.persistentModelID && $0.deletedAt == nil }
     }
     private var activeSessions: [ActiveSession] {
-        allSessions.filter { $0.userId == settings.userId }
+        allSessions.filter { $0.userId == settings.userId && $0.deletedAt == nil }
     }
 
     var body: some View {
@@ -142,7 +142,7 @@ struct ProjectListView: View {
             let entry = session.asTimeEntry(durationMinutes: elapsed, notes: session.notes, label: session.label)
             context.insert(entry)
             NotificationManager.shared.cancelSession(id: session.notificationID)
-            context.delete(session)
+            session.deletedAt = Date()
         }
         try? context.save()
         RestSyncService.shared.triggerSyncNow()

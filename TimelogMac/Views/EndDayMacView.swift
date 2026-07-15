@@ -36,7 +36,7 @@ struct EndDayMacView: View {
     @State private var note = ""
 
     private var activeSessions: [ActiveSession] {
-        allSessions.filter { $0.userId == settings.userId }
+        allSessions.filter { $0.userId == settings.userId && $0.deletedAt == nil }
     }
 
     private var todayEntries: [TimeEntry] {
@@ -152,7 +152,7 @@ struct EndDayMacView: View {
                 )
                 context.insert(entry)
                 NotificationManager.shared.cancelSession(id: session.notificationID)
-                context.delete(session)
+                session.deletedAt = Date()
             }
         }
 

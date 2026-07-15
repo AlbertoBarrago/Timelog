@@ -48,6 +48,7 @@ private struct SessionDTO: Codable {
     var clientMongoId: String?
     var projectMongoId: String?
     var notificationID: String?
+    var deletedAt: String?
 }
 
 private struct ClientDTO: Codable {
@@ -431,35 +432,17 @@ public final class RestSyncService {
             review.userId == userId && review.mongoId.map { !remoteDayReviewIds.contains($0) } ?? false
         }
 
-        // Fire one notification before any wipe so views can clear their selection state.
-        if !clientsToDelete.isEmpty || !projectsToDelete.isEmpty || !entriesToDelete.isEmpty || !dayReviewsToDelete.isEmpty {
-            NotificationCenter.default.post(name: Self.willWipeDataNotification, object: nil)
-        }
-        clientsToDelete.forEach  { context.delete($0) }
-        projectsToDelete.forEach { context.delete($0) }
-        entriesToDelete.forEach  { context.delete($0) }
-        dayReviewsToDelete.forEach { context.delete($0) }
-
-        // Sessions: replace strategy (remote is authoritative), scoped to this user.
-        let mySessions = response.sessions.filter { $0.userId == nil || $0.userId == userId }
-        let allLocalSessions = (try? context.fetch(FetchDescriptor<ActiveSession>())) ?? []
-        let localSessionById = Dictionary(uniqueKeysWithValues: allLocalSessions.compactMap { s in s.mongoId.map { ($0, s) } })
-        for dto in mySessions {
+        let existingSessions = (try? context.fetch(FetchDescriptor<ActiveSession>())) ?? []
+        var sessionMap: [String: ActiveSession] = Dictionary(uniqueKeysWithValues: existingSessions.compactMap { s in s.mongoId.map { ($0, s) } })
+        let remoteSessionIds = Set(response.sessions.map { $0._id })
+        for dto in response.sessions where dto.userId == nil || dto.userId == userId {
             let startDate = dto.startDate.flatMap { Self.iso8601.date(from: $0) ?? Self.iso8601NoFrac.date(from: $0) } ?? Date()
-            if let s = localSessionById[dto._id] {
-                s.startDate = startDate; s.notes = dto.notes; s.label = dto.label
-            } else if let orphan = allLocalSessions.first(where: {
-                // Session was pushed but local copy still has mongoId=nil because the
-                // server assigns the ObjectId and the client never reads it back from
-                // the POST response. Adopt the server ID instead of creating a duplicate.
-                $0.mongoId == nil && $0.userId == userId &&
-                abs($0.startDate.timeIntervalSince(startDate)) < 10
-            }) {
-                orphan.mongoId = dto._id
-                orphan.startDate = startDate
-                orphan.notes = dto.notes
-                orphan.label = dto.label
-            } else {
+            let deletedAt = dto.deletedAt.flatMap { Self.iso8601.date(from: $0) ?? Self.iso8601NoFrac.date(from: $0) }
+            if let s = sessionMap[dto._id] {
+                s.startDate = startDate; s.notes = dto.notes; s.label = dto.label; s.deletedAt = deletedAt
+                if let cid = dto.clientMongoId { s.client = clientMap[cid] }
+                if let pid = dto.projectMongoId { s.project = projectMap[pid] }
+            } else if deletedAt == nil {
                 let s = ActiveSession(
                     client: dto.clientMongoId.flatMap { clientMap[$0] },
                     project: dto.projectMongoId.flatMap { projectMap[$0] },
@@ -468,13 +451,24 @@ public final class RestSyncService {
                 s.startDate = startDate
                 s.mongoId = dto._id
                 s.notificationID = dto.notificationID ?? UUID().uuidString
-                context.insert(s)
+                context.insert(s); sessionMap[dto._id] = s
             }
         }
-        // Active sessions are never deleted via pull: they have an explicit lifecycle
-        // (start → stop → TimeEntry + delete). Removing them here would silently wipe
-        // a running session if the push hasn't reached the server yet, or if the server
-        // assigned its own ObjectId that doesn't match the client-side nil-assigned id.
+        let sessionsToDelete = hasPendingPush ? [] : existingSessions.filter { s in
+            s.userId == userId && s.mongoId.map { !remoteSessionIds.contains($0) } ?? false
+        }
+
+        // Fire one notification before any wipe so views can clear their selection state.
+        if !clientsToDelete.isEmpty || !projectsToDelete.isEmpty || !entriesToDelete.isEmpty
+            || !dayReviewsToDelete.isEmpty || !sessionsToDelete.isEmpty {
+            NotificationCenter.default.post(name: Self.willWipeDataNotification, object: nil)
+        }
+        clientsToDelete.forEach    { context.delete($0) }
+        projectsToDelete.forEach   { context.delete($0) }
+        entriesToDelete.forEach    { context.delete($0) }
+        dayReviewsToDelete.forEach { context.delete($0) }
+        sessionsToDelete.forEach   { context.delete($0) }
+
         do {
             try context.save()
         } catch {
@@ -501,7 +495,7 @@ public final class RestSyncService {
             clients: clients.map { ClientDTO(_id: $0.mongoId ?? "", name: $0.name, colorHex: $0.colorHex, isArchived: $0.isArchived, userId: $0.userId, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }) },
             projects: projects.map { ProjectDTO(_id: $0.mongoId ?? "", name: $0.name, code: $0.code, userId: $0.userId, clientMongoId: $0.client?.mongoId, labels: $0.labels, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }) },
             entries: entries.map { EntryDTO(_id: $0.mongoId ?? "", date: Self.iso8601.string(from: $0.date), durationMinutes: $0.durationMinutes, notes: $0.notes, label: $0.label, userId: $0.userId, clientMongoId: $0.client?.mongoId, projectMongoId: $0.project?.mongoId, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }) },
-            sessions: sessions.map { SessionDTO(_id: $0.mongoId ?? "", startDate: Self.iso8601.string(from: $0.startDate), notes: $0.notes, label: $0.label, userId: $0.userId, clientMongoId: $0.client?.mongoId, projectMongoId: $0.project?.mongoId, notificationID: $0.notificationID) },
+            sessions: sessions.map { SessionDTO(_id: $0.mongoId ?? "", startDate: Self.iso8601.string(from: $0.startDate), notes: $0.notes, label: $0.label, userId: $0.userId, clientMongoId: $0.client?.mongoId, projectMongoId: $0.project?.mongoId, notificationID: $0.notificationID, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }) },
             dayReviews: dayReviews.map { DayReviewDTO(_id: $0.mongoId ?? "", date: Self.iso8601.string(from: $0.date), mood: $0.mood, pressure: $0.pressure, notes: $0.notes, userId: $0.userId, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }) }
         )
         try await post(url: url, body: payload)

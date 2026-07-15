@@ -16,7 +16,7 @@ struct TodayMacView: View {
     @State private var entryToEdit: TimeEntry?
     @State private var sessionToStop: ActiveSession?
 
-    private var activeSessions: [ActiveSession] { allSessions.filter { $0.userId == settings.userId } }
+    private var activeSessions: [ActiveSession] { allSessions.filter { $0.userId == settings.userId && $0.deletedAt == nil } }
     private var todayEntries: [TimeEntry] {
         allEntries.filter { $0.userId == settings.userId && Calendar.current.isDateInToday($0.date) }
     }
@@ -94,7 +94,7 @@ struct TodayMacView: View {
                                         Divider()
                                         Button("Discard", role: .destructive) {
                                             NotificationManager.shared.cancelSession(id: session.notificationID)
-                                            context.delete(session)
+                                            session.deletedAt = Date()
                                             try? context.save()
                                             RestSyncService.shared.triggerSyncNow()
                                         }

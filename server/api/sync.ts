@@ -43,6 +43,7 @@ interface SessionDTO {
   projectMongoId?: string
   notificationID?: string
   userId?: string
+  deletedAt?: string
 }
 
 interface DayReviewDTO {
@@ -99,7 +100,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     ...sessions.map(s =>
       db.collection('active_sessions').updateOne(
         { _id: toOid(s._id) },
-        { $set: { startDate: s.startDate ? new Date(s.startDate) : new Date(), notes: s.notes ?? null, label: s.label ?? null, clientMongoId: s.clientMongoId ?? null, projectMongoId: s.projectMongoId ?? null, notificationID: s.notificationID ?? '', userId: s.userId } },
+        { $set: { startDate: s.startDate ? new Date(s.startDate) : new Date(), notes: s.notes ?? null, label: s.label ?? null, clientMongoId: s.clientMongoId ?? null, projectMongoId: s.projectMongoId ?? null, notificationID: s.notificationID ?? '', userId: s.userId, deletedAt: s.deletedAt ?? null } },
         { upsert: true }
       )
     ),
@@ -111,18 +112,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       )
     ),
   ])
-
-  // Reconcile sessions: a session stopped on the client is removed from the payload.
-  // Delete this user's remote sessions that are no longer present so they don't
-  // reappear as "ghost" sessions on the next pull. Scoped to userId to never touch
-  // another user's data on a shared cluster.
-  if (typeof userId === 'string' && userId.length > 0) {
-    const keepIds = sessions.map(s => toOid(s._id))
-    await db.collection('active_sessions').deleteMany({
-      userId,
-      _id: { $nin: keepIds },
-    })
-  }
 
   res.json({ ok: true })
 }

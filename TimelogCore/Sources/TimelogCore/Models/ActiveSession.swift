@@ -11,6 +11,7 @@ public final class ActiveSession {
     public var notificationID: String
     public var mongoId: String?
     public var userId: String = ""
+    public var deletedAt: Date? = nil
 
     public init(client: Client? = nil, project: Project? = nil, notes: String? = nil, label: String? = nil, userId: String = "") {
         self.startDate = .now
@@ -19,7 +20,7 @@ public final class ActiveSession {
         self.notes = notes
         self.label = label
         self.notificationID = UUID().uuidString
-        self.mongoId = nil
+        self.mongoId = Client.newMongoId()
         self.userId = userId
     }
 
