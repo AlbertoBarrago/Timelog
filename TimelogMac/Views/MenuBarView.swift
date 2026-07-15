@@ -63,7 +63,9 @@ struct MenuBarView: View {
                                     sessionToStop = session
                                 } onDiscard: {
                                     NotificationManager.shared.cancelSession(id: session.notificationID)
-                                    session.deletedAt = Date()
+                                    let now = Date()
+                                    session.deletedAt = now
+                                    session.updatedAt = now
                                     try? context.save()
                                     RestSyncService.shared.triggerSyncNow()
                                 }

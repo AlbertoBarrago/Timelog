@@ -218,7 +218,9 @@ struct StopSessionMacView: View {
 
     private func discard() {
         NotificationManager.shared.cancelSession(id: session.notificationID)
-        session.deletedAt = Date()
+        let now = Date()
+        session.deletedAt = now
+        session.updatedAt = now
         try? context.save()
         onStop?()
         RestSyncService.shared.triggerSyncNow()
@@ -233,7 +235,9 @@ struct StopSessionMacView: View {
         )
         context.insert(entry)
         NotificationManager.shared.cancelSession(id: session.notificationID)
-        session.deletedAt = Date()
+        let now = Date()
+        session.deletedAt = now
+        session.updatedAt = now
         try? context.save()
         onStop?()
         RestSyncService.shared.triggerSyncNow()

@@ -49,6 +49,7 @@ private struct SessionDTO: Codable {
     var projectMongoId: String?
     var notificationID: String?
     var deletedAt: String?
+    var updatedAt: String?
 }
 
 private struct ClientDTO: Codable {
@@ -438,8 +439,10 @@ public final class RestSyncService {
         for dto in response.sessions where dto.userId == nil || dto.userId == userId {
             let startDate = dto.startDate.flatMap { Self.iso8601.date(from: $0) ?? Self.iso8601NoFrac.date(from: $0) } ?? Date()
             let deletedAt = dto.deletedAt.flatMap { Self.iso8601.date(from: $0) ?? Self.iso8601NoFrac.date(from: $0) }
+            let updatedAt = dto.updatedAt.flatMap { Self.iso8601.date(from: $0) ?? Self.iso8601NoFrac.date(from: $0) } ?? Date()
             if let s = sessionMap[dto._id] {
-                s.startDate = startDate; s.notes = dto.notes; s.label = dto.label; s.deletedAt = deletedAt
+                s.startDate = startDate; s.notes = dto.notes; s.label = dto.label
+                s.deletedAt = deletedAt; s.updatedAt = updatedAt
                 if let cid = dto.clientMongoId { s.client = clientMap[cid] }
                 if let pid = dto.projectMongoId { s.project = projectMap[pid] }
             } else if deletedAt == nil {
@@ -451,6 +454,7 @@ public final class RestSyncService {
                 s.startDate = startDate
                 s.mongoId = dto._id
                 s.notificationID = dto.notificationID ?? UUID().uuidString
+                s.updatedAt = updatedAt
                 context.insert(s); sessionMap[dto._id] = s
             }
         }
@@ -495,7 +499,7 @@ public final class RestSyncService {
             clients: clients.map { ClientDTO(_id: $0.mongoId ?? "", name: $0.name, colorHex: $0.colorHex, isArchived: $0.isArchived, userId: $0.userId, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }) },
             projects: projects.map { ProjectDTO(_id: $0.mongoId ?? "", name: $0.name, code: $0.code, userId: $0.userId, clientMongoId: $0.client?.mongoId, labels: $0.labels, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }) },
             entries: entries.map { EntryDTO(_id: $0.mongoId ?? "", date: Self.iso8601.string(from: $0.date), durationMinutes: $0.durationMinutes, notes: $0.notes, label: $0.label, userId: $0.userId, clientMongoId: $0.client?.mongoId, projectMongoId: $0.project?.mongoId, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }) },
-            sessions: sessions.map { SessionDTO(_id: $0.mongoId ?? "", startDate: Self.iso8601.string(from: $0.startDate), notes: $0.notes, label: $0.label, userId: $0.userId, clientMongoId: $0.client?.mongoId, projectMongoId: $0.project?.mongoId, notificationID: $0.notificationID, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }) },
+            sessions: sessions.map { SessionDTO(_id: $0.mongoId ?? "", startDate: Self.iso8601.string(from: $0.startDate), notes: $0.notes, label: $0.label, userId: $0.userId, clientMongoId: $0.client?.mongoId, projectMongoId: $0.project?.mongoId, notificationID: $0.notificationID, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }, updatedAt: Self.iso8601.string(from: $0.updatedAt)) },
             dayReviews: dayReviews.map { DayReviewDTO(_id: $0.mongoId ?? "", date: Self.iso8601.string(from: $0.date), mood: $0.mood, pressure: $0.pressure, notes: $0.notes, userId: $0.userId, deletedAt: $0.deletedAt.map { Self.iso8601.string(from: $0) }) }
         )
         try await post(url: url, body: payload)

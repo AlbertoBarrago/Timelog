@@ -12,6 +12,10 @@ public final class ActiveSession {
     public var mongoId: String?
     public var userId: String = ""
     public var deletedAt: Date? = nil
+    /// Bumped on every local mutation (create, stop, discard). Lets the server
+    /// reject a stale push from a device that hasn't yet learned about a newer
+    /// change made elsewhere, instead of silently overwriting it.
+    public var updatedAt: Date = Date.now
 
     public init(client: Client? = nil, project: Project? = nil, notes: String? = nil, label: String? = nil, userId: String = "") {
         self.startDate = .now
@@ -22,6 +26,7 @@ public final class ActiveSession {
         self.notificationID = UUID().uuidString
         self.mongoId = Client.newMongoId()
         self.userId = userId
+        self.updatedAt = .now
     }
 
     public var elapsedDisplay: String {

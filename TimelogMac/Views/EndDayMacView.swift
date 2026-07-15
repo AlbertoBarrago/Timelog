@@ -152,7 +152,9 @@ struct EndDayMacView: View {
                 )
                 context.insert(entry)
                 NotificationManager.shared.cancelSession(id: session.notificationID)
-                session.deletedAt = Date()
+                let now = Date()
+                session.deletedAt = now
+                session.updatedAt = now
             }
         }
 
