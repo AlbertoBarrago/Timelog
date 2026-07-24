@@ -11,7 +11,7 @@ struct HomeView: View {
     @Query(filter: #Predicate<Client> { !$0.isArchived && $0.deletedAt == nil }, sort: \Client.name) private var allClients: [Client]
     @State private var activeSheet: HomeSheet?
 
-    private var activeSessions: [ActiveSession] { allSessions.filter { $0.userId == settings.userId } }
+    private var activeSessions: [ActiveSession] { allSessions.filter { $0.userId == settings.userId && $0.deletedAt == nil } }
     private var clients: [Client] { allClients.filter { $0.userId == settings.userId } }
     private var todayEntries: [TimeEntry] {
         allEntries.filter { $0.userId == settings.userId && Calendar.current.isDateInToday($0.date) }
@@ -63,7 +63,9 @@ struct HomeView: View {
                                         .swipeActions(edge: .trailing) {
                                             Button(role: .destructive) {
                                                 NotificationManager.shared.cancelSession(id: session.notificationID)
-                                                context.delete(session)
+                                                let now = Date()
+                                                session.deletedAt = now
+                                                session.updatedAt = now
                                                 try? context.save()
                                                 RestSyncService.shared.triggerSyncNow()
                                             } label: {
