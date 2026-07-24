@@ -16,7 +16,7 @@ struct MenuBarView: View {
     @State private var showingStartTracking = false
     @State private var sessionToStop: ActiveSession?
 
-    private var activeSessions: [ActiveSession] { allSessions.filter { $0.userId == settings.userId } }
+    private var activeSessions: [ActiveSession] { allSessions.filter { $0.userId == settings.userId && $0.deletedAt == nil } }
     private var clients: [Client] { allClients.filter { $0.userId == settings.userId } }
     private var todayMinutes: Int {
         let logged = allEntries.filter { $0.userId == settings.userId && Calendar.current.isDateInToday($0.date) }
@@ -63,7 +63,9 @@ struct MenuBarView: View {
                                     sessionToStop = session
                                 } onDiscard: {
                                     NotificationManager.shared.cancelSession(id: session.notificationID)
-                                    context.delete(session)
+                                    let now = Date()
+                                    session.deletedAt = now
+                                    session.updatedAt = now
                                     try? context.save()
                                     RestSyncService.shared.triggerSyncNow()
                                 }

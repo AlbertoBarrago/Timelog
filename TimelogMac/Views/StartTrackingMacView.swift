@@ -1,6 +1,7 @@
 import SwiftUI
 import SwiftData
 import TimelogCore
+import TimelogSync
 
 struct StartTrackingMacView: View {
     var onDismiss: (() -> Void)? = nil
@@ -116,6 +117,7 @@ struct StartTrackingMacView: View {
             endMinute: settings.trackingEndMinute
         )
         try? context.save()
+        RestSyncService.shared.triggerSyncNow()
         dismissSelf()
     }
 }

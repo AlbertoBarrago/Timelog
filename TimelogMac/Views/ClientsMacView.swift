@@ -140,7 +140,7 @@ struct ProjectsMacView: View {
     }
 
     private var activeSessions: [ActiveSession] {
-        allSessions.filter { $0.userId == settings.userId }
+        allSessions.filter { $0.userId == settings.userId && $0.deletedAt == nil }
     }
 
     var body: some View {
@@ -264,7 +264,9 @@ struct ProjectsMacView: View {
             let entry = session.asTimeEntry(durationMinutes: elapsed, notes: session.notes, label: session.label)
             context.insert(entry)
             NotificationManager.shared.cancelSession(id: session.notificationID)
-            context.delete(session)
+            let now = Date()
+            session.deletedAt = now
+            session.updatedAt = now
         }
         try? context.save()
         RestSyncService.shared.triggerSyncNow()
@@ -286,6 +288,7 @@ struct ProjectsMacView: View {
             endMinute: settings.trackingEndMinute
         )
         try? context.save()
+        RestSyncService.shared.triggerSyncNow()
     }
 }
 

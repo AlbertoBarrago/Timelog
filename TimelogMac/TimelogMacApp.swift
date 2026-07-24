@@ -62,7 +62,7 @@ private struct RestSyncSetup: ViewModifier {
 private struct IdleAlertModifier: ViewModifier {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(SettingsStore.self) private var settings
-    @Query private var sessions: [ActiveSession]
+    @Query(filter: #Predicate<ActiveSession> { $0.deletedAt == nil }) private var sessions: [ActiveSession]
 
     func body(content: Content) -> some View {
         content

@@ -108,6 +108,8 @@ public enum SyncDataFingerprint {
             hasher.combine(session.client?.mongoId)
             hasher.combine(session.project?.mongoId)
             hasher.combine(session.userId)
+            hasher.combine(session.deletedAt?.timeIntervalSinceReferenceDate)
+            hasher.combine(session.updatedAt.timeIntervalSinceReferenceDate)
         }
 
         for review in dayReviews {
