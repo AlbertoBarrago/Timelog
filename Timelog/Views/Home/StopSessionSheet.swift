@@ -18,6 +18,8 @@ struct StopSessionSheet: View {
     @State private var notes: String
     @State private var selectedLabel: String?
     @State private var newLabelText = ""
+    @State private var isSaving = false
+    @State private var saveErrorMessage: String?
 
     init(session: ActiveSession, endHour: Int = 18, endMinute: Int = 0, onStop: (() -> Void)? = nil) {
         self.onStop = onStop
@@ -80,12 +82,21 @@ struct StopSessionSheet: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button(String(localized: "Log")) { stop() }
-                        .disabled(hours == 0 && minutes == 0)
+                        .disabled(isSaving || (hours == 0 && minutes == 0))
                 }
             }
         }
         .onAppear    { RestSyncService.shared.isUserEditing = true  }
         .onDisappear { RestSyncService.shared.isUserEditing = false }
+        .alert(String(localized: "Couldn't save session"), isPresented: errorAlertBinding) {
+            Button(String(localized: "OK"), role: .cancel) {}
+        } message: {
+            Text(saveErrorMessage ?? "")
+        }
+    }
+
+    private var errorAlertBinding: Binding<Bool> {
+        Binding(get: { saveErrorMessage != nil }, set: { if !$0 { saveErrorMessage = nil } })
     }
 
     private func addLabel(to project: Project) {
@@ -98,6 +109,9 @@ struct StopSessionSheet: View {
     }
 
     private func stop() {
+        guard !isSaving else { return }
+        isSaving = true
+
         let entry = session.asTimeEntry(
             durationMinutes: hours * 60 + minutes,
             notes: notes.isEmpty ? nil : notes,
@@ -108,7 +122,15 @@ struct StopSessionSheet: View {
         let now = Date()
         session.deletedAt = now
         session.updatedAt = now
-        try? context.save()
+
+        do {
+            try context.save()
+        } catch {
+            isSaving = false
+            saveErrorMessage = error.localizedDescription
+            return
+        }
+
         onStop?()
         RestSyncService.shared.triggerSyncNow()
         #if os(iOS)

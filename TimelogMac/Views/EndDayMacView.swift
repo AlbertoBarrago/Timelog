@@ -34,6 +34,8 @@ struct EndDayMacView: View {
 
     @State private var selectedMood: EndDayMood = .ok
     @State private var note = ""
+    @State private var isSaving = false
+    @State private var saveErrorMessage: String?
 
     private var activeSessions: [ActiveSession] {
         allSessions.filter { $0.userId == settings.userId && $0.deletedAt == nil }
@@ -101,11 +103,20 @@ struct EndDayMacView: View {
                 Button(actionTitle) { closeDay() }
                     .buttonStyle(.borderedProminent)
                     .keyboardShortcut(.return)
-                    .disabled(activeSessions.isEmpty && todayEntries.isEmpty)
+                    .disabled(isSaving || (activeSessions.isEmpty && todayEntries.isEmpty))
             }
         }
         .padding()
         .frame(width: 460)
+        .alert("Salvataggio non riuscito", isPresented: errorAlertBinding) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(saveErrorMessage ?? "")
+        }
+    }
+
+    private var errorAlertBinding: Binding<Bool> {
+        Binding(get: { saveErrorMessage != nil }, set: { if !$0 { saveErrorMessage = nil } })
     }
 
     private var actionTitle: String {
@@ -139,6 +150,9 @@ struct EndDayMacView: View {
     }
 
     private func closeDay() {
+        guard !isSaving else { return }
+        isSaving = true
+
         let closureNote = makeClosureNote()
 
         if activeSessions.isEmpty {
@@ -158,7 +172,14 @@ struct EndDayMacView: View {
             }
         }
 
-        try? context.save()
+        do {
+            try context.save()
+        } catch {
+            isSaving = false
+            saveErrorMessage = error.localizedDescription
+            return
+        }
+
         RestSyncService.shared.triggerSyncNow()
         dismiss()
     }
