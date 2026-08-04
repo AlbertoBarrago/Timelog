@@ -411,10 +411,15 @@ private struct HistoryMacRow: View {
             VStack(alignment: .leading, spacing: 2) {
                 if let project = entry.project {
                     HStack(spacing: 4) {
-                        Text(project.name).fontWeight(.medium)
+                        Text(project.name)
+                            .fontWeight(.medium)
+                            .lineLimit(1)
+                            .truncationMode(.tail)
                         if let label = entry.label {
                             Text(label)
                                 .font(.caption2)
+                                .lineLimit(1)
+                                .fixedSize()
                                 .padding(.horizontal, 5)
                                 .padding(.vertical, 2)
                                 .background(.quaternary, in: Capsule())

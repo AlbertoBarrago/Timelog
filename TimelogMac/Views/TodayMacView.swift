@@ -373,8 +373,12 @@ struct EntryMacRow: View {
                 if let proj = entry.project {
                     HStack(spacing: 4) {
                         Text(proj.name)
+                            .lineLimit(1)
+                            .truncationMode(.tail)
                         if let label = entry.label {
                             Text(label)
+                                .lineLimit(1)
+                                .fixedSize()
                                 .padding(.horizontal, 5)
                                 .padding(.vertical, 2)
                                 .background(.quaternary, in: Capsule())
