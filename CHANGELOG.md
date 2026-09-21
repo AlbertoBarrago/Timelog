@@ -9,6 +9,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.6.9] — 2026-09-21
+
+### Fixed
+- Pending notifications are now cancelled when the app quits, so reminders,
+  idle and end-of-day alerts are no longer delivered with the app closed.
+  They are re-scheduled on the next launch.
+
+---
+
 ## [1.6.8] — 2026-08-04
 
 ---
