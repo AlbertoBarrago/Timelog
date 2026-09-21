@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Timelog; Track time. Natively.</title>
-  <meta name="description" content="A lightweight time tracking app for iOS and macOS. Built with SwiftUI, SwiftData, and a self hosted sync layer. No subscriptions." />
+  <meta name="description" content="A lightweight time tracking app for iOS and macOS. Built with SwiftUI and SwiftData. Your data never leaves your device. No accounts, no subscriptions." />
   <link rel="icon" type="image/png" href="Timelog/Assets.xcassets/AppIcon.appiconset/AppIcon.png" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -444,76 +444,14 @@
       line-height: 1.6;
     }
 
-    /* ── SYNC SECTION ── */
-    .sync-section {
+    /* ── PRIVACY SECTION ── */
+    .privacy-section {
       background: var(--bg2);
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
     }
 
-    .sync-diagram {
-      max-width: 860px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    .sync-row {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .sync-node {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 20px 28px;
-      flex: 1;
-      text-align: center;
-      position: relative;
-    }
-
-    .sync-node .node-icon { font-size: 28px; margin-bottom: 6px; display: block; }
-    .sync-node .node-label { font-size: 13px; font-weight: 600; color: var(--text); }
-    .sync-node .node-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
-
-    .sync-arrow {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      min-width: 80px;
-    }
-
-    .sync-arrow .arrow-label {
-      font-size: 10px;
-      color: var(--muted);
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-
-    .sync-arrow .arrow-line {
-      width: 60px;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      border-radius: 1px;
-      position: relative;
-    }
-
-    .sync-arrow .arrow-line::after {
-      content: '';
-      position: absolute;
-      right: -4px; top: -4px;
-      width: 0; height: 0;
-      border-top: 5px solid transparent;
-      border-bottom: 5px solid transparent;
-      border-left: 8px solid var(--accent2);
-    }
-
-    .sync-cards {
+    .privacy-cards {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 16px;
@@ -521,14 +459,14 @@
       margin: 48px auto 0;
     }
 
-    .sync-card {
+    .privacy-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 28px 24px;
     }
 
-    .sync-card .tag {
+    .privacy-card .tag {
       display: inline-flex;
       align-items: center;
       gap: 6px;
@@ -544,13 +482,13 @@
       margin-bottom: 14px;
     }
 
-    .sync-card h4 {
+    .privacy-card h4 {
       font-size: 16px;
       font-weight: 600;
       margin-bottom: 8px;
     }
 
-    .sync-card p {
+    .privacy-card p {
       color: var(--muted);
       font-size: 13px;
       line-height: 1.6;
@@ -980,56 +918,12 @@
 
       .feature-cell { padding: 28px 24px; }
 
-      .sync-diagram { gap: 18px; }
-      .sync-cards {
+      .privacy-cards {
         grid-template-columns: 1fr;
         gap: 12px;
         margin-top: 34px;
       }
       nav .nav-links { display: none; }
-      .sync-row {
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .sync-node {
-        width: 100%;
-        padding: 18px 20px;
-      }
-
-      .sync-arrow {
-        min-width: 0;
-        min-height: 54px;
-        justify-content: center;
-      }
-
-      .sync-arrow .arrow-label {
-        white-space: normal;
-        text-align: center;
-        line-height: 1.35;
-      }
-
-      .sync-arrow .arrow-line {
-        width: 2px;
-        height: 34px;
-        background: linear-gradient(180deg, var(--accent), var(--accent2));
-      }
-
-      .sync-arrow .arrow-line::after {
-        right: -4px;
-        top: auto;
-        bottom: -6px;
-        border-left: 5px solid transparent;
-        border-right: 5px solid transparent;
-        border-top: 8px solid var(--accent2);
-        border-bottom: none;
-      }
-
-      .sync-row .sync-arrow[style*="visibility:hidden"],
-      .sync-row .sync-node[style*="visibility:hidden"] {
-        display: none;
-      }
-
       .tech-pills {
         justify-content: flex-start;
         gap: 8px;
@@ -1078,7 +972,7 @@
       section { padding: 64px 16px; }
       .platform-card { padding: 30px 20px; }
       .feature-cell { padding: 26px 20px; }
-      .sync-card { padding: 24px 20px; }
+      .privacy-card { padding: 24px 20px; }
       .oss-section { padding: 50px 16px; }
       .oss-banner { padding: 36px 20px; }
       footer { padding-inline: 16px; }
@@ -1095,7 +989,7 @@
       <li><a href="#screenshots">Screenshots</a></li>
       <li><a href="#features">Features</a></li>
       <li><a href="#platforms">Platforms</a></li>
-      <li><a href="#sync">Sync</a></li>
+      <li><a href="#privacy">Privacy</a></li>
       <li><a href="#tech">Tech</a></li>
       <li><a href="#install">Install</a></li>
     </ul>
@@ -1114,7 +1008,7 @@
     </div>
     <p class="eyebrow">iOS &amp; macOS</p>
     <h1>Track time.<br/>Natively.</h1>
-    <p class="sub">A lightweight time tracking app built with SwiftUI and SwiftData. Sync across devices via self hosted middleware on Vercel; zero cloud lock in, zero subscription.</p>
+    <p class="sub">A lightweight time tracking app built with SwiftUI and SwiftData. Your data stays on your device; no account, no cloud, no subscription.</p>
     <div class="badges">
       <span class="badge">
         <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm3.91 5.82L8.94 11.7c-.18.27-.46.43-.77.44h-.01c-.3 0-.58-.15-.76-.4l-2.06-2.9c-.34-.48-.23-1.14.25-1.48.48-.34 1.14-.23 1.48.25l1.3 1.83 2.02-3.04c.32-.49.98-.62 1.47-.3.49.32.62.98.3 1.47l-.25-.75z"/></svg>
@@ -1146,7 +1040,7 @@
         <div class="platform-icon">📱</div>
         <p class="platform-label">iPhone &amp; iPad</p>
         <h3>Timelog for iOS</h3>
-        <p>Full featured mobile app with real time session tracking, Live Activity on your lock screen and Dynamic Island, and automatic sync at every launch.</p>
+        <p>Full featured mobile app with real time session tracking and Live Activity on your lock screen and Dynamic Island.</p>
         <ul class="feature-list">
           <li>Today view; log time manually or start live sessions, with a running daily total</li>
           <li>Clients &amp; Projects; color coded, archivable, swipe to edit</li>
@@ -1167,7 +1061,6 @@
           <li>Clients &amp; Projects; NavigationSplitView with native Table</li>
           <li>Pomodoro / stopwatch window; Space to start/pause</li>
           <li>Auto updates via Sparkle; one click updates inside the app, signed with EdDSA</li>
-          <li>Real time sync via SSE; changes from iPhone appear in &lt;1 s</li>
           <li>Settings window accessible via ⌘,</li>
         </ul>
       </div>
@@ -1205,9 +1098,9 @@
         <p>Configurable focus and break intervals with a ring progress view and lock screen notification when a phase ends.</p>
       </div>
       <div class="feature-cell">
-        <span class="feature-emoji">🔄</span>
-        <h4>Real time sync</h4>
-        <p>Stop a session on iPhone and your Mac updates in under a second, no polling. Push and pull via Server Sent Events backed by MongoDB Change Streams.</p>
+        <span class="feature-emoji">🔒</span>
+        <h4>Local first</h4>
+        <p>Every session, client and project lives in a SwiftData store on your device. Nothing is uploaded, nothing is tracked, nothing to sign up for.</p>
       </div>
       <div class="feature-cell">
         <span class="feature-emoji">🏝</span>
@@ -1247,73 +1140,27 @@
     </div>
   </section>
 
-  <!-- SYNC -->
-  <section class="sync-section" id="sync">
+  <!-- PRIVACY -->
+  <section class="privacy-section" id="privacy">
     <p class="section-eyebrow">Architecture</p>
-    <h2 class="section-title">Sync you control.</h2>
-    <p class="section-sub">A tiny Vercel middleware sits between your devices and MongoDB Atlas. Both iOS and macOS share the same sync engine; real time, push based, zero polling.</p>
+    <h2 class="section-title">Your data never leaves.</h2>
+    <p class="section-sub">There is no server, no account and no telemetry. Timelog writes to a local SwiftData store and that is the whole story.</p>
 
-    <div class="sync-diagram fade-in">
-      <div class="sync-row">
-        <div class="sync-node">
-          <span class="node-icon">📱</span>
-          <div class="node-label">iPhone / iPad</div>
-          <div class="node-sub">RestSyncService · SSEClient</div>
-        </div>
-        <div class="sync-arrow">
-          <span class="arrow-label">push · pull · SSE</span>
-          <div class="arrow-line"></div>
-        </div>
-        <div class="sync-node">
-          <span class="node-icon">▲</span>
-          <div class="node-label">Vercel Functions</div>
-          <div class="node-sub">pull · sync · events (SSE)</div>
-        </div>
-        <div class="sync-arrow">
-          <span class="arrow-label">Change Stream</span>
-          <div class="arrow-line"></div>
-        </div>
-        <div class="sync-node">
-          <span class="node-icon">🍃</span>
-          <div class="node-label">MongoDB Atlas</div>
-          <div class="node-sub">Free M0 · upsert · multi device</div>
-        </div>
-      </div>
-      <div class="sync-row">
-        <div class="sync-node">
-          <span class="node-icon">🖥</span>
-          <div class="node-label">Mac</div>
-          <div class="node-sub">RestSyncService · SSEClient</div>
-        </div>
-        <div class="sync-arrow">
-          <span class="arrow-label">push · pull · SSE</span>
-          <div class="arrow-line"></div>
-        </div>
-        <div class="sync-node">
-          <span class="node-icon">▲</span>
-          <div class="node-label">Vercel Functions</div>
-          <div class="node-sub">same endpoints · same auth</div>
-        </div>
-        <div class="sync-arrow" style="visibility:hidden"></div>
-        <div class="sync-node" style="visibility:hidden"></div>
-      </div>
-    </div>
-
-    <div class="sync-cards fade-in">
-      <div class="sync-card">
+    <div class="privacy-cards fade-in">
+      <div class="privacy-card">
         <span class="tag">iOS + macOS</span>
-        <h4>RestSyncService</h4>
-        <p>Unified sync engine for both platforms. Pure URLSession, zero external dependencies. Pulls at launch, pushes with 2 second debounce. Credentials load automatically from a gitignored config file.</p>
+        <h4>On device storage</h4>
+        <p>Clients, projects, sessions and entries live in a SwiftData store on the device that created them. No network call is made to save your work.</p>
       </div>
-      <div class="sync-card">
-        <span class="tag" style="background:rgba(48,209,88,0.12); border-color:rgba(48,209,88,0.3); color:var(--accent2);">Real time</span>
-        <h4>SSEClient</h4>
-        <p>Server Sent Events client backed by MongoDB Change Streams. Stop a session on your iPhone; your Mac updates in under a second, with no polling and no wasted battery.</p>
+      <div class="privacy-card">
+        <span class="tag" style="background:rgba(48,209,88,0.12); border-color:rgba(48,209,88,0.3); color:var(--accent2);">No account</span>
+        <h4>Nothing to sign up for</h4>
+        <p>Pick a nickname on first launch and start tracking. No email, no password, no server to deploy and keep alive.</p>
       </div>
-      <div class="sync-card">
-        <span class="tag" style="background:rgba(191,90,242,0.12); border-color:rgba(191,90,242,0.3); color:var(--accent4);">Server</span>
-        <h4>Vercel Middleware</h4>
-        <p>Three serverless functions; GET /api/pull, POST /api/sync, GET /api/events. Auth via X API Key. Full Swagger UI at your deployment URL. Runs on the free tier.</p>
+      <div class="privacy-card">
+        <span class="tag" style="background:rgba(191,90,242,0.12); border-color:rgba(191,90,242,0.3); color:var(--accent4);">Export</span>
+        <h4>Your hours, your file</h4>
+        <p>Export the week straight to email from Settings whenever you need to hand your hours to someone else.</p>
       </div>
     </div>
   </section>
@@ -1331,10 +1178,6 @@
       <span class="tech-pill"><span class="dot" style="background:#bf5af2"></span>ActivityKit</span>
       <span class="tech-pill"><span class="dot" style="background:#0071e3"></span>MenuBarExtra</span>
       <span class="tech-pill"><span class="dot" style="background:#30d158"></span>UserNotifications</span>
-      <span class="tech-pill"><span class="dot" style="background:#64d2ff"></span>Keychain</span>
-      <span class="tech-pill"><span class="dot" style="background:#ff9f0a"></span>Server Sent Events</span>
-      <span class="tech-pill"><span class="dot" style="background:#fff"></span>Vercel</span>
-      <span class="tech-pill"><span class="dot" style="background:#3178c6"></span>TypeScript</span>
       <span class="tech-pill"><span class="dot" style="background:#bf5af2"></span>Sparkle</span>
       <span class="tech-pill"><span class="dot" style="background:#f05138"></span>Xcode 16+</span>
     </div>
@@ -1388,20 +1231,6 @@
           </div>
         </div>
         <div class="install-step">
-          <div class="step-num" style="background:rgba(191,90,242,0.12); border-color:rgba(191,90,242,0.3); color:var(--accent4);">✦</div>
-          <div class="step-body">
-            <div class="step-title">Optional; Enable Sync</div>
-            <div class="step-desc">Create the file below with your Vercel server URL and API key. Timelog reads it on first launch and saves it to Keychain; the file is only needed once.</div>
-            <div class="code-block">
-              <span class="code-text">~/.config/timelog/sync.local</span>
-              <button class="copy-btn" onclick="navigator.clipboard.writeText('~/.config/timelog/sync.local').then(()=>{this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',1800)})">Copy</button>
-            </div>
-            <div class="step-desc" style="margin-top:10px;">
-              <a href="https://github.com/AlbertoBarrago/Timelog/blob/main/docs/SETUP_SYNC_SERVER.md" target="_blank" rel="noopener" style="color:var(--accent);">Full setup guide</a>
-            </div>
-          </div>
-        </div>
-        <div class="install-step">
           <div class="step-num" style="background:rgba(48,209,88,0.12); border-color:rgba(48,209,88,0.3); color:var(--accent2);">↑</div>
           <div class="step-body">
             <div class="step-title">Future updates are automatic</div>
@@ -1417,10 +1246,10 @@
     <div class="oss-banner fade-in">
       <span class="big-icon">🧑‍💻</span>
       <h2>Free &amp; Open Source</h2>
-      <p>Timelog is fully open source. Fork it, extend it, self host the sync server, or just read the code. No vendor lock in, ever.</p>
+      <p>Timelog is fully open source. Fork it, extend it, or just read the code. No vendor lock in, ever.</p>
       <div class="cta-group">
         <a href="https://github.com/AlbertoBarrago/Timelog" class="btn-primary" target="_blank" rel="noopener">View source on GitHub</a>
-        <a href="https://github.com/AlbertoBarrago/Timelog/blob/main/docs/SETUP_SYNC_SERVER.md" class="btn-secondary" target="_blank" rel="noopener">Setup guide</a>
+        <a href="https://github.com/AlbertoBarrago/Timelog/blob/main/GUIDE.md" class="btn-secondary" target="_blank" rel="noopener">User guide</a>
       </div>
     </div>
   </section>
@@ -1434,7 +1263,7 @@
     <ul class="footer-links">
       <li><a href="https://github.com/AlbertoBarrago/Timelog" target="_blank" rel="noopener">GitHub</a></li>
       <li><a href="https://github.com/AlbertoBarrago/Timelog/blob/main/CHANGELOG.md" target="_blank" rel="noopener">Changelog</a></li>
-      <li><a href="https://github.com/AlbertoBarrago/Timelog/blob/main/docs/SETUP_SYNC_SERVER.md" target="_blank" rel="noopener">Docs</a></li>
+      <li><a href="https://github.com/AlbertoBarrago/Timelog/blob/main/docs/README.md" target="_blank" rel="noopener">Docs</a></li>
     </ul>
   </footer>
 
