@@ -47,7 +47,7 @@ struct HistoryMacView: View {
 
         for entry in periodEntries {
             let key: String = {
-                if let proj = entry.project { return proj.mongoId ?? "local_\(proj.name)" }
+                if let proj = entry.project { return proj.analyticsID }
                 return "_none_"
             }()
             if acc[key] == nil {
@@ -60,7 +60,7 @@ struct HistoryMacView: View {
                     color: baseColor,
                     minutes: 0
                 )
-                clientMap[key] = entry.client?.mongoId ?? entry.client?.name ?? "_no_client_"
+                clientMap[key] = entry.client?.analyticsID ?? "_no_client_"
             }
             if var b = acc[key] {
                 b.minutes += entry.durationMinutes
@@ -129,7 +129,7 @@ struct HistoryMacView: View {
 
     private func clientKey(_ client: Client?) -> String? {
         guard let client else { return nil }
-        return client.mongoId ?? client.name
+        return client.analyticsID
     }
 
     private var heatmapEntriesInRange: [TimeEntry] {

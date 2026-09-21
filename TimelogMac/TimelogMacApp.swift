@@ -2,62 +2,8 @@ import SwiftUI
 import SwiftData
 import UserNotifications
 import TimelogCore
-import TimelogSync
 import AppKit
 import Sparkle
-
-private struct RestSyncSetup: ViewModifier {
-    @Environment(\.modelContext) private var modelContext
-    @Environment(\.scenePhase) private var scenePhase
-    @Query private var clients: [Client]
-    @Query private var projects: [Project]
-    @Query private var entries: [TimeEntry]
-    @Query private var sessions: [ActiveSession]
-    @Query private var dayReviews: [DayReview]
-
-    func body(content: Content) -> some View {
-        content
-            .onAppear {
-                let container = modelContext.container
-                RestSyncService.shared.loadConfigFromFile()
-                RestSyncService.shared.storedContext = modelContext
-                RestSyncService.shared.setDataProvider { [container] in
-                    let ctx = container.mainContext
-                    let clients  = (try? ctx.fetch(FetchDescriptor<Client>()))        ?? []
-                    let projects = (try? ctx.fetch(FetchDescriptor<Project>()))       ?? []
-                    let entries  = (try? ctx.fetch(FetchDescriptor<TimeEntry>()))     ?? []
-                    let sessions = (try? ctx.fetch(FetchDescriptor<ActiveSession>())) ?? []
-                    let dayReviews = (try? ctx.fetch(FetchDescriptor<DayReview>()))   ?? []
-                    return (clients, projects, entries, sessions, dayReviews)
-                }
-                Task {
-                    try? await Task.sleep(for: .milliseconds(300))
-                    RestSyncService.shared.triggerSync()
-                    try? await RestSyncService.shared.pullAll(into: modelContext)
-                }
-                RestSyncService.shared.startListening()
-            }
-            .onDisappear {
-                RestSyncService.shared.stopListening()
-            }
-            .onChange(of: scenePhase) { _, newPhase in
-                if newPhase == .active {
-                    Task { try? await RestSyncService.shared.pullAll(into: modelContext) }
-                }
-            }
-            .onChange(of: dataFingerprint) { _, _ in RestSyncService.shared.triggerSync() }
-    }
-
-    private var dataFingerprint: Int {
-        SyncDataFingerprint.make(
-            clients: clients,
-            projects: projects,
-            entries: entries,
-            sessions: sessions,
-            dayReviews: dayReviews
-        )
-    }
-}
 
 private struct IdleAlertModifier: ViewModifier {
     @Environment(\.scenePhase) private var scenePhase
@@ -185,9 +131,7 @@ struct TimelogMacApp: App {
                     timerVM.applySettings(settings)
                     NotificationManager.shared.requestPermission()
                     settings.applyReminders()
-                    RestSyncService.shared.userId = settings.userId
                 }
-                .modifier(RestSyncSetup())
                 .modifier(IdleAlertModifier())
                 .modifier(EndOfDayAlertModifier())
                 .environment(settings)
@@ -205,10 +149,6 @@ struct TimelogMacApp: App {
             }
             CommandGroup(after: .appInfo) {
                 CheckForUpdatesView(updater: updaterController.updater)
-                Button(String(localized: "Sync Now")) {
-                    RestSyncService.shared.triggerSyncNow()
-                }
-                .keyboardShortcut("s", modifiers: .command)
             }
         }
 

@@ -8,7 +8,6 @@ erDiagram
         String  name
         String  colorHex
         Bool    isArchived
-        String  mongoId
         String  userId      "owner identifier — multi-user isolation"
         Date    deletedAt   "optional — soft delete"
     }
@@ -16,7 +15,6 @@ erDiagram
         String     name
         String     code        "optional"
         String[]   labels
-        String     mongoId
         String     userId      "owner identifier — multi-user isolation"
         Date       deletedAt   "optional — soft delete"
     }
@@ -25,7 +23,6 @@ erDiagram
         Int     durationMinutes
         String  notes       "optional"
         String  label       "optional"
-        String  mongoId
         String  userId      "owner identifier — multi-user isolation"
         Date    deletedAt   "optional — soft delete"
     }
@@ -34,7 +31,6 @@ erDiagram
         String  notes       "optional"
         String  label       "optional"
         String  notificationID
-        String  mongoId
         String  userId      "owner identifier — multi-user isolation"
     }
     DAY_REVIEW {
@@ -42,7 +38,6 @@ erDiagram
         String  mood        "optional"
         Int     pressure    "optional"
         String  notes       "optional"
-        String  mongoId
         String  userId      "owner identifier — multi-user isolation"
         Date    deletedAt   "optional — soft delete"
     }
@@ -60,19 +55,17 @@ erDiagram
 Represents a client. Holds the list of projects (cascade delete) and is referenced by TimeEntry and ActiveSession.
 
 - `colorHex` — identifying colour in `#RRGGBB` format, exposed as `Color` via `Color+Hex`
-- `mongoId` — MongoDB `ObjectId` serialised as a string (assigned on first upsert)
 - `userId` — nickname/identifier of the record owner, set at creation time from `SettingsStore.userId`; used to isolate data per user on a shared database. All `@Query` results are filtered to records where `userId == settings.userId`. Defaults to `""` for pre-migration records; migrated on first launch.
-- `deletedAt` — logical deletion date (`nil` = active); used by the soft-delete strategy during sync
+- `deletedAt` — logical deletion date (`nil` = active); records are marked rather than removed
 - Relationship with `Project`: deleteRule `.cascade` — deleting a client removes all its projects
 
 ### `Project`
 Project belonging to a client. The `code` field is optional (job number, e.g. "PRJ-001").
 
-- `labels` — free-form string tags (`[String]`, defaults to `[]`); synced as an array
+- `labels` — free-form string tags (`[String]`, defaults to `[]`)
 - `Project` has **no** `isArchived` flag — only `Client` is archivable
 - Relationship with `TimeEntry`: deleteRule `.nullify` — deleting a project does not delete entries, just unlinks them
-- `mongoId` — same as above
-- `userId` — same as above; identifies the owner and is used for multi-user isolation on a shared database
+- `userId` — same as above; identifies the owner of the record
 - `deletedAt` — same as above (soft delete)
 
 ### `TimeEntry`
@@ -81,7 +74,7 @@ A logged time record. The core data structure of the app.
 - `durationMinutes` — duration in whole minutes; formatted via `Int.formattedDuration` ("1h 30m")
 - `notes` and `label` — optional free-form text fields
 - `client` and `project` are optional — an entry can be unassigned
-- `userId` — same as above; identifies the owner and is used for multi-user isolation on a shared database
+- `userId` — same as above; identifies the owner of the record
 - `deletedAt` — same as above (soft delete)
 
 ### `ActiveSession`
@@ -90,8 +83,7 @@ An in-progress tracking session. At most one per active client/project combinati
 - `client` and `project` optional — a session can be unassigned
 - `notes` — optional notes transferred to the `TimeEntry` on stop
 - `label` — optional tag transferred to the `TimeEntry` on stop
-- `mongoId` — same as above; the session is multi-device syncable
-- `userId` — same as above; identifies the owner and is used for multi-user isolation on a shared database
+- `userId` — same as above; identifies the owner of the record
 - `elapsedDisplay` — `"HH:MM:SS"` string computed at runtime from `startDate`
 - `elapsedMinutes` — computed integer, used to estimate duration before stopping
 - `notificationID` — ID of the UNUserNotification for the open-session reminder; cancelled on stop
@@ -103,8 +95,7 @@ A per-day review record shared by iOS and macOS. It is the long-term home for en
 - `mood` — optional mood label
 - `pressure` — optional numeric pressure value, left flexible until the UI scale is finalized
 - `notes` — optional end-of-day notes
-- `mongoId` — same as above; synced through the `day_reviews` collection
-- `userId` — same as above; identifies the owner and is used for multi-user isolation on a shared database
+- `userId` — same as above; identifies the owner of the record
 - `deletedAt` — same as above (soft delete)
 
 ### `SettingsStore.userId`
@@ -116,45 +107,8 @@ A per-day review record shared by iOS and macOS. It is the long-term home for en
 
 ```mermaid
 flowchart LR
-    subgraph iOS
-        iApp["iOS App"] -->|"read/write"| SD_iOS[("SwiftData\nlocal SQLite")]
-        SD_iOS -->|"onChange + debounce 2s"| RSS["RestSyncService"]
-        RSS -->|"POST /api/sync"| VCL["Vercel Functions"]
-        VCL -->|"upsert"| MDB[("MongoDB Atlas")]
-        MDB -->|"GET /api/pull?userId=…\n(on launch)"| RSS
-        RSS -->|"upsert by mongoId"| SD_iOS
-    end
-
-    subgraph macOS
-        mApp["macOS App"] -->|"read/write"| SD_MAC[("SwiftData\nlocal SQLite")]
-        SD_MAC -->|"onChange + debounce 2s"| mRSS["RestSyncService"]
-        mRSS -->|"POST /api/sync"| VCL
-        VCL -->|"GET /api/pull?userId=…\n(on launch)"| mRSS
-        mRSS -->|"upsert by mongoId"| SD_MAC
-        VCL -->|"GET /api/events (SSE)\nChange Stream"| mRSS
-    end
-
+    iApp["iOS App"] -->|"read/write"| SD_iOS[("SwiftData\nlocal SQLite")]
+    mApp["macOS App"] -->|"read/write"| SD_MAC[("SwiftData\nlocal SQLite")]
 ```
 
-## MongoId and upsert strategy
-
-Every SwiftData entity has a `mongoId: String?` field used as the sync key by both implementations.
-
-### iOS pull (RestSyncService)
-The pull is an **incremental upsert keyed by `mongoId`** (not a delete-all + re-insert). Records are matched by `mongoId`: existing ones are updated in place, new ones are inserted. Soft-deleted records (`deletedAt != nil`) are applied to existing rows but never inserted fresh. Server responses are filtered client-side to the current `userId` (legacy records with no `userId` are kept).
-
-| Step | Action |
-|------|--------|
-| 1. Clients | Build `mongoId → Client` map; update matches, insert new (skip if `deletedAt`) |
-| 2. Projects | Same, linking `Client` via `clientMongoId` |
-| 3. Entries  | Same, linking Client + Project via mongoId |
-| 4. Day reviews | Same, using `day_reviews` and soft delete |
-| 5. Sessions | Upsert strategy scoped to `userId`; stopped sessions are reconciled server-side |
-
-> Client, Project, TimeEntry, and DayReview use soft delete (`deletedAt`). ActiveSession has no `deletedAt`; stopped sessions are removed from the sync payload and reconciled by the server.
-
-### Pull (both platforms)
-Uses incremental upsert keyed by `mongoId`: existing records updated in place, new records inserted. Soft-deleted records are applied but never inserted fresh. Sessions use a replace strategy scoped to `userId`. Triggered on launch, on SSE change event, and on app activation.
-
-### Push (both platforms)
-Each entity is serialised with its `mongoId` and sent via `POST /api/sync`, which upserts on `_id` and reconciles sessions server-side.
+All data is device-local. The two apps keep separate stores and never exchange records.

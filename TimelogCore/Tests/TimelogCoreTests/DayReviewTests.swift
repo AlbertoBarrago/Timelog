@@ -20,20 +20,6 @@ struct DayReviewTests {
         #expect(review.pressure == 2)
         #expect(review.notes == "Done")
         #expect(review.userId == "albz")
-        #expect(review.mongoId?.count == 24)
-    }
-
-    @Test func syncFingerprintIncludesDayReviews() throws {
-        let container = try makeContainer()
-        let review = DayReview(mood: "Ok", pressure: 1, notes: "First", userId: "albz")
-
-        container.mainContext.insert(review)
-
-        let initial = SyncDataFingerprint.make(clients: [], projects: [], entries: [], sessions: [], dayReviews: [review])
-        review.notes = "Updated"
-        let updated = SyncDataFingerprint.make(clients: [], projects: [], entries: [], sessions: [], dayReviews: [review])
-
-        #expect(initial != updated)
     }
 
     private func makeContainer() throws -> ModelContainer {

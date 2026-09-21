@@ -499,9 +499,9 @@ extension TimeEntry {
             date: date,
             durationMinutes: durationMinutes,
             label: label,
-            clientId: client?.mongoId ?? client?.name,
+            clientId: client?.analyticsID ?? client?.name,
             clientName: client?.name,
-            projectId: project?.mongoId ?? project?.name,
+            projectId: project?.analyticsID ?? project?.name,
             projectName: project?.name
         )
     }

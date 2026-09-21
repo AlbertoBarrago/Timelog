@@ -1,7 +1,6 @@
 import SwiftUI
 import SwiftData
 import TimelogCore
-import TimelogSync
 
 struct UserSetupView: View {
     @Environment(\.modelContext) private var context
@@ -24,7 +23,7 @@ struct UserSetupView: View {
                 Text("How should Timelog call you?")
                     .font(.title.bold())
 
-                Text("Use the same nickname on each device so your time stays together.")
+                Text("Your nickname is stamped on everything you track.")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -61,10 +60,6 @@ struct UserSetupView: View {
         guard !trimmed.isEmpty else { return }
         migrateExistingRecords(to: trimmed)
         settings.userId = trimmed
-        RestSyncService.shared.userId = trimmed
-        Task {
-            try? await RestSyncService.shared.pullAll(into: context)
-        }
     }
 
     private func migrateExistingRecords(to userId: String) {

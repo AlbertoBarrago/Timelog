@@ -1,7 +1,6 @@
 import SwiftUI
 import SwiftData
 import TimelogCore
-import TimelogSync
 
 struct TodayMacView: View {
     @Environment(\.modelContext) private var context
@@ -98,7 +97,6 @@ struct TodayMacView: View {
                                             session.deletedAt = now
                                             session.updatedAt = now
                                             try? context.save()
-                                            RestSyncService.shared.triggerSyncNow()
                                         }
                                     }
                                 }
@@ -163,11 +161,6 @@ struct TodayMacView: View {
                                                                          endHour: settings.trackingEndHour,
                                                                          endMinute: settings.trackingEndMinute,
                                                                          onStop: {}) }
-        .syncGated(while: $showingQuickLog)
-        .syncGated(while: $showingStartTracking)
-        .syncGated(while: $showingEndDay)
-        .syncGated(whilePresent: $entryToEdit)
-        .syncGated(whilePresent: $sessionToStop)
     }
 }
 

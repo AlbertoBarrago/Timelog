@@ -6,8 +6,7 @@ let package = Package(
     defaultLocalization: "en",
     platforms: [.iOS(.v17), .macOS(.v14)],
     products: [
-        .library(name: "TimelogCore", targets: ["TimelogCore"]),
-        .library(name: "TimelogSync", targets: ["TimelogSync"])
+        .library(name: "TimelogCore", targets: ["TimelogCore"])
     ],
     dependencies: [],
     targets: [
@@ -16,12 +15,6 @@ let package = Package(
             dependencies: [],
             path: "Sources/TimelogCore",
             resources: [.process("Localizable.xcstrings")],
-            swiftSettings: [.swiftLanguageMode(.v5)]
-        ),
-        .target(
-            name: "TimelogSync",
-            dependencies: ["TimelogCore"],
-            path: "Sources/TimelogSync",
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .testTarget(

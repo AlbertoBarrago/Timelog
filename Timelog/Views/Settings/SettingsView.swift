@@ -1,5 +1,4 @@
 import TimelogCore
-import TimelogSync
 import SwiftUI
 import SwiftData
 
@@ -72,17 +71,6 @@ struct SettingsView: View {
                     Text("Work Schedule")
                 } footer: {
                     Text("Days you normally work. Used by analytics to exclude weekends from productivity baselines.")
-                }
-
-                Section {
-                    Button("Sync Now") {
-                        Task { try? await RestSyncService.shared.pullAll(into: context) }
-                    }
-                    .disabled(!RestSyncService.shared.isConfigured)
-                    .accessibilityLabel(String(localized: "Sync Now"))
-                    RestSyncStatusRow()
-                } header: {
-                    Text("Sync")
                 }
 
                 Section("Export") {
@@ -202,31 +190,6 @@ struct SettingsView: View {
         let subject = String(localized: "Timelog Week Export")
         let mailto = "mailto:?subject=\(subject.urlEncoded)&body=\(body.urlEncoded)"
         if let url = URL(string: mailto) { openURL(url) }
-    }
-}
-
-private struct RestSyncStatusRow: View {
-    private var sync: RestSyncService { RestSyncService.shared }
-
-    var body: some View {
-        if sync.isSyncing {
-            Label("Syncing…", systemImage: "arrow.triangle.2.circlepath")
-                .font(.caption).foregroundStyle(.secondary)
-        } else if let error = sync.lastError {
-            Label(error, systemImage: "exclamationmark.triangle")
-                .font(.caption).foregroundStyle(.red)
-        } else if let date = sync.lastSyncDate {
-            Label("Last sync: \(date.formatted(date: .omitted, time: .shortened))",
-                  systemImage: "checkmark.circle")
-                .font(.caption).foregroundStyle(.green)
-        }
-        if let url = sync.readServerURL() {
-            Text(url)
-                .font(.caption2)
-                .foregroundStyle(.tertiary)
-                .lineLimit(1)
-                .truncationMode(.middle)
-        }
     }
 }
 

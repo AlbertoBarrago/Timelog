@@ -1,5 +1,4 @@
 import TimelogCore
-import TimelogSync
 import SwiftUI
 import SwiftData
 #if os(iOS)
@@ -86,8 +85,6 @@ struct StopSessionSheet: View {
                 }
             }
         }
-        .onAppear    { RestSyncService.shared.isUserEditing = true  }
-        .onDisappear { RestSyncService.shared.isUserEditing = false }
         .alert(String(localized: "Couldn't save session"), isPresented: errorAlertBinding) {
             Button(String(localized: "OK"), role: .cancel) {}
         } message: {
@@ -132,7 +129,6 @@ struct StopSessionSheet: View {
         }
 
         onStop?()
-        RestSyncService.shared.triggerSyncNow()
         #if os(iOS)
         UINotificationFeedbackGenerator().notificationOccurred(.success)
         #endif

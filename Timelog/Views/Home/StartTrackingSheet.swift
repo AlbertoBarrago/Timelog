@@ -1,5 +1,4 @@
 import TimelogCore
-import TimelogSync
 import SwiftUI
 import SwiftData
 
@@ -103,7 +102,6 @@ struct StartTrackingSheet: View {
             endMinute: settings.trackingEndMinute
         )
         try? context.save()
-        RestSyncService.shared.triggerSyncNow()
         dismiss()
     }
 }

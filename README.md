@@ -6,7 +6,7 @@
 
 <p align="center">
   A lightweight time-tracking app for iOS and native macOS, built with SwiftUI and SwiftData.<br/>
-  Sync across devices via a self-hosted middleware on Vercel — zero cloud lock-in, zero subscription.
+  All data stays on your device — no cloud, no account, no subscription.
 </p>
 
 <p align="center">
@@ -14,7 +14,6 @@
   <img src="https://img.shields.io/badge/macOS-14%2B-black?style=flat-square&logo=apple" />
   <img src="https://img.shields.io/badge/Swift-5.10-orange?style=flat-square&logo=swift" />
   <img src="https://img.shields.io/badge/SwiftData-✓-blue?style=flat-square" />
-  <img src="https://img.shields.io/badge/Vercel-middleware-black?style=flat-square&logo=vercel" />
   <img src="https://img.shields.io/badge/Sparkle-auto--update-purple?style=flat-square" />
   <img src="https://img.shields.io/badge/Localization-EN%20%7C%20IT-green?style=flat-square" />
 </p>
@@ -40,8 +39,8 @@
 
 | App | Platform | Description |
 |-----|----------|-------------|
-| **Timelog** (iOS) | iPhone / iPad | Full-featured mobile app with Live Activity, splash screen, auto-sync |
-| **TimelogMac** (macOS) | macOS 14+ | Native menu bar app with full window management and MongoDB sync |
+| **Timelog** (iOS) | iPhone / iPad | Full-featured mobile app with Live Activity and splash screen |
+| **TimelogMac** (macOS) | macOS 14+ | Native menu bar app with full window management |
 
 Both apps share business logic via **TimelogCore**, a local Swift Package in the same repo.
 
@@ -54,14 +53,12 @@ Both apps share business logic via **TimelogCore**, a local Swift Package in the
 | **Today** | Log time manually or start real-time sessions; live daily total |
 | **Clients** | Manage clients (color coded) and their projects; archive when done |
 | **Timer** | Stopwatch or Pomodoro with ring progress and lock-screen notification |
-| **Settings** | Pomodoro intervals, daily reminders, smart tracking config, sync status |
+| **Settings** | Pomodoro intervals, daily reminders, smart tracking config |
 | **Language** | English and Italian — follows the system locale automatically |
-| **Multi-user** | Each person picks a nickname on first launch — data is fully isolated per user on a shared cluster |
+| **Nickname** | Picked on first launch and stamped on every record |
+
 ### Smart Tracking
 Tap ▶ to start a session when you begin working. Stop it when done — duration is logged automatically. Multiple sessions can run simultaneously. Forgot to stop? You get a notification at your configured end-of-day time.
-
-### Sync (iOS ↔ macOS)
-Data entered on Mac is available on iPhone automatically. The iOS app pulls from a lightweight Node.js middleware on Vercel at every launch and pushes changes with a 2-second debounce. The connection string never leaves the server.
 
 ### Live Activity (iOS)
 Active sessions and the running timer appear on the lock screen and in the Dynamic Island — no need to open the app.
@@ -75,30 +72,8 @@ Active sessions and the running timer appear on the lock screen and in the Dynam
 - **Clients & Projects** — `NavigationSplitView` with macOS `Table`, inline create/edit forms
 - **Timer** — full Pomodoro / stopwatch window, Space to start/pause
 - **Auto-updates via Sparkle** — one-click in-app updates, EdDSA-signed DMG; "Check for Updates…" in the app menu. No Apple Developer ID required
-- **REST sync** — push/pull via `RestSyncService` + real-time SSE; connection string stored in Keychain
-- **Multi-user** — each team member picks a nickname on first launch; data is isolated per user, one shared cluster
 - **Settings window** — Pomodoro config, smart tracking end-of-day threshold (`⌘,`)
 - **Localization** — English and Italian; system locale followed automatically
-
----
-
-## Sync Architecture
-
-```
-iPhone ──► GET /api/pull   ──► Vercel (Node.js) ──► MongoDB Atlas
-Mac    ──► GET /api/pull   ──► Vercel (Node.js) ──► MongoDB Atlas
-        ◄── JSON ───────────────────────────────────────────────
-
-Both   ──► POST /api/sync  ──► Vercel ──► MongoDB upsert
-
-Both   ──► GET /api/events ──► Vercel SSE ──► MongoDB Change Streams
-```
-
-- **iOS + macOS**: `RestSyncService` — pure `URLSession`, zero direct database connections from the clients
-- **Real time**: `SSEClient` listens to `GET /api/events` and triggers `pullAll(into:)` after MongoDB Change Stream events
-- **Server**: Vercel functions (`GET /api/pull`, `POST /api/sync`, `GET /api/events`), auth via `X-API-Key`
-- **User isolation**: every document carries a `userId` field (the user's nickname); each device only pulls and pushes its own records
-- **API docs**: live Swagger UI at your Vercel deployment URL
 
 ---
 
@@ -110,17 +85,10 @@ TimeLog/
 ├── TimelogMac.xcodeproj        # macOS app project
 ├── TimelogCore/                # Shared Swift Package
 │   └── Sources/
-│       ├── TimelogCore/        # Models, VM, Stores, Helpers, Extensions
-│       └── TimelogSync/        # RestSyncService + SSEClient for iOS and macOS
+│       └── TimelogCore/        # Models, VM, Stores, Helpers, Extensions
 ├── Timelog/                    # iOS app sources (Views only)
 ├── TimelogMac/                 # macOS app sources (Views only)
-├── server/                     # Vercel middleware (Node.js + TypeScript)
-│   └── api/
-│       ├── pull.ts             # GET  /api/pull
-│       ├── sync.ts             # POST /api/sync
-│       └── events.ts           # GET  /api/events
 └── docs/
-    ├── SETUP_SYNC_SERVER.md    # How to configure sync on a new machine
     └── audit/                  # Performance, stability, release readiness
 ```
 
@@ -132,7 +100,6 @@ TimeLog/
 |-----|-------------|
 | iOS | Xcode 16+, iOS 17+, physical device for Live Activity |
 | macOS | Xcode 16+, macOS 14+ |
-| Sync server | Node.js 18+, Vercel account (free), MongoDB Atlas (free M0) |
 
 ---
 
@@ -147,29 +114,6 @@ cd Timelog
 
 **macOS:** open `TimelogMac.xcodeproj`, select the `TimelogMac` scheme, run.
 
-### Sync setup
-
-See [`docs/SETUP_SYNC_SERVER.md`](docs/SETUP_SYNC_SERVER.md) for full instructions. Quick version:
-
-```bash
-# 1. Deploy the middleware
-cd server && vercel --prod
-
-# 2. Set env vars on Vercel
-vercel env add MONGODB_URI
-vercel env add API_KEY
-
-# 3. Configure iOS credentials (gitignored, auto-loaded at launch)
-echo "URL=https://your-app.vercel.app"  > Timelog/SyncConfig.local
-echo "API_KEY=your-secret-key"         >> Timelog/SyncConfig.local
-
-# 4. Configure macOS credentials
-mkdir -p ~/.config/timelog
-echo "URL=https://your-app.vercel.app"  > ~/.config/timelog/sync.local
-echo "API_KEY=your-secret-key"         >> ~/.config/timelog/sync.local
-chmod 600 ~/.config/timelog/sync.local
-```
-
 ---
 
 ## Architecture
@@ -177,7 +121,6 @@ chmod 600 ~/.config/timelog/sync.local
 - **TimelogCore** — shared `@Observable` models and business logic, public API, iOS 17+ / macOS 14+
 - **MVVM** — `TimerViewModel` lives at app level, injected via SwiftUI environment
 - **SwiftData** — single `ModelContainer` shared across all scenes
-- **Keychain** — all sync credentials stored via `KeychainHelper`, never in code or UserDefaults
 - **ActivityKit** — Live Activities managed by `TimerViewModel` (iOS only, compile-guarded)
 - **UserNotifications** — daily reminders, session overdue alerts, Pomodoro phase-end
 
@@ -193,12 +136,12 @@ chmod 600 ~/.config/timelog/sync.local
 scripts/run-local-mac.sh
 ```
 
-Per i test che richiedono l'app bundle (Keychain, Notifications), usa **⌘U** in Xcode sul scheme `Timelog`.
+Per i test che richiedono l'app bundle (Notifications), usa **⌘U** in Xcode sul scheme `Timelog`.
 
 | Target | Suite | Runner |
 |--------|-------|--------|
 | `TimelogCoreTests` | `Int.formattedDuration`, `Color+Hex`, `Client`, `ActiveSession` | `swift test` |
-| `TimelogTests` | `KeychainHelper`, `SettingsStore`, `TimerViewModel` | Xcode ⌘U |
+| `TimelogTests` | `SettingsStore`, `TimerViewModel` | Xcode ⌘U |
 
 ---
 
