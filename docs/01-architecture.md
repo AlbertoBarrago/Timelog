@@ -34,13 +34,12 @@ graph TD
         Models["Models\nClient · Project\nTimeEntry · ActiveSession"]
         VM["TimerViewModel"]
         Store["SettingsStore"]
-        Helpers["KeychainHelper\nNotificationManager"]
+        Helpers["NotificationManager\nHistoryHeatmap"]
         Ext["Extensions\nColor+Hex · Int+Duration"]
     end
 
     subgraph Infra["Infrastructure"]
         SD[("SwiftData\nlocal SQLite")]
-        KCH[("Keychain")]
         UNS["UNUserNotificationCenter"]
     end
 
@@ -51,7 +50,6 @@ graph TD
     VM --> UNS
     VM -.->|"iOS only"| LiveActivity["ActivityKit\nLive Activity"]
     Store --> UNS
-    Helpers --> KCH
     Models --> SD
 ```
 

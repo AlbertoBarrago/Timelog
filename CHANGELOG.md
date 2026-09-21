@@ -24,6 +24,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   ⌘S hint popover.
 - Sync documentation: `docs/04-sync.md`, `docs/05-self-hosting.md`,
   `docs/SETUP_SYNC_SERVER.md`.
+- **`KeychainHelper`** and its test suite. It only ever held the sync credentials,
+  and nothing else in either app reads or writes the Keychain.
+- `ClientTests`, whose three cases all covered `Client.newMongoId()`.
 
 ---
 

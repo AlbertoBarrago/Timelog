@@ -16,7 +16,7 @@ TimeLog/
 │       ├── Models/            ← Client, Project, TimeEntry, ActiveSession
 │       ├── ViewModels/        ← TimerViewModel
 │       ├── Stores/            ← SettingsStore
-│       ├── Helpers/           ← KeychainHelper, NotificationManager
+│       ├── Helpers/           ← NotificationManager, HistoryHeatmap
 │       └── Extensions/        ← Color+Hex, Int+Duration
 ├── Timelog/                   ← iOS sources (Views only)
 └── TimelogMac/                ← macOS sources (Views only)

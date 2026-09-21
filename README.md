@@ -136,12 +136,12 @@ cd Timelog
 scripts/run-local-mac.sh
 ```
 
-Per i test che richiedono l'app bundle (Keychain, Notifications), usa **⌘U** in Xcode sul scheme `Timelog`.
+Per i test che richiedono l'app bundle (Notifications), usa **⌘U** in Xcode sul scheme `Timelog`.
 
 | Target | Suite | Runner |
 |--------|-------|--------|
 | `TimelogCoreTests` | `Int.formattedDuration`, `Color+Hex`, `Client`, `ActiveSession` | `swift test` |
-| `TimelogTests` | `KeychainHelper`, `SettingsStore`, `TimerViewModel` | Xcode ⌘U |
+| `TimelogTests` | `SettingsStore`, `TimerViewModel` | Xcode ⌘U |
 
 ---
 
