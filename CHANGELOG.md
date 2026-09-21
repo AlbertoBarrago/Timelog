@@ -9,6 +9,24 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.7.0] — 2026-09-21
+
+### Removed
+- **Cloud sync** — the `TimelogSync` package (`RestSyncService`, `SSEClient`), the
+  Vercel middleware under `server/` and every client-side hook into them are gone.
+  Both apps are now purely local: data lives in each device's SwiftData store and
+  is never sent anywhere.
+- **`mongoId`** on `Client`, `Project`, `TimeEntry`, `ActiveSession` and `DayReview`.
+  Analytics and history grouping now key off the SwiftData persistent identifier
+  (`analyticsID`) instead.
+- **Sync UI** — "Sync Now" (iOS Settings, macOS Settings, ⌘S), "Reset & Pull",
+  the sidebar and settings status dots, the post-sync green flash on iOS and the
+  ⌘S hint popover.
+- Sync documentation: `docs/04-sync.md`, `docs/05-self-hosting.md`,
+  `docs/SETUP_SYNC_SERVER.md`.
+
+---
+
 ## [1.6.9] — 2026-09-21
 
 ### Fixed
