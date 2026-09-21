@@ -140,6 +140,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         alert.addButton(withTitle: String(localized: "Cancel"))
         return alert.runModal() == .alertFirstButtonReturn ? .terminateNow : .terminateCancel
     }
+
+    /// Pending notifications survive termination and would be delivered with the app closed.
+    /// Drop them on quit; they are re-scheduled on the next launch.
+    func applicationWillTerminate(_ notification: Notification) {
+        NotificationManager.shared.cancelAllPending()
+    }
 }
 
 @main

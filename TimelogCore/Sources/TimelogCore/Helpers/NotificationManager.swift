@@ -13,6 +13,12 @@ public final class NotificationManager {
         }
     }
 
+    /// Removes every pending request so nothing is delivered while the app is not running.
+    /// Alerts are re-scheduled on the next launch by the app's `onAppear` setup.
+    public func cancelAllPending() {
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+    }
+
     // MARK: - Daily reminders
 
     public func reschedule(hour: Int, minute: Int, days: Set<Int>) {

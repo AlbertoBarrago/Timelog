@@ -194,6 +194,11 @@ struct TimelogApp: App {
                     .modifier(SyncFlashOverlay())
                     .modifier(IdleAlertModifier())
                     .modifier(EndOfDayAlertModifier())
+                    .onReceive(NotificationCenter.default.publisher(
+                        for: UIApplication.willTerminateNotification)) { _ in
+                        // Pending requests would still fire with the app closed.
+                        NotificationManager.shared.cancelAllPending()
+                    }
 
                 if showSplash {
                     SplashView(isShowing: $showSplash)
