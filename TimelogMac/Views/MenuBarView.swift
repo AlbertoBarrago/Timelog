@@ -1,7 +1,6 @@
 import SwiftUI
 import SwiftData
 import TimelogCore
-import TimelogSync
 import AppKit
 
 struct MenuBarView: View {
@@ -67,7 +66,6 @@ struct MenuBarView: View {
                                     session.deletedAt = now
                                     session.updatedAt = now
                                     try? context.save()
-                                    RestSyncService.shared.triggerSyncNow()
                                 }
                             }
                         }

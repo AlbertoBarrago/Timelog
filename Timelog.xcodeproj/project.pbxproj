@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AA110011AA110011AA110011 /* TimelogSync in Frameworks */ = {isa = PBXBuildFile; productRef = AA110012AA110012AA110012 /* TimelogSync */; };
 		B17066319DDC41458A535522 /* TimelogCore in Frameworks */ = {isa = PBXBuildFile; productRef = CD0C797427FE40D09F52EBAA /* TimelogCore */; };
 /* End PBXBuildFile section */
 
@@ -71,7 +70,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B17066319DDC41458A535522 /* TimelogCore in Frameworks */,
-				AA110011AA110011AA110011 /* TimelogSync in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,7 +131,6 @@
 			name = Timelog;
 			packageProductDependencies = (
 				CD0C797427FE40D09F52EBAA /* TimelogCore */,
-				AA110012AA110012AA110012 /* TimelogSync */,
 			);
 			productName = Timelog;
 			productReference = E97A4C712FAFE9D100C528C1 /* Timelog.app */;
@@ -635,11 +632,6 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		AA110012AA110012AA110012 /* TimelogSync */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E901B81A2FB11ED500EA36A5 /* XCLocalSwiftPackageReference "TimelogCore" */;
-			productName = TimelogSync;
-		};
 		CD0C797427FE40D09F52EBAA /* TimelogCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E901B81A2FB11ED500EA36A5 /* XCLocalSwiftPackageReference "TimelogCore" */;

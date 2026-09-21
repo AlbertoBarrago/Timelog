@@ -7,6 +7,7 @@
     "  |  " : {
       "shouldTranslate" : false
     },
+    "$" : {},
     "%@: %@" : {
       "localizations" : {
         "en" : {
@@ -37,9 +38,7 @@
         }
       }
     },
-    "%lld" : {
-
-    },
+    "%lld" : {},
     "%lld of %lld pomodoros completed" : {
       "localizations" : {
         "it" : {
@@ -50,21 +49,8 @@
         }
       }
     },
-    "%lldh" : {
-
-    },
-    "%lldm" : {
-
-    },
-    "→" : {
-
-    },
-    "✔" : {
-
-    },
-    "$" : {
-
-    },
+    "%lldh" : {},
+    "%lldm" : {},
     "0" : {
       "shouldTranslate" : false
     },
@@ -141,16 +127,6 @@
         }
       }
     },
-    "Add a new client" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aggiungi un nuovo cliente"
-          }
-        }
-      }
-    },
     "Add Client" : {
       "localizations" : {
         "it" : {
@@ -167,6 +143,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aggiungi progetto"
+          }
+        }
+      }
+    },
+    "Add a new client" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aggiungi un nuovo cliente"
           }
         }
       }
@@ -216,9 +202,7 @@
         }
       }
     },
-    "Annulla" : {
-
-    },
+    "Annulla" : {},
     "Archive" : {
       "localizations" : {
         "it" : {
@@ -259,9 +243,7 @@
         }
       }
     },
-    "Avg session" : {
-
-    },
+    "Avg session" : {},
     "Avg session length by hour of day" : {
       "localizations" : {
         "it" : {
@@ -292,9 +274,6 @@
         }
       }
     },
-    "brew install --formula gratitude" : {
-
-    },
     "Brown" : {
       "localizations" : {
         "it" : {
@@ -305,12 +284,7 @@
         }
       }
     },
-    "Buy me a coffee at buymeacoffee.com/albz" : {
-
-    },
-    "buymeacoffee.com/albz" : {
-
-    },
+    "Buy me a coffee at buymeacoffee.com/albz" : {},
     "Cancel" : {
       "localizations" : {
         "it" : {
@@ -341,12 +315,8 @@
         }
       }
     },
-    "Chiusura" : {
-
-    },
-    "Chiusure giornata" : {
-
-    },
+    "Chiusura" : {},
+    "Chiusure giornata" : {},
     "Click to edit entry" : {
       "localizations" : {
         "it" : {
@@ -387,9 +357,7 @@
         }
       }
     },
-    "Close today's active sessions" : {
-
-    },
+    "Close today's active sessions" : {},
     "Code (optional)" : {
       "localizations" : {
         "it" : {
@@ -410,9 +378,7 @@
         }
       }
     },
-    "Com'e andata?" : {
-
-    },
+    "Com'e andata?" : {},
     "Computing…" : {
       "localizations" : {
         "it" : {
@@ -505,9 +471,7 @@
         }
       }
     },
-    "Day" : {
-
-    },
+    "Day" : {},
     "Days" : {
       "localizations" : {
         "it" : {
@@ -518,9 +482,7 @@
         }
       }
     },
-    "Days you normally work. Used by analytics to exclude weekends from productivity baselines." : {
-
-    },
+    "Days you normally work. Used by analytics to exclude weekends from productivity baselines." : {},
     "Delete" : {
       "localizations" : {
         "it" : {
@@ -537,6 +499,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eliminare \"%@\"?"
+          }
+        }
+      }
+    },
+    "Delete Client" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elimina cliente"
           }
         }
       }
@@ -567,17 +540,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eliminare tutte le registrazioni?"
-          }
-        }
-      }
-    },
-    "Delete Client" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Elimina cliente"
           }
         }
       }
@@ -793,34 +755,16 @@
         }
       }
     },
-    "Giornata chiusa" : {
-
-    },
-    "Giornata chiusa: %@" : {
-
-    },
-    "Giornate pesanti" : {
-
-    },
-    "Giorni chiusi" : {
-
-    },
+    "Giornata chiusa" : {},
+    "Giornata chiusa: %@" : {},
+    "Giornate pesanti" : {},
+    "Giorni chiusi" : {},
     "GitHub" : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "GitHub"
-          }
-        }
-      }
-    },
-    "Got it" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Capito"
           }
         }
       }
@@ -845,12 +789,7 @@
         }
       }
     },
-    "h" : {
-      "shouldTranslate" : false
-    },
-    "Hai messo insieme %@." : {
-
-    },
+    "Hai messo insieme %@." : {},
     "Heatmap" : {
       "localizations" : {
         "it" : {
@@ -861,8 +800,7 @@
         }
       }
     },
-    "Hide archived" : {
-      "extractionState" : "stale",
+    "Hide Archived" : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -872,7 +810,8 @@
         }
       }
     },
-    "Hide Archived" : {
+    "Hide archived" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -922,15 +861,23 @@
         }
       }
     },
-    "Hour" : {
-
-    },
+    "Hour" : {},
     "Hours by project" : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ore per progetto"
+          }
+        }
+      }
+    },
+    "How should Timelog call you?" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Come deve chiamarti Timelog?"
           }
         }
       }
@@ -945,9 +892,7 @@
         }
       }
     },
-    "Label" : {
-
-    },
+    "Label" : {},
     "Label Breakdown" : {
       "localizations" : {
         "it" : {
@@ -964,17 +909,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Etichette"
-          }
-        }
-      }
-    },
-    "Last sync %@" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ultima sincronizzazione %@"
           }
         }
       }
@@ -1019,8 +953,7 @@
         }
       }
     },
-    "Log time" : {
-      "extractionState" : "stale",
+    "Log Time" : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1030,7 +963,8 @@
         }
       }
     },
-    "Log Time" : {
+    "Log time" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1079,9 +1013,6 @@
           }
         }
       }
-    },
-    "m" : {
-      "shouldTranslate" : false
     },
     "M" : {
       "extractionState" : "stale",
@@ -1135,17 +1066,6 @@
         }
       }
     },
-    "MongoDB Sync" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sincronizzazione MongoDB"
-          }
-        }
-      }
-    },
     "Month" : {
       "localizations" : {
         "it" : {
@@ -1156,12 +1076,8 @@
         }
       }
     },
-    "Mood" : {
-
-    },
-    "Mood frequente" : {
-
-    },
+    "Mood" : {},
+    "Mood frequente" : {},
     "More" : {
       "localizations" : {
         "it" : {
@@ -1192,22 +1108,22 @@
         }
       }
     },
-    "New label" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nuova etichetta"
-          }
-        }
-      }
-    },
     "New Project" : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nuovo progetto"
+          }
+        }
+      }
+    },
+    "New label" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuova etichetta"
           }
         }
       }
@@ -1232,9 +1148,7 @@
         }
       }
     },
-    "Niente da chiudere o annotare per oggi." : {
-
-    },
+    "Niente da chiudere o annotare per oggi." : {},
     "No active sessions on this Mac" : {
       "localizations" : {
         "it" : {
@@ -1295,29 +1209,14 @@
         }
       }
     },
-    "Non c'e ancora tempo registrato oggi." : {
-
-    },
-    "Non ci sono sessioni attive. La chiusura verra aggiunta all'ultima entry di oggi." : {
-
-    },
+    "Non c'e ancora tempo registrato oggi." : {},
+    "Non ci sono sessioni attive. La chiusura verra aggiunta all'ultima entry di oggi." : {},
     "None" : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nessuno"
-          }
-        }
-      }
-    },
-    "Not connected" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Non connesso"
           }
         }
       }
@@ -1332,9 +1231,7 @@
         }
       }
     },
-    "Nota per domani" : {
-
-    },
+    "Nota per domani" : {},
     "Notes" : {
       "localizations" : {
         "it" : {
@@ -1385,9 +1282,7 @@
         }
       }
     },
-    "Opzionale" : {
-
-    },
+    "Opzionale" : {},
     "Orange" : {
       "localizations" : {
         "it" : {
@@ -1448,9 +1343,7 @@
         }
       }
     },
-    "Per oggi basta" : {
-
-    },
+    "Per oggi basta" : {},
     "Pick another day to review logged time." : {
       "localizations" : {
         "it" : {
@@ -1487,16 +1380,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Modalità Pomodoro"
-          }
-        }
-      }
-    },
-    "Press ⌘S to sync changes immediately." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Premi ⌘S per sincronizzare le modifiche immediatamente."
           }
         }
       }
@@ -1541,34 +1424,6 @@
         }
       }
     },
-    "quit_anyway_sessions_warning %lld" : {
-      "localizations" : {
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "You have 1 active session. Quit anyway?"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "You have %lld active sessions. Quit anyway?"
-                }
-              }
-            }
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ci sono %lld sessioni attive. Chiudere comunque?"
-          }
-        }
-      }
-    },
     "Red" : {
       "localizations" : {
         "it" : {
@@ -1605,26 +1460,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reimposta"
-          }
-        }
-      }
-    },
-    "Reset & Pull" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reimposta e scarica"
-          }
-        }
-      }
-    },
-    "Reset & Pull re-downloads all data from the server." : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reset & Pull riscarica tutti i dati dal server."
           }
         }
       }
@@ -1731,9 +1566,7 @@
         }
       }
     },
-    "Score" : {
-
-    },
+    "Score" : {},
     "Select a client" : {
       "localizations" : {
         "it" : {
@@ -1776,9 +1609,7 @@
         }
       }
     },
-    "Sessioni da chiudere" : {
-
-    },
+    "Sessioni da chiudere" : {},
     "Settings" : {
       "localizations" : {
         "it" : {
@@ -1799,8 +1630,7 @@
         }
       }
     },
-    "Show archived" : {
-      "extractionState" : "stale",
+    "Show Archived" : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1810,7 +1640,8 @@
         }
       }
     },
-    "Show Archived" : {
+    "Show archived" : {
+      "extractionState" : "stale",
       "localizations" : {
         "it" : {
           "stringUnit" : {
@@ -1901,6 +1732,16 @@
         }
       }
     },
+    "Start Tracking" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avvia tracciamento"
+          }
+        }
+      }
+    },
     "Start a new tracking session" : {
       "localizations" : {
         "it" : {
@@ -1941,16 +1782,6 @@
         }
       }
     },
-    "Start Tracking" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Avvia tracciamento"
-          }
-        }
-      }
-    },
     "Started" : {
       "localizations" : {
         "it" : {
@@ -1977,6 +1808,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ferma e registra"
+          }
+        }
+      }
+    },
+    "Stop Tracking" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ferma tracciamento"
           }
         }
       }
@@ -2021,16 +1862,6 @@
         }
       }
     },
-    "Stop Tracking" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ferma tracciamento"
-          }
-        }
-      }
-    },
     "Stopwatch" : {
       "localizations" : {
         "it" : {
@@ -2062,86 +1893,13 @@
         }
       }
     },
-    "Support" : {
-
-    },
+    "Support" : {},
     "Switch mode" : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cambia modalità"
-          }
-        }
-      }
-    },
-    "Sync" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sincronizzazione"
-          }
-        }
-      }
-    },
-    "Sync error" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Errore di sincronizzazione"
-          }
-        }
-      }
-    },
-    "Sync in progress" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sincronizzazione in corso"
-          }
-        }
-      }
-    },
-    "Sync not yet run" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sincronizzazione non ancora eseguita"
-          }
-        }
-      }
-    },
-    "Sync Now" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sincronizza ora"
-          }
-        }
-      }
-    },
-    "Synced" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sincronizzato"
-          }
-        }
-      }
-    },
-    "Syncing…" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sincronizzazione in corso…"
           }
         }
       }
@@ -2237,25 +1995,23 @@
         }
       }
     },
-    "Timelog — Week of" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Timelog — Settimana del"
-          }
-        }
-      }
-    },
-    "Timelog is free. Coffee is optional." : {
-
-    },
     "Timelog Week Export" : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Esportazione settimanale Timelog"
+          }
+        }
+      }
+    },
+    "Timelog is free. Coffee is optional." : {},
+    "Timelog — Week of" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Timelog — Settimana del"
           }
         }
       }
@@ -2301,9 +2057,7 @@
         }
       }
     },
-    "Today has already been closed" : {
-
-    },
+    "Today has already been closed" : {},
     "Toggle Timelog window" : {
       "localizations" : {
         "it" : {
@@ -2330,16 +2084,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Etichetta principale"
-          }
-        }
-      }
-    },
-    "total" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "totale"
           }
         }
       }
@@ -2445,9 +2189,7 @@
         }
       }
     },
-    "Ultima chiusura" : {
-
-    },
+    "Ultima chiusura" : {},
     "Unarchive" : {
       "localizations" : {
         "it" : {
@@ -2458,9 +2200,7 @@
         }
       }
     },
-    "Update available" : {
-
-    },
+    "Update available" : {},
     "Version" : {
       "localizations" : {
         "it" : {
@@ -2483,16 +2223,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Versione %@ (%@)"
-          }
-        }
-      }
-    },
-    "vs last week" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "vs settimana scorsa"
           }
         }
       }
@@ -2548,22 +2278,23 @@
         }
       }
     },
-    "How should Timelog call you?" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Come deve chiamarti Timelog?"
-          }
-        }
-      }
-    },
     "When" : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Quando"
+          }
+        }
+      }
+    },
+    "Work Schedule" : {},
+    "Work Style" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stile di lavoro"
           }
         }
       }
@@ -2578,22 +2309,7 @@
         }
       }
     },
-    "Work Schedule" : {
-
-    },
-    "Work Style" : {
-      "localizations" : {
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stile di lavoro"
-          }
-        }
-      }
-    },
-    "Working days" : {
-
-    },
+    "Working days" : {},
     "Yellow" : {
       "localizations" : {
         "it" : {
@@ -2614,16 +2330,74 @@
         }
       }
     },
-    "Use the same nickname on each device so your time stays together." : {
+    "Your nickname is stamped on everything you track." : {
       "localizations" : {
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Usa lo stesso nickname su ogni dispositivo, così le tue ore restano insieme."
+            "value" : "Il tuo nickname viene associato a tutto ciò che registri."
           }
         }
       }
-    }
+    },
+    "brew install --formula gratitude" : {},
+    "buymeacoffee.com/albz" : {},
+    "h" : {
+      "shouldTranslate" : false
+    },
+    "m" : {
+      "shouldTranslate" : false
+    },
+    "quit_anyway_sessions_warning %lld" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You have 1 active session. Quit anyway?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You have %lld active sessions. Quit anyway?"
+                }
+              }
+            }
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ci sono %lld sessioni attive. Chiudere comunque?"
+          }
+        }
+      }
+    },
+    "total" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "totale"
+          }
+        }
+      }
+    },
+    "vs last week" : {
+      "localizations" : {
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "vs settimana scorsa"
+          }
+        }
+      }
+    },
+    "→" : {},
+    "✔" : {}
   },
   "version" : "1.1"
 }

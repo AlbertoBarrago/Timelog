@@ -5,7 +5,6 @@ import Foundation
 public final class Project {
     public var name: String
     public var code: String?
-    public var mongoId: String?
     public var userId: String = ""
     public var client: Client?
     public var labels: [String] = []
@@ -15,7 +14,6 @@ public final class Project {
     public init(name: String, code: String? = nil, userId: String = "") {
         self.name = name
         self.code = code
-        self.mongoId = Client.newMongoId()
         self.userId = userId
     }
 }

@@ -54,25 +54,13 @@ TimeLog/
   - UIKit haptics → `#if os(iOS)` (on the function signature too, not just the body)
   - AppKit → `#if canImport(AppKit) && !targetEnvironment(macCatalyst)`
 
-## Package TimelogSync
-
-- Contains `RestSyncService` (shared iOS + macOS) and `SSEClient` — unified sync via Vercel REST API
-- Both platforms push via `POST /api/sync` and receive real-time events via `GET /api/events` (Server-Sent Events backed by MongoDB Change Streams)
-- `pullAll(into:)` downloads everything from the server; triggered on launch and on each SSE change event
-- Auto-push: `triggerSync()` debounced 2 s → POST payload to Vercel
-- Race guard: `hasPendingPush` flag defers SSE-triggered pulls until the in-flight push completes (prevents local deletes being overwritten)
-- `isUserEditing` flag (macOS): defers SSE-triggered pulls while a form is open
-- Credentials: iOS reads `SyncConfig.local` from bundle; macOS reads `~/.config/timelog/sync.local` → Keychain (never in the repo)
-- No direct MongoDB connection from clients; no MongoKitten dependency
-
 ## SwiftUI / Swift conventions
 
 - For ternary expressions returning different `ButtonStyle` types, use `@ViewBuilder` to avoid type-inference errors
-- When adding sync/data features, always implement **both push and pull**
 - Always reference `modelContext` via `@Environment` — never assume it is in scope
 - When querying related objects from a `@State`-held model, use a separate `@Query` filtered by `persistentModelID` rather than accessing the relationship directly (SwiftData relationships on `@State` objects are not always reactive)
 - Verify multi-platform targeting (iOS + macOS) when creating new Xcode targets or files
-- **SwiftData safety**: always call `try? context.save()` explicitly after mutations; never assume auto-save will fire before app termination or a sync push
+- **SwiftData safety**: always call `try? context.save()` explicitly after mutations; never assume auto-save will fire before app termination
 
 ## Git
 
@@ -96,8 +84,6 @@ This project targets App Store publication. Always respect:
 ## Tech stack
 
 - SwiftUI + SwiftData + `@Observable`
-- Keychain for API keys and MongoDB connection string
 - `UNUserNotificationCenter` for daily reminders, open session alerts, Pomodoro phase end
 - `ActivityKit` for iOS Live Activity
 - `MenuBarExtra` for macOS menu bar
-- `MongoKitten` for MongoDB Atlas sync (macOS only)

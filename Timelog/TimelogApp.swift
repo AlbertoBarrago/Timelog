@@ -1,114 +1,8 @@
 import SwiftUI
 import SwiftData
 import TimelogCore
-import TimelogSync
 import UIKit
 import UserNotifications
-
-private struct RestSyncSetup: ViewModifier {
-    @Environment(\.modelContext) private var modelContext
-    @Environment(\.scenePhase) private var scenePhase
-    @Environment(SettingsStore.self) private var settings
-    @Query private var clients:  [Client]
-    @Query private var projects: [Project]
-    @Query private var entries:  [TimeEntry]
-    @Query private var sessions: [ActiveSession]
-    @Query private var dayReviews: [DayReview]
-    @State private var isPulling = false
-
-    func body(content: Content) -> some View {
-        content
-            .onAppear { setup() }
-            .onDisappear { RestSyncService.shared.stopListening() }
-            .onChange(of: scenePhase) { _, newPhase in
-                switch newPhase {
-                case .active:
-                    // Re-open SSE stream if it was dropped while in background, then
-                    // do a catch-up pull for any changes missed while disconnected.
-                    RestSyncService.shared.startListening()
-                    pullLatest()
-                case .background:
-                    // iOS suspends network connections in the background — stop cleanly.
-                    RestSyncService.shared.stopListening()
-                default:
-                    break
-                }
-            }
-            .onChange(of: dataFingerprint) { _, _ in
-                if !isPulling { RestSyncService.shared.triggerSync() }
-            }
-    }
-
-    private func pullLatest() {
-        guard RestSyncService.shared.isConfigured, !isPulling else { return }
-        isPulling = true
-        let ctx = modelContext
-        Task {
-            try? await RestSyncService.shared.pullAll(into: ctx)
-            isPulling = false
-        }
-    }
-
-    private func setup() {
-        RestSyncService.shared.userId = settings.userId
-        RestSyncService.shared.loadConfigFromFile()
-        RestSyncService.shared.storedContext = modelContext
-        let container = modelContext.container
-        RestSyncService.shared.setDataProvider { [container] in
-            let ctx = container.mainContext
-            return (
-                (try? ctx.fetch(FetchDescriptor<Client>())) ?? [],
-                (try? ctx.fetch(FetchDescriptor<Project>())) ?? [],
-                (try? ctx.fetch(FetchDescriptor<TimeEntry>())) ?? [],
-                (try? ctx.fetch(FetchDescriptor<ActiveSession>())) ?? [],
-                (try? ctx.fetch(FetchDescriptor<DayReview>())) ?? []
-            )
-        }
-        guard RestSyncService.shared.isConfigured else { return }
-        isPulling = true
-        Task {
-            try? await RestSyncService.shared.pullAll(into: modelContext)
-            isPulling = false
-            RestSyncService.shared.startListening()
-        }
-    }
-
-    private var dataFingerprint: Int {
-        SyncDataFingerprint.make(
-            clients: clients,
-            projects: projects,
-            entries: entries,
-            sessions: sessions,
-            dayReviews: dayReviews
-        )
-    }
-}
-
-
-// MARK: - Sync flash overlay
-
-private struct SyncFlashOverlay: ViewModifier {
-    @State private var flash = false
-    private var syncDate: Date? { RestSyncService.shared.lastSyncDate }
-
-    func body(content: Content) -> some View {
-        content
-            .overlay(
-                RoundedRectangle(cornerRadius: 0)
-                    .fill(Color.green.opacity(flash ? 0.18 : 0))
-                    .ignoresSafeArea()
-                    .allowsHitTesting(false)
-                    .animation(.easeOut(duration: 0.5), value: flash)
-            )
-            .onChange(of: RestSyncService.shared.lastSyncDate) { _, _ in
-                #if os(iOS)
-                UINotificationFeedbackGenerator().notificationOccurred(.success)
-                #endif
-                flash = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { flash = false }
-            }
-    }
-}
 
 private final class ForegroundNotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
@@ -190,8 +84,6 @@ struct TimelogApp: App {
                         NotificationManager.shared.requestPermission()
                         settings.applyReminders()
                     }
-                    .modifier(RestSyncSetup())
-                    .modifier(SyncFlashOverlay())
                     .modifier(IdleAlertModifier())
                     .modifier(EndOfDayAlertModifier())
                     .onReceive(NotificationCenter.default.publisher(

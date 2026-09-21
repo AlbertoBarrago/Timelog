@@ -1,7 +1,6 @@
 import SwiftUI
 import SwiftData
 import TimelogCore
-import TimelogSync
 
 struct ClientsMacView: View {
     @Environment(\.modelContext) private var context
@@ -91,12 +90,6 @@ struct ClientsMacView: View {
                 }
             }
             Button("Cancel", role: .cancel) { clientToDelete = nil }
-        }
-        .syncGated(while: $showingAddClient)
-        .syncGated(whilePresent: $clientToEdit)
-        .onReceive(NotificationCenter.default.publisher(for: RestSyncService.willWipeDataNotification)) { _ in
-            selectedClientID = nil
-            clientToEdit     = nil
         }
     }
 }
@@ -249,12 +242,6 @@ struct ProjectsMacView: View {
         } message: {
             Text("You can keep multiple sessions running, or stop the others and log them now.")
         }
-        .syncGated(while: $showingAddProject)
-        .syncGated(whilePresent: $projectToEdit)
-        .onReceive(NotificationCenter.default.publisher(for: RestSyncService.willWipeDataNotification)) { _ in
-            projectToEdit    = nil
-            selectedProjects = []
-        }
     }
 
     private func autoStop(_ sessions: [ActiveSession]) {
@@ -269,7 +256,6 @@ struct ProjectsMacView: View {
             session.updatedAt = now
         }
         try? context.save()
-        RestSyncService.shared.triggerSyncNow()
     }
 
     private func quickStart(project: Project) {
@@ -288,7 +274,6 @@ struct ProjectsMacView: View {
             endMinute: settings.trackingEndMinute
         )
         try? context.save()
-        RestSyncService.shared.triggerSyncNow()
     }
 }
 

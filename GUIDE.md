@@ -72,10 +72,9 @@ The app launches with both the main window **and** the menu bar icon.
 
 On first launch the app will ask for a **nickname**. This is a one-time step.
 
-- The nickname identifies your data when sharing the same MongoDB cluster with teammates
-- Each person uses their own nickname — data is fully isolated, nobody sees anyone else's entries
+- The nickname is stamped on every record you create
 - Pick something short and consistent (e.g. your first name or GitHub handle)
-- It cannot be changed easily after the first sync, so choose carefully
+- It is awkward to change once records carry it, so choose carefully
 
 ---
 

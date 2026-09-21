@@ -1,5 +1,4 @@
 import TimelogCore
-import TimelogSync
 import SwiftUI
 import SwiftData
 
@@ -146,7 +145,6 @@ struct QuickLogSheet: View {
             e.client = selectedClient
             e.project = selectedProject
             try? context.save()
-            RestSyncService.shared.triggerSyncNow()
         } else {
             let e = TimeEntry(
                 date: date, durationMinutes: total,
@@ -157,7 +155,6 @@ struct QuickLogSheet: View {
             )
             context.insert(e)
             try? context.save()
-            RestSyncService.shared.triggerSyncNow()
         }
         dismiss()
     }

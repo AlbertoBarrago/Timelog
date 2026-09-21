@@ -1,6 +1,5 @@
 import SwiftUI
 import TimelogCore
-import TimelogSync
 
 enum SidebarItem: String, CaseIterable, Identifiable {
     case today    = "Today"
@@ -83,20 +82,17 @@ struct MainMacView: View {
                 Button {
                     selection = .settings
                 } label: {
-                    HStack(spacing: 0) {
-                        Label(SidebarItem.settings.rawValue, systemImage: SidebarItem.settings.icon)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        SyncStatusDot()
-                    }
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 7)
-                    .background {
-                        if selection == .settings {
-                            RoundedRectangle(cornerRadius: 6)
-                                .fill(Color.accentColor.opacity(0.16))
+                    Label(SidebarItem.settings.rawValue, systemImage: SidebarItem.settings.icon)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 7)
+                        .background {
+                            if selection == .settings {
+                                RoundedRectangle(cornerRadius: 6)
+                                    .fill(Color.accentColor.opacity(0.16))
+                            }
                         }
-                    }
-                    .contentShape(Rectangle())
+                        .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel(String(localized: "Settings"))
@@ -131,60 +127,3 @@ struct MainMacView: View {
     }
 }
 
-private struct SyncStatusDot: View {
-    private var sync: RestSyncService { RestSyncService.shared }
-    @State private var pulse = false
-    @State private var showHint = false
-    @AppStorage("syncHintDismissed") private var hintDismissed: Bool = false
-
-    var body: some View {
-        ZStack {
-            if sync.isSyncing {
-                Circle()
-                    .fill(Color.yellow.opacity(0.3))
-                    .frame(width: 12, height: 12)
-                    .scaleEffect(pulse ? 1.8 : 1.0)
-                    .opacity(pulse ? 0 : 1)
-                    .animation(.easeOut(duration: 1.1).repeatForever(autoreverses: false), value: pulse)
-            }
-            Circle()
-                .fill(dotColor)
-                .frame(width: 7, height: 7)
-        }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(syncStatusDescription)
-        .onAppear { pulse = true }
-        .onChange(of: sync.isUserEditing) { _, isEditing in
-            guard !isEditing, !hintDismissed else { return }
-            showHint = true
-        }
-        .popover(isPresented: $showHint, arrowEdge: .trailing) {
-            VStack(alignment: .leading, spacing: 10) {
-                Text("Press ⌘S to sync changes immediately.")
-                    .font(.callout)
-                Button(String(localized: "Got it")) {
-                    hintDismissed = true
-                    showHint = false
-                }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.small)
-            }
-            .padding(14)
-            .frame(width: 240)
-        }
-    }
-
-    private var dotColor: Color {
-        if sync.isSyncing           { return .yellow }
-        if sync.lastError != nil    { return .red }
-        if sync.lastSyncDate != nil { return .green }
-        return .clear
-    }
-
-    private var syncStatusDescription: String {
-        if sync.isSyncing           { return String(localized: "Sync in progress") }
-        if sync.lastError != nil    { return String(localized: "Sync error") }
-        if sync.lastSyncDate != nil { return String(localized: "Synced") }
-        return String(localized: "Sync not yet run")
-    }
-}

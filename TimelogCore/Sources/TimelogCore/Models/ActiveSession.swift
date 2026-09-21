@@ -9,7 +9,6 @@ public final class ActiveSession {
     public var notes: String?
     public var label: String?
     public var notificationID: String
-    public var mongoId: String?
     public var userId: String = ""
     public var deletedAt: Date? = nil
     /// Bumped on every local mutation (create, stop, discard). Lets the server
@@ -24,7 +23,6 @@ public final class ActiveSession {
         self.notes = notes
         self.label = label
         self.notificationID = UUID().uuidString
-        self.mongoId = Client.newMongoId()
         self.userId = userId
         self.updatedAt = .now
     }

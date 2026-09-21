@@ -7,7 +7,6 @@ public final class DayReview {
     public var mood: String?
     public var pressure: Int?
     public var notes: String?
-    public var mongoId: String?
     public var userId: String = ""
     public var deletedAt: Date? = nil
 
@@ -22,7 +21,6 @@ public final class DayReview {
         self.mood = mood
         self.pressure = pressure
         self.notes = notes
-        self.mongoId = Client.newMongoId()
         self.userId = userId
     }
 }

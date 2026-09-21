@@ -1,7 +1,6 @@
 import SwiftUI
 import SwiftData
 import TimelogCore
-import TimelogSync
 
 struct MacSettingsView: View {
     @Environment(SettingsStore.self) private var store
@@ -79,35 +78,6 @@ struct MacSettingsView: View {
                 Text("Work Schedule")
             } footer: {
                 Text("Days you normally work. Used by analytics to exclude weekends from productivity baselines.")
-            }
-
-            // MARK: Sync — native macOS layout
-            Section {
-                HStack(spacing: 10) {
-                    SyncStatusDotSettings()
-                    Spacer()
-                    Button("Sync Now") {
-                        RestSyncService.shared.triggerSync()
-                    }
-                    .controlSize(.small)
-                    .disabled(!RestSyncService.shared.isConfigured)
-
-                    Divider().frame(height: 16)
-
-                    Button("Reset & Pull") {
-                        Task {
-                            try? await RestSyncService.shared.pullAll(into: modelContext)
-                            RestSyncService.shared.triggerSync()
-                        }
-                    }
-                    .controlSize(.small)
-                    .foregroundStyle(.orange)
-                    .disabled(!RestSyncService.shared.isConfigured)
-                }
-            } header: {
-                Text("Sync")
-            } footer: {
-                Text("Reset & Pull re-downloads all data from the server.")
             }
 
             // MARK: History
@@ -331,51 +301,6 @@ private struct NicknameRevealRow: View {
             guard !Task.isCancelled else { return }
             revealed = false
         }
-    }
-}
-
-private struct SyncStatusDotSettings: View {
-    private var sync: RestSyncService { RestSyncService.shared }
-    @State private var pulse = false
-
-    var body: some View {
-        HStack(spacing: 6) {
-            ZStack {
-                if sync.isSyncing {
-                    Circle()
-                        .fill(Color.yellow.opacity(0.25))
-                        .frame(width: 14, height: 14)
-                        .scaleEffect(pulse ? 1.6 : 1.0)
-                        .opacity(pulse ? 0 : 1)
-                        .animation(.easeOut(duration: 1.1).repeatForever(autoreverses: false), value: pulse)
-                }
-                Circle()
-                    .fill(dotColor)
-                    .frame(width: 8, height: 8)
-            }
-            Text(statusText)
-                .font(.callout)
-                .foregroundStyle(textColor)
-        }
-        .onAppear { pulse = true }
-    }
-
-    private var dotColor: Color {
-        if sync.isSyncing           { return .yellow }
-        if sync.lastError != nil    { return .red }
-        if sync.lastSyncDate != nil { return .green }
-        return Color.secondary.opacity(0.4)
-    }
-
-    private var textColor: Color { sync.lastError != nil ? .red : .secondary }
-
-    private var statusText: String {
-        if sync.isSyncing           { return "Syncing…" }
-        if let e = sync.lastError   { return e }
-        if let d = sync.lastSyncDate {
-            return "Last sync \(d.formatted(.relative(presentation: .named)))"
-        }
-        return "Not connected"
     }
 }
 

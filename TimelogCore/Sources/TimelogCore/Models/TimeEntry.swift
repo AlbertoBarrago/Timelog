@@ -7,7 +7,6 @@ public final class TimeEntry {
     public var durationMinutes: Int
     public var notes: String?
     public var label: String?
-    public var mongoId: String?
     public var userId: String = ""
     public var client: Client?
     public var project: Project?
@@ -22,7 +21,6 @@ public final class TimeEntry {
         self.label = label
         self.client = client
         self.project = project
-        self.mongoId = Client.newMongoId()
         self.userId = userId
     }
 }

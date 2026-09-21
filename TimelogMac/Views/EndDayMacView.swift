@@ -1,7 +1,6 @@
 import SwiftUI
 import SwiftData
 import TimelogCore
-import TimelogSync
 
 private enum EndDayMood: String, CaseIterable, Identifiable {
     case ok = "Ok"
@@ -180,7 +179,6 @@ struct EndDayMacView: View {
             return
         }
 
-        RestSyncService.shared.triggerSyncNow()
         dismiss()
     }
 

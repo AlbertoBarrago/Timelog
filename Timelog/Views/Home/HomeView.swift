@@ -1,5 +1,4 @@
 import TimelogCore
-import TimelogSync
 import SwiftUI
 import SwiftData
 
@@ -67,7 +66,6 @@ struct HomeView: View {
                                                 session.deletedAt = now
                                                 session.updatedAt = now
                                                 try? context.save()
-                                                RestSyncService.shared.triggerSyncNow()
                                             } label: {
                                                 Label("Discard", systemImage: "trash")
                                             }
@@ -94,9 +92,6 @@ struct HomeView: View {
                         }
                     }
                     .listStyle(.inset)
-                    .refreshable {
-                        try? await RestSyncService.shared.pullAll(into: context)
-                    }
                 }
             }
             .navigationTitle("Timelog")
@@ -136,9 +131,6 @@ struct HomeView: View {
                                      endMinute: settings.trackingEndMinute,
                                      onStop: {})
                 }
-            }
-            .onChange(of: activeSheet?.id) { _, sheetID in
-                RestSyncService.shared.isUserEditing = sheetID != nil
             }
         }
     }

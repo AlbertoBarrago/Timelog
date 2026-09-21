@@ -1,5 +1,4 @@
 import TimelogCore
-import TimelogSync
 import SwiftUI
 import SwiftData
 
@@ -147,7 +146,6 @@ struct ProjectListView: View {
             session.updatedAt = now
         }
         try? context.save()
-        RestSyncService.shared.triggerSyncNow()
     }
 
     private func quickStart(project: Project) {
@@ -166,6 +164,5 @@ struct ProjectListView: View {
             endMinute: settings.trackingEndMinute
         )
         try? context.save()
-        RestSyncService.shared.triggerSyncNow()
     }
 }

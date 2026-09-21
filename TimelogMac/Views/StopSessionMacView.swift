@@ -1,7 +1,6 @@
 import SwiftUI
 import SwiftData
 import TimelogCore
-import TimelogSync
 
 struct StopSessionMacView: View {
     enum Presentation {
@@ -223,7 +222,6 @@ struct StopSessionMacView: View {
         session.updatedAt = now
         try? context.save()
         onStop?()
-        RestSyncService.shared.triggerSyncNow()
         dismissSelf()
     }
 
@@ -240,7 +238,6 @@ struct StopSessionMacView: View {
         session.updatedAt = now
         try? context.save()
         onStop?()
-        RestSyncService.shared.triggerSyncNow()
         dismissSelf()
     }
 }
