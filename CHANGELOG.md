@@ -9,7 +9,18 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
-## [1.7.0] — 2026-09-21
+## [2.0.0] — 2026-09-21
+
+Major release: **not backwards compatible**. Cloud sync is gone for good, and the
+data model changed with it.
+
+- Devices no longer exchange anything. Whatever lived only on the server, and was
+  never pulled down to this device, is not reachable from the app any more.
+- The SwiftData schema drops `mongoId` from every model. Records created by 1.6.x
+  keep working after the lightweight migration, but a 2.0 store cannot be read
+  back by a 1.6.x build.
+- The Vercel deployment and the MongoDB cluster are no longer used by either app
+  and can be shut down.
 
 ### Removed
 - **Cloud sync** — the `TimelogSync` package (`RestSyncService`, `SSEClient`), the
