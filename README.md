@@ -39,8 +39,8 @@
 
 | App | Platform | Description |
 |-----|----------|-------------|
-| **Timelog** (iOS) | iPhone / iPad | Full-featured mobile app with Live Activity and splash screen |
-| **TimelogMac** (macOS) | macOS 14+ | Native menu bar app with full window management |
+| **Timelog** (iOS) | iPhone / iPad, iOS 26+ | Full-featured mobile app with Live Activity and splash screen |
+| **TimelogMac** (macOS) | macOS 26.4+ | Native menu bar app with full window management |
 
 Both apps share business logic via **TimelogCore**, a local Swift Package in the same repo.
 
@@ -98,8 +98,10 @@ TimeLog/
 
 | App | Requirement |
 |-----|-------------|
-| iOS | Xcode 16+, iOS 17+, physical device for Live Activity |
-| macOS | Xcode 16+, macOS 14+ |
+| iOS | iOS 26+, physical device for Live Activity |
+| macOS | macOS 26.4+ |
+
+Development currently uses Xcode 27.1 (build 27A9275). Compatibility with older Xcode versions, including 16.4, is not guaranteed. See [build compatibility](docs/build-compatibility.md) for verification results and the reported Xcode 16.4 workaround.
 
 ---
 
